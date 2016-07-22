@@ -1,0 +1,7 @@
+install: make get-deps
+
+language: cpp
+
+script: ./build_cpp.sh
+
+compiler: clang
