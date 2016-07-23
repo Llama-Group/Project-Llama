@@ -17,7 +17,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-
+/*
 #include "Cryptography.h"
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
@@ -69,3 +69,4 @@ string alpaca::cryptography::decode(const string &ciphertext, const string& priv
     CRYPTO_cleanup_all_ex_data();
     return result;
 }
+*/
