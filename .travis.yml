@@ -1,7 +1,7 @@
 language: cpp
 
 script: 
-- ./build/build_cpp.sh
-- ./build/build_cpp.sh -e test_build
+- bash ./build/build_cpp.sh
+- bash ./build/build_cpp.sh -e test_build
 
 compiler: clang
