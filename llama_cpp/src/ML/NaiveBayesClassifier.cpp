@@ -11,7 +11,7 @@ double Llama::NaiveBayesClassifier::getTheta(int feature, int featureValue, bool
 	int countY = 0;
 	auto currentFeature = this->features[feature];
 	for (auto it = currentFeature.begin(); it != currentFeature.end(); ++it) {
-		if (find(distinct.begin(), distinct.end(), *it) == distinct.end()) {
+		if (std::find(distinct.begin(), distinct.end(), *it) == distinct.end()) {
 			distinct.push_back(*it);
 		}
 		if (this->featureClass[distance(currentFeature.begin(), it)] == targetClass) {
