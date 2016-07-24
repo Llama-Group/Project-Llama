@@ -22,6 +22,19 @@ set(CMAKE_SOURCE_DIR "../../src")
 
 include_directories(${CMAKE_SOURCE_DIR})
 
+find_package(PkgConfig REQUIRED)
+pkg_search_module(CRYPTO REQUIRED libcrypto)
+
+if( CRYPTO_FOUND )
+    include_directories(${CRYPTO_INCLUDE_DIRS})
+    link_directories(${CRYPTO_LIBRARY_DIRS})
+    message(STATUS "Using Crypto ${CRYPTO_VERSION}")
+else()
+    # Error; with REQUIRED, pkg_search_module() will throw an error by it's own
+endif()
+
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 
 add_executable(test_build ${SRC_FILES} test_build.cpp)
+
+target_link_libraries(test_build ${CRYPTO_LIBRARIES})

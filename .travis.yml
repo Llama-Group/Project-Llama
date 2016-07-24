@@ -4,5 +4,6 @@ script:
 - bash ./build/build_cpp.sh
 - bash ./build/build_cpp.sh -e test_build
 - bash ./build/build_cpp.sh -e spam_classification
+- bash ./build/build_cpp.sh -e rsa
 
 compiler: clang
