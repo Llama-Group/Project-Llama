@@ -1,4 +1,6 @@
 
+#include <algorithm>
+
 #include "NaiveBayesClassifier.h"
 
 using namespace std;
