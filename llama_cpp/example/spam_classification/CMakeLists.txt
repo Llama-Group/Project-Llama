@@ -1,7 +1,7 @@
 
 cmake_minimum_required (VERSION 2.8)
 
-project (test_build)
+project (spam_classification)
 
 # Check for C++11 and set
 
@@ -16,6 +16,7 @@ else()
 	message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
+
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../lib_llama_cpp")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin_llama_cpp")
 set(CMAKE_SOURCE_DIR "../../src")
@@ -23,5 +24,6 @@ set(CMAKE_SOURCE_DIR "../../src")
 include_directories(${CMAKE_SOURCE_DIR})
 
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
-add_executable(test_build ${SRC_FILES} test_build.cpp)
+add_executable(spam_classification ${SRC_FILES} ${EXAMPLE_FILES})
