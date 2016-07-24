@@ -23,26 +23,28 @@
 
 #include <string>
 
-namespace alpaca::cryptography {
-    /**
-     *  @brief Encode the plain text with public key
-     *
-     *  @param plaintext Plain text
-     *  @param publickey The path of the public key
-     *
-     *  @return Cipher text or "" if failed
-     */
-    std::string encode(const std::string& plaintext, const std::string& publickey);
-    
-    /**
-     *  @brief Decode the cipher text with private key
-     *
-     *  @param ciphertext Cipher text
-     *  @param privatekey The path of the private key
-     *
-     *  @return Plain text or "" if failed
-     */
-    std::string decode(const std::string& ciphertext, const std::string& privatekey);
+namespace alpaca {
+    namespace cryptography {
+        /**
+         *  @brief Encode the plain text with public key
+         *
+         *  @param plaintext Plain text
+         *  @param publickey The path of the public key
+         *
+         *  @return Cipher text or "" if failed
+         */
+        std::string encode(const std::string& plaintext, const std::string& publickey);
+        
+        /**
+         *  @brief Decode the cipher text with private key
+         *
+         *  @param ciphertext Cipher text
+         *  @param privatekey The path of the private key
+         *
+         *  @return Plain text or "" if failed
+         */
+        std::string decode(const std::string& ciphertext, const std::string& privatekey);
+    };
 };
 
 #endif /* CRYPTOGRAPHY_H */
