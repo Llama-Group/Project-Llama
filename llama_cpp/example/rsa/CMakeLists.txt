@@ -1,7 +1,7 @@
 
 cmake_minimum_required (VERSION 2.8)
 
-project (llama_cpp)
+project (rsa)
 
 # Check for C++11 and set
 
@@ -22,20 +22,24 @@ endif()
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "../lib_llama_cpp")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin_llama_cpp")
-set(CMAKE_SOURCE_DIR "./src")
+set(CMAKE_SOURCE_DIR "../../src")
 
-file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
+include_directories(${CMAKE_SOURCE_DIR})
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(CRYPTO REQUIRED libcrypto)
 
 if( CRYPTO_FOUND )
     include_directories(${CRYPTO_INCLUDE_DIRS})
+    link_directories(${CRYPTO_LIBRARY_DIRS})
     message(STATUS "Using Crypto ${CRYPTO_VERSION}")
 else()
     # Error; with REQUIRED, pkg_search_module() will throw an error by it's own
 endif()
 
-add_library(Llama ${SRC_FILES})
+file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
-target_link_libraries(Llama ${CRYPTO_LIBRARIES})
+add_executable(rsa ${SRC_FILES} ${EXAMPLE_FILES})
+
+target_link_libraries(rsa ${CRYPTO_LIBRARIES})
