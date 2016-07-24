@@ -24,6 +24,20 @@ set(CMAKE_SOURCE_DIR "../../src")
 include_directories(${CMAKE_SOURCE_DIR})
 
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
+
+find_package(PkgConfig REQUIRED)
+pkg_search_module(CRYPTO REQUIRED libcrypto)
+
+if( CRYPTO_FOUND )
+    include_directories(${CRYPTO_INCLUDE_DIRS})
+    message(STATUS "Using Crypto ${CRYPTO_VERSION}")
+else()
+    # Error; with REQUIRED, pkg_search_module() will throw an error by it's own
+endif()
+
+file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
 add_executable(spam_classification ${SRC_FILES} ${EXAMPLE_FILES})
+
+target_link_libraries(spam_classification ${CRYPTO_LIBRARIES})
