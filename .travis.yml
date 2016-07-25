@@ -1,11 +1,12 @@
 language: cpp
 
 script: 
-- bash ./build/build_cpp.sh
-- bash ./build/build_cpp.sh -e test_build
-- bash ./build/build_cpp.sh -e spam_classification
-- bash ./build/build_cpp.sh -e rsa
-- bash ./build/build_cpp.sh -e mersenne_twister
-- bash ./build/build_cpp.sh -e kmeans
+- ./build/build_cpp.sh
+- ./build/build_cpp.sh -e test_build
+- ./build/build_cpp.sh -e spam_classification
+- ./build/build_cpp.sh -e rsa
+- ./build/build_cpp.sh -e mersenne_twister
+- ./build/build_cpp.sh -e kmeans
+- ./build/build_cpp.sh -e sort_test
 
 compiler: clang
