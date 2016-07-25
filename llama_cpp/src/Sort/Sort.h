@@ -7,63 +7,65 @@
 #include <iostream>
 #include <stdexcept>
 
-namespace llama {
-	namespace detail {
-	    template <typename T> double getValue     () {}
-	    template <>           double getValue<int>() {return 0;}
-		template <>           double getValue<std::string>() {return 1;}
-		template <>           double getValue<double>() {return 2;}
-	}
+// How to add sort algorithm:
+// Create a template class "template<class T>" inherit Sort.
+// Override void doSort(std::vector<SortObject<T>> *reformedArray).
+// Dealing with SortObject.
+// Add template specialization to support new type/class.
 
+namespace llama {
+	// SortObject class, represents each object in the array to sort.
 	template<class T>
 	class SortObject {
 	public:
-		SortObject(T inputObject) { obj = inputObject; }
-		SortObject() { na = true; }
-
-		double getValue() const {
-			detail::getValue();
-		}
-/*
-		template<>
-		double getValue<int>() const { 
-			return (double)obj;
-		}
-		template<>
-		double getValue<std::string>() const {
-			return (double)(((std::string)obj)[0]);
-		}
-		template<>
-		double getValue<double>() const {
-			return obj;
-		}*/
-				//throw std::invalid_argument("Sorting this type is not supported.");
+		bool na = false;
 		
+		SortObject(T inputObject) { obj = inputObject; }
+		SortObject() {
+			na = true;
+		}
+
+		double getValue() const;
 
 		T getObj() { return obj; }
 
-		bool operator> (const SortObject<T>& s) const { 0 > s.getValue(); }
-
-		bool na = false;
+		bool operator> (const SortObject<T>& s) const { return getValue() > s.getValue(); }
+		bool operator< (const SortObject<T>& s) const { return getValue() < s.getValue(); }
+		bool operator>= (const SortObject<T>& s) const { return getValue() >= s.getValue(); }
+		bool operator<= (const SortObject<T>& s) const { return getValue() <= s.getValue(); }
 	
 	private:
 		T obj;
 	};
-
+	
+	// Template specializations for SortObject class.
+	template<> double SortObject<int>::getValue() const {
+		return (double&)obj;
+	}
+	template<> double SortObject<std::string>::getValue() const {
+		return obj.size()>0?(double)(obj[0]):0;
+	}
+	template<> double SortObject<double>::getValue() const {
+		return obj;
+	}
+	
+	// Sort class
 	template<class T>
 	class Sort {
 	public:
-		Sort(std::vector<T> *inputArray) {
+		Sort() {}
+		
+		void sort(std::vector<T> *inputArray) {
 			std::vector<SortObject<T>> reformedArray;
 			for (typename std::vector<T>::iterator it = inputArray->begin(); it != inputArray->end(); ++it) {
 				reformedArray.push_back(SortObject<T>(*it));
 			}
-
+			
 			doSort(&reformedArray);
-
+			
 			int index = 0;
 			for (typename std::vector<T>::iterator it = inputArray->begin(); it != inputArray->end(); ++it) {
-				*it = reformedArray[index].getObj();
+				*it = reformedArray.at(index).getObj();
 				index ++;
 			}
 		}
