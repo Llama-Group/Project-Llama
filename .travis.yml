@@ -6,5 +6,6 @@ script:
 - bash ./build/build_cpp.sh -e spam_classification
 - bash ./build/build_cpp.sh -e rsa
 - bash ./build/build_cpp.sh -e mersenne_twister
+- bash ./build/build_cpp.sh -e kmeans
 
 compiler: clang
