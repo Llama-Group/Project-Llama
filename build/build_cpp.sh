@@ -15,7 +15,7 @@ if [ "$1" == "" ]; then
 	cmake ../Project-Llama/llama_cpp
 else
 	# Build examples
-	if [ "$1" == "-e" ] && [ "$2" != "" ]; then
+	if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
 		if [ -d "../Project-Llama/llama_cpp/example/"$2 ]; then
 			echo "Building: Project-Llama/llama_cpp/example/"$2
 			cmake ../Project-Llama/llama_cpp/example/$2
@@ -23,8 +23,11 @@ else
 			echo "No such example."
 			exit -2
 		fi
+	elif [ "$1" == "-b" ] || [ "$1" == "--benchmark" ]; then
+		cmake ../Project-Llama/llama_cpp/benchmark
 	else
-		echo "Usage: ./build_cpp.sh -e [example name]"
+		echo "Usage: ./build_cpp.sh [-e|--example] [example name]"
+		echo "						[-b|--benchmark]"
 		exit -1
 	fi
 fi
