@@ -20,6 +20,6 @@ script:
 - ./build/build_cpp.sh -e sort_test
 - ./build/build_cpp.sh -b sort_benchmark
 
-compiler: clang
+compiler: g++
 
 sudo: required
