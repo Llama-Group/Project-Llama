@@ -18,8 +18,9 @@ script:
 - ./build/build_cpp.sh -e mersenne_twister
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
+- source ./llama_cpp/benchmark/google_benchmark/.travis-setup.sh
 - ./build/build_cpp.sh -b sort_benchmark
 
-compiler: clang++
+compiler: clang
 
 sudo: required
