@@ -2,11 +2,13 @@ language: cpp
 
 before_install:
 - git submodule update --init --recursive
-- sudo add-apt-repository ppa:george-edison55/precise-backports --yes
-- sudo apt-get update
 
-install:
-- sudo apt-get -y install cmake
+addons:
+  apt:
+    packages:
+      - cmake
+    sources:
+      - kalakris-cmake
 
 script: 
 - ./build/build_cpp.sh
