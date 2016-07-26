@@ -8,6 +8,7 @@ before_install:
 - cd cmake-3.5.2
 - ./configure
 - make
+- sudo make install
 
 script: 
 - ./build/build_cpp.sh
