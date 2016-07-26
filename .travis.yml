@@ -4,10 +4,6 @@ before_install:
 - git submodule update --init --recursive
 
 before_script:
-- sudo apt-add-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.8 main"
-- sudo apt-get update
-- sudo apt-get install clang-3.8 lldb-3.8
-- clang-3.8 -v
 - source ./llama_cpp/benchmark/google_benchmark/.travis-setup.sh
 
 script: 
@@ -19,7 +15,7 @@ script:
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
 
-- ./build/build_cpp.sh -b sort_benchmark
+＃- ./build/build_cpp.sh -b sort_benchmark
 
 compiler: clang
 
