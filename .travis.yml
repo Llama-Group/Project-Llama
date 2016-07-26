@@ -21,6 +21,6 @@ script:
 - source ./llama_cpp/benchmark/google_benchmark/.travis-setup.sh
 - ./build/build_cpp.sh -b sort_benchmark
 
-compiler: clang
+compiler: g++
 
 sudo: required
