@@ -24,10 +24,21 @@ else
 			exit -2
 		fi
 	elif [ "$1" == "-b" ] || [ "$1" == "--benchmark" ]; then
-		cmake ../Project-Llama/llama_cpp/benchmark
+		../Project-Llama/llama_cpp/benchmark/install_benchmark.sh
+		if [ $? != 0 ]; then
+			echo "Failed to build Google Benchmark"
+			exit -5
+		fi
+		if [ -d "../Project-Llama/llama_cpp/benchmark/"$2 ]; then
+			echo "Building: Project-Llama/llama_cpp/benchmark/"$2
+			cmake ../Project-Llama/llama_cpp/benchmark/$2
+		else
+			echo "No such benchmark."
+			ext -4
+		fi
 	else
-		echo "Usage: ./build_cpp.sh [-e|--example] [example name]"
-		echo "						[-b|--benchmark]"
+		echo "Usage: ./build_cpp.sh 	[-e|--example] [example name]"
+		echo "			[-b|--benchmark] [benchmark name]"
 		exit -1
 	fi
 fi

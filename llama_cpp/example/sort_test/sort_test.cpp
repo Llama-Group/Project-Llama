@@ -21,13 +21,16 @@ private:
 	int input;
 };
 
-template <>
-double llama::SortObject<CustomisedClass>::getValue() const {
-	return (double)(obj.getInput());
+namespace llama {
+    template<>
+    double SortObject<CustomisedClass>::getValue() const {
+        return (double) (obj.getInput());
+    }
 }
 
 int main() {
 	// Easy tests
+
 	std::vector<int> a = {5, 4, 3, 2, 1};
 	new llama::BruteForceSort<int>(&a);
 	
@@ -51,4 +54,3 @@ int main() {
 
 	return 0;
 }
-

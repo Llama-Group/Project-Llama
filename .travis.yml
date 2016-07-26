@@ -1,5 +1,11 @@
 language: cpp
 
+before_install:
+- git submodule update --init --recursive
+
+before_script:
+- source ./llama_cpp/benchmark/google_benchmark/.travis-setup.sh
+
 script: 
 - ./build/build_cpp.sh
 - ./build/build_cpp.sh -e test_build
@@ -9,4 +15,8 @@ script:
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
 
+＃- ./build/build_cpp.sh -b sort_benchmark
+
 compiler: clang
+
+sudo: required

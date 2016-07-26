@@ -8,7 +8,7 @@
 
 namespace llama {
 	template<class T>
-	class BruteForceSort : Sort<T> {
+	class BruteForceSort : public Sort<T> {
 	public:
 		BruteForceSort() {}
 		BruteForceSort(std::vector<T> *inputArray) { this->sort(inputArray); }
@@ -22,11 +22,11 @@ namespace llama {
 						index ++;
 					}
 				}
+                index --;
 				while (!resultArray[index].na) {
 					index --;
 				}
 				resultArray[index] = reformedArray->at(i);
-				index = 0;
 			}
 			std::copy(resultArray.begin(), resultArray.end(), reformedArray->begin());
 		}
