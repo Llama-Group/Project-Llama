@@ -8,5 +8,6 @@ script:
 - ./build/build_cpp.sh -e mersenne_twister
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
+- ./build/build_cpp.sh -b sort_benchmark
 
 compiler: clang
