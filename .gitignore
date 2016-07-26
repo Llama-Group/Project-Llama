@@ -1,2 +1,10 @@
 
+# Mac stuff
 .DS_Store
+
+# Gradle java
+.gradle
+.idea
+
+# gedit
+.*~
