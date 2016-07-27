@@ -1,5 +1,12 @@
 language: cpp
 
+addons:
+  apt:
+    packages:
+      - cmake
+    sources:
+      - kalakris-cmake
+
 before_script:
 # g++4.8.1
 - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
