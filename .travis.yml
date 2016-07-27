@@ -4,12 +4,12 @@ addons:
   apt:
     packages:
       - cmake
-      - g++4.8
-      - clang
     sources:
       - kalakris-cmake
-      - ubuntu-toolchain-r-test
-  
+
+install:
+- export CXXFLAGS="-std=gnu++11 -stdlib=libc++"
+
 script: 
 - $CXX --version
 - ./build/build_cpp.sh
