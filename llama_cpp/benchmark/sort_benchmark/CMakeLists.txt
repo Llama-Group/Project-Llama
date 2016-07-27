@@ -17,7 +17,7 @@ else()
 endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
-set(PROJECT_ROOT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../") # Change this before change folder of CMakeLists.txt
+set(PROJECT_ROOT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../..") # Change this before change folder of CMakeLists.txt
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/../lib_llama_cpp")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/../bin_llama_cpp")
@@ -43,6 +43,8 @@ find_package (Threads)
 
 set(BENCHMARK_LIBRARY "${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
 link_directories("${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lz ${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
 
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
