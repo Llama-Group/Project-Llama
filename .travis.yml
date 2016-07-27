@@ -4,6 +4,8 @@ addons:
   apt:
     packages:
       - cmake
+      - g++-4.8
+      - clang
     sources:
       - kalakris-cmake
 
