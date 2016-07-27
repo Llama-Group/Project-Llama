@@ -8,6 +8,8 @@ addons:
       - clang
     sources:
       - kalakris-cmake
+      - ubuntu-toolchain-r/test
+      - h-rayflood/llvm
 
 before_script:
 # g++4.8.1
