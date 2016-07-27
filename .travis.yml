@@ -27,6 +27,7 @@ script:
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
 - ./llama_cpp/benchmark/install_benchmark.sh
+- cp -f ./libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
 - pushd /home/travis/build/Llama-Group/benchmark_llama_cpp/
 - sudo make install
 - popd
