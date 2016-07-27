@@ -32,6 +32,7 @@ pkg_search_module(CRYPTO REQUIRED libcrypto)
 
 if( CRYPTO_FOUND )
     include_directories(${CRYPTO_INCLUDE_DIRS})
+    link_directories(${CRYPTO_LIBRARY_DIRS})
     message(STATUS "Using Crypto ${CRYPTO_VERSION}")
 else()
     # Error; with REQUIRED, pkg_search_module() will throw an error by it's own
@@ -47,4 +48,4 @@ file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES} ${EXAMPLE_FILES})
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} libbenchmark.a ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} benchmark ${CMAKE_THREAD_LIBS_INIT})
