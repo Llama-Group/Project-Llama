@@ -1,8 +1,5 @@
 language: cpp
 
-before_install:
-- git submodule update --init --recursive
-
 before_script:
 - source ./llama_cpp/benchmark/google_benchmark/.travis-setup.sh
 
