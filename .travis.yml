@@ -26,10 +26,11 @@ script:
 - ./build/build_cpp.sh -e mersenne_twister
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
+- ./llama_cpp/benchmark/install_benchmark.sh
+- pushd ../benchmark-llama-cpp/
+- sudo make install
+- popd
 - ./build/build_cpp.sh -b sort_benchmark
-- cat /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/sort_benchmark.dir/build.make
-- echo "============================"
-- cat /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/sort_benchmark.dir/link.txt
 
 compiler: g++
 
