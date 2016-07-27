@@ -15,7 +15,7 @@ elseif(COMPILER_SUPPORTS_CXX0X)
 else()
 	message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c99”)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c99")
 
 set(PROJECT_ROOT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../../../") # Change this before change folder of CMakeLists.txt
 
