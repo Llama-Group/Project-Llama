@@ -9,7 +9,7 @@ addons:
       - gcc-5
     sources:
       - kalakris-cmake
-      - llvm-toolchain-precise
+#      - llvm-toolchain-precise
       - ubuntu-toolchain-r-test
       
 install:
