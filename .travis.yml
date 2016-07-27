@@ -18,6 +18,9 @@ install:
 
 script:
 - g++-5 -std=c++11 -L. -lbenchmark testlib.cpp
+- g++-5 -std=c++11 testlib.cpp libbenchmark.a
+- g++-5 -L. -ll m.cpp
+- g++-5 m.cpp libl.a
 - uname -a
 - $CXX --version
 - ./build/build_cpp.sh
