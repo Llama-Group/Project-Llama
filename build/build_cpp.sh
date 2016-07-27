@@ -31,7 +31,7 @@ else
 		fi
 		if [ -d "../Project-Llama/llama_cpp/benchmark/"$2 ]; then
 			echo "Building: Project-Llama/llama_cpp/benchmark/"$2
-			cmake -DCMAKE_CXX_COMPILER="clang++"../Project-Llama/llama_cpp/benchmark/$2
+			cmake ../Project-Llama/llama_cpp/benchmark/$2
 		else
 			echo "No such benchmark."
 			ext -4
