@@ -13,11 +13,13 @@ addons:
       - ubuntu-toolchain-r-test
       
 install:
+- sudo apt-get install -qq --reinstall binutils
 - sudo apt-get install build-essential
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 - if [ "$CXX" = "clang++" ]; then export CXX="clang++3.7" CC="clang-3.7"; fi
 
 script:
+- ld -v
 - g++-5 -c l.cpp
 - ar rvs libl.a l.o
 - rm l.o 
