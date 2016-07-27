@@ -8,7 +8,7 @@ addons:
       - kalakris-cmake
 
 install:
-- export CXXFLAGS="-stdlib=libc++"
+- sudo yum install libstdc++-devel
 
 script: 
 - $CXX --version
