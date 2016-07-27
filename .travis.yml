@@ -8,7 +8,10 @@ addons:
       - kalakris-cmake
 
 install:
-- sudo yum install libstdc++-devel
+- sudo apt-get install apt-file
+- sudo apt-file update
+- sudo apt-file find libstdc++.so.6
+- sudo apt-get install libstdc++6
 
 script: 
 - $CXX --version
