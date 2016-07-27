@@ -25,8 +25,10 @@ else
 		fi
 	elif [ "$1" == "-b" ] || [ "$1" == "--benchmark" ]; then
 		../Project-Llama/llama_cpp/benchmark/install_benchmark.sh
-		if [ $? != 0 ]; then
-			echo "Failed to build Google Benchmark"
+		if [ $? == 0 ] && [ -f "../benchmark_llama_cpp/src/libbenchmark.a" ]; then
+			echo "Google Benchmark library position correct."
+		else
+			echo "Failed to build Google Benchmark."
 			exit -5
 		fi
 		if [ -d "../Project-Llama/llama_cpp/benchmark/"$2 ]; then

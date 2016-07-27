@@ -40,10 +40,11 @@ endif()
 find_package (Threads)
 
 set(BENCHMARK_LIBRARY "${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
+link_directories("${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/")
 
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES} ${EXAMPLE_FILES})
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} ${BENCHMARK_LIBRARY} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} libbenchmark.a ${CMAKE_THREAD_LIBS_INIT})
