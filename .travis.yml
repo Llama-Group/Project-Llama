@@ -4,16 +4,17 @@ addons:
   apt:
     packages:
       - cmake
+      - clang-3.7
+      - g++-5
+      - gcc-5
     sources:
       - kalakris-cmake
-
+      - llvm-toolchain-precise
+      - ubuntu-toolchain-r-test
+      
 install:
-- sudo apt-get update
-- export CXXFLAGS="-std=c++0x -stdlib=libc++"
-- svn co -quiet http://llvm.org/svn/llvm-project/libcxx/trunk libcxx
-- cd libcxx/lib && bash buildit
-- sudo cp ./libc++.so.1.0 /usr/lib/
-- sudo mkdir /usr/include/c++/v1
+- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+- if [ "$CXX" = "clang++" ]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
 
 script: 
 - $CXX --version
