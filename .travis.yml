@@ -7,6 +7,9 @@ addons:
     sources:
       - kalakris-cmake
 
+before_install:
+- sudo apt-add-repository "deb http://llvm.org/apt/trusty/ llvm-toolchain-trusty-3.8 main"
+
 install:
 - sudo apt-get update
 - sudo apt-get install clang-3.8
