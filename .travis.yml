@@ -21,8 +21,8 @@ script:
 - g++-5 -c l.cpp
 - ar rvs libl.a l.o
 - rm l.o 
-- clang m.cpp libl.a
-- clang -L. -ll m.cpp
+- clang++ m.cpp libl.a
+- clang++ -L. -ll m.cpp
 - g++-5 -std=c++11 -L. -lbenchmark testlib.cpp
 - g++-5 -std=c++11 testlib.cpp libbenchmark.a
 - g++-5 -L. -ll m.cpp
