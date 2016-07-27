@@ -8,7 +8,7 @@ addons:
       - kalakris-cmake
 
 install:
-- export CXXFLAGS="-std=gnu++11 -stdlib=libc++"
+- export CXXFLAGS="-stdlib=libc++"
 
 script: 
 - $CXX --version
