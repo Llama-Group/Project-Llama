@@ -13,7 +13,7 @@ before_install:
 install:
 - wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
 - sudo apt-get update
-- sudo apt-get install clang-3.8 libclang1-3.8 libllvm3.8 libstdc++-4.8-dev libgcc-4.8-dev libclang-common-3.8-dev llvm-3.8-dev
+- sudo apt-get install clang-3.8 libclang1-3.8 libllvm3.8 libclang-common-3.8-dev llvm-3.8-dev
 
 script: 
 - $CXX --version
