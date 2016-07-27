@@ -25,10 +25,17 @@ script:
 - rm l.o 
 - clang++ m.cpp libl.a
 - clang++ -L. -ll m.cpp
+- clang++ -L. -ll m.cpp -stdlib=libc++
+- clang++ -lz ./libl.a m.cpp
 - g++-5 -std=c++11 -L. -lbenchmark testlib.cpp
 - g++-5 -std=c++11 testlib.cpp libbenchmark.a
+- g++-5 -std=c++11 -stdlib=libc++ testlib.cpp libbenchmark.a
+- g++-5 -std=c++11 -stdlib=libc++ -lz ./libbenchmark.a testlib.cpp
+- clang++ -std=c++11 -lz ./libbenchmark.a testlib.cpp
 - g++-5 -L. -ll m.cpp
 - g++-5 m.cpp libl.a
+- g++-5 m.cpp -lz ./libl.a
+- cat libl.a
 - uname -a
 - $CXX --version
 - ./build/build_cpp.sh
