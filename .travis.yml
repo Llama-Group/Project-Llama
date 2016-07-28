@@ -50,9 +50,16 @@ script:
 - popd
 - ./build/build_cpp.sh -b sort_benchmark
 - cat /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/sort_benchmark.dir/link.txt
-- g++-5 -std=c++11 ../benchmark_llama_cpp/src/libbenchmark.a testlib.cpp
-- g++-5 -std=c++11 testlib.cpp -lz ../benchmark_llama_cpp/src/libbenchmark.a
-
+- cmake ./llama_cpp/benchmark/google_benchmark
+- make
+- rm ./libbenchmark.a
+- mv ./src/libbenchmark.a ./
+- g++-5 -std=c++11 ./libbenchmark.a testlib.cpp
+- g++-5 -std=c++11 testlib.cpp -lz ./libbenchmark.a
+- g++-5 -std=c++11 testlib.cpp -L. -lbenchmark
+- clang++ -std=c++11 ./libbenchmark.a testlib.cpp
+- clang++ -std=c++11 testlib.cpp -lz ./libbenchmark.a
+- clang++ -std=c++11 testlib.cpp -L. -lbenchmark
 compiler: g++
 
 sudo: required
