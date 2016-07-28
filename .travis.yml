@@ -19,23 +19,6 @@ install:
 - if [ "$CXX" = "clang++" ]; then export CXX="clang++3.7" CC="clang-3.7"; fi
 
 script:
-- ld -v
-- g++-5 -c l.cpp
-- ar rvs libl.a l.o
-- rm l.o 
-- clang++ m.cpp libl.a
-- clang++ m.cpp -L. -ll
-- clang++ -lz ./libl.a m.cpp
-- g++-5 -std=c++11 testlib.cpp -L. -lbenchmark
-- g++-5 -std=c++11 testlib.cpp libbenchmark.a
-- g++-5 -std=c++11 -stdlib=libc++ libbenchmark.a testlib.cpp
-- g++-5 -std=c++11 -stdlib=libc++ -lz ./libbenchmark.a testlib.cpp
-- clang++ -std=c++11 -lz ./libbenchmark.a testlib.cpp
-- g++-5 -L. -ll m.cpp
-- g++-5 m.cpp libl.a
-- g++-5 m.cpp -lz ./libl.a
-- cat libl.a
-- uname -a
 - $CXX --version
 - ./build/build_cpp.sh
 - ./build/build_cpp.sh -e test_build
@@ -48,18 +31,17 @@ script:
 - pushd /home/travis/build/Llama-Group/benchmark_llama_cpp/
 - sudo make install
 - popd
+- export CXX="clang++"
 - ./build/build_cpp.sh -b sort_benchmark
 - cat /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/sort_benchmark.dir/link.txt
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - rm ./libbenchmark.a
 - mv ./src/libbenchmark.a ./
-- g++-5 -std=c++11 testlib.cpp libbenchmark.a
-- g++-5 -std=c++11 testlib.cpp -lz ./libbenchmark.a
-- g++-5 -std=c++11 testlib.cpp -L. -lbenchmark
 - clang++ -std=c++11 testlib.cpp libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -lz ./libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -L. -lbenchmark -lpthread
+
 compiler: g++
 
 sudo: required
