@@ -51,7 +51,7 @@ script:
 - ./build/build_cpp.sh -b sort_benchmark
 - cat /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/sort_benchmark.dir/link.txt
 - g++-5 -std=c++11 ../benchmark_llama_cpp/src/libbenchmark.a testlib.cpp
-- g++-5 -std=c++11 -lz testlib.cpp ../benchmark_llama_cpp/src/libbenchmark.a
+- g++-5 -std=c++11 testlib.cpp -lz ../benchmark_llama_cpp/src/libbenchmark.a
 
 compiler: g++
 
