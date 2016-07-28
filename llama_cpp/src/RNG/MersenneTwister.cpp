@@ -21,7 +21,7 @@
 
 #include "MersenneTwister.h"
 
-using namespace llama::RNG;
+using namespace alpaca::RNG;
 
 MersenneTwister::MersenneTwister(uint32_t seed) {
     this->index = 0;

@@ -31,7 +31,7 @@ int main(int argc, const char * argv[]) {
         data.emplace_back(23333 - random() % 10);
     }
     
-    vector<double> result = llama::ML::kmeans<double>(3, 2, data, [&](const vector<pair<double, uint32_t>>& data) -> double {
+    vector<double> result = alpaca::ML::kmeans<double>(3, 2, data, [&](const vector<pair<double, uint32_t>>& data) -> double {
         double total = 0, count = 0;
 
         for_each(data.cbegin(), data.cend(), [&total, &count](const pair<double, uint32_t>& point){

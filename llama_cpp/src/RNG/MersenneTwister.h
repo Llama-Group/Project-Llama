@@ -25,7 +25,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-namespace llama {
+namespace alpaca {
     namespace RNG {
         class MersenneTwister {
         public:

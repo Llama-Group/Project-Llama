@@ -1,7 +1,7 @@
 
 cmake_minimum_required (VERSION 2.8)
 
-project (llama_sort_test)
+project (alpaca_sort_test)
 
 # Check for C++11 and set
 
@@ -39,6 +39,6 @@ endif()
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
-add_executable(llama_sort_test ${SRC_FILES} ${EXAMPLE_FILES})
+add_executable(alpaca_sort_test ${SRC_FILES} ${EXAMPLE_FILES})
 
-target_link_libraries(llama_sort_test ${CRYPTO_LIBRARIES})
+target_link_libraries(alpaca_sort_test ${CRYPTO_LIBRARIES})
