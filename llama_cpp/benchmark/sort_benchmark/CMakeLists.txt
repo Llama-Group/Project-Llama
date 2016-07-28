@@ -51,4 +51,4 @@ file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES} ${EXAMPLE_FILES})
 
 link_directories("${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/")
-target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} ${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} "-lz ${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a" ${CMAKE_THREAD_LIBS_INIT})
