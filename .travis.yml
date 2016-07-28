@@ -37,7 +37,9 @@ script:
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - rm ./libbenchmark.a
-- mv ./src/libbenchmark.a ./
+- cp -f ./src/libbenchmark.a ./
+- sudo rm /usr/local/lib/libbenchmark.a
+- sudo cp -f ./src/libbenchmark.a /usr/local/lib/libbenchmark.a
 - clang++ -std=c++11 testlib.cpp libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -lz /usr/local/lib/libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -L. -lbenchmark -lpthread
