@@ -1,12 +1,8 @@
 
 #include <iostream>
 
-#include <Search/IterativeSearch.h>
-
-int main()
-{
-    std::cout << "test build\n" << std::endl;
-	Llama::tryMe();
+int main() {
+    std::cout << "Test build executed." << std::endl;
 	
     return 0;
 }
