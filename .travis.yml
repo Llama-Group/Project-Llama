@@ -55,10 +55,10 @@ script:
 - rm ./libbenchmark.a
 - mv ./src/libbenchmark.a ./
 - g++-5 -std=c++11 ./libbenchmark.a testlib.cpp
-- g++-5 -std=c++11 testlib.cpp -lz ./libbenchmark.a
+- strace -f g++-5 -std=c++11 testlib.cpp -lz ./libbenchmark.a
 - g++-5 -std=c++11 testlib.cpp -L. -lbenchmark
 - clang++ -std=c++11 ./libbenchmark.a testlib.cpp
-- clang++ -std=c++11 testlib.cpp -lz ./libbenchmark.a
+- strace -f clang++ -std=c++11 testlib.cpp -lz ./libbenchmark.a
 - clang++ -std=c++11 testlib.cpp -L. -lbenchmark
 compiler: g++
 
