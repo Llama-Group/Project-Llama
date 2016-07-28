@@ -12,9 +12,13 @@ addons:
 
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
-- ./llama_cpp/benchmark/install_benchmark.sh
 
 script:
+- cmake ./llama_cpp/benchmark/google_benchmark
+- make
+- mkdir -p ../benchmark_llama_cpp
+- mkdir -p ../benchmark_llama_cpp/src
+- cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
 - export CXX="clang++"
 - ./build/build_cpp.sh all
 
