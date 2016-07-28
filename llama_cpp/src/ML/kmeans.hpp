@@ -30,7 +30,7 @@
 #include <time.h>
 #include <RNG/MersenneTwister.h>
 
-namespace llama {
+namespace alpaca {
     namespace ML {
         /**
          *  @brief K-means algorithm
@@ -73,7 +73,7 @@ namespace llama {
             using ClusterPoint  = std::map<uint32_t, std::vector<ElementCount>>;
             
             Cluster clusters;
-            llama::RNG::MersenneTwister mt(static_cast<uint32_t>(time(NULL)));
+            alpaca::RNG::MersenneTwister mt(static_cast<uint32_t>(time(NULL)));
             uint32_t randmax = static_cast<uint32_t>(data.size());
             
             for (uint32_t i = 0; i < k; i++) {

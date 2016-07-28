@@ -14,32 +14,32 @@ int main(int argc, const char * argv[]) {
     };
     
     restore(array);
-    llama::sort<int>(llama::BUBBLE_SORT, array, 11);
+    alpaca::sort<int>(alpaca::BUBBLE_SORT, array, 11);
     copy(array, array+11, ostream_iterator<int>(cout, " "));
     cout<<'\n';
     
     restore(array);
-    llama::sort<int>(llama::COCKTAIL_SORT, array, 11);
+    alpaca::sort<int>(alpaca::COCKTAIL_SORT, array, 11);
     copy(array, array+11, ostream_iterator<int>(cout, " "));
     cout<<'\n';
     
     restore(array);
-    llama::sort<int>(llama::INSERTION_SORT, array, 11);
+    alpaca::sort<int>(alpaca::INSERTION_SORT, array, 11);
     copy(array, array+11, ostream_iterator<int>(cout, " "));
     cout<<'\n';
     
     restore(array);
-    llama::sort<int>(llama::SELECTION_SORT, array, 11);
+    alpaca::sort<int>(alpaca::SELECTION_SORT, array, 11);
     copy(array, array+11, ostream_iterator<int>(cout, " "));
     cout<<'\n';
     
     restore(array);
-    llama::sort<int>(llama::SHELL_SORT, array, 11);
+    alpaca::sort<int>(alpaca::SHELL_SORT, array, 11);
     copy(array, array+11, ostream_iterator<int>(cout, " "));
     cout<<'\n';
     
     restore(array);
-    llama::sort<int>(llama::QUICK_SORT, array, 11);
+    alpaca::sort<int>(alpaca::QUICK_SORT, array, 11);
     copy(array, array+11, ostream_iterator<int>(cout, " "));
     cout<<'\n';
     return 0;

@@ -27,7 +27,7 @@
 #include <sys/types.h>
 #include <type_traits>
 
-namespace llama {
+namespace alpaca {
     typedef enum : uint32_t {
         BUBBLE_SORT,
         COCKTAIL_SORT,

@@ -14,7 +14,7 @@ script:
 - ./build/build_cpp.sh -e mersenne_twister
 - ./build/build_cpp.sh -e kmeans
 - ./build/build_cpp.sh -e sort_test
-- ./build/build_cpp.sh -e llama_sort_test
+- ./build/build_cpp.sh -e alpaca_sort_test
 
 compiler: clang
 
