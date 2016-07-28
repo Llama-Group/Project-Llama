@@ -42,13 +42,13 @@ endif()
 find_package (Threads)
 
 set(BENCHMARK_LIBRARY "${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
-link_directories("${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lz ${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lz ${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
 
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
 add_executable(${CMAKE_PROJECT_NAME} ${SRC_FILES} ${EXAMPLE_FILES})
 
+link_directories("${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/")
 target_link_libraries(${CMAKE_PROJECT_NAME} ${CRYPTO_LIBRARIES} benchmark ${CMAKE_THREAD_LIBS_INIT})
