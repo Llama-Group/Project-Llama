@@ -32,7 +32,6 @@ script:
 - sudo make install
 - popd
 - export CXX="clang++"
-- ./build/build_cpp.sh -b sort_benchmark
 - cat /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/sort_benchmark.dir/link.txt
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
@@ -43,6 +42,7 @@ script:
 - clang++ -std=c++11 testlib.cpp libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -lz /usr/local/lib/libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -L. -lbenchmark -lpthread
+- ./build/build_cpp.sh -b sort_benchmark
 
 compiler: g++
 
