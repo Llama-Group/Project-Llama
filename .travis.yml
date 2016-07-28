@@ -1,21 +1,27 @@
 language: cpp
 
-before_install:
-- git submodule update --init --recursive
+addons:
+  apt:
+    packages:
+      - cmake
+      - g++-5
+      - gcc-5
+    sources:
+      - kalakris-cmake
+      - ubuntu-toolchain-r-test
 
-before_script:
-- source ./llama_cpp/benchmark/google_benchmark/.travis-setup.sh
+install:
+- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
-script: 
-- ./build/build_cpp.sh
-- ./build/build_cpp.sh -e test_build
-- ./build/build_cpp.sh -e spam_classification
-- ./build/build_cpp.sh -e rsa
-- ./build/build_cpp.sh -e mersenne_twister
-- ./build/build_cpp.sh -e kmeans
-- ./build/build_cpp.sh -e sort_test
-- ./build/build_cpp.sh -e alpaca_sort_test
+script:
+- cmake ./llama_cpp/benchmark/google_benchmark
+- make
+- mkdir -p ../benchmark_llama_cpp
+- mkdir -p ../benchmark_llama_cpp/src
+- cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
+- export CXX="clang++"
+- ./build/build_cpp.sh all
 
-compiler: clang
+compiler: g++
 
 sudo: required
