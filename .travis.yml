@@ -39,7 +39,7 @@ script:
 - rm ./libbenchmark.a
 - mv ./src/libbenchmark.a ./
 - clang++ -std=c++11 testlib.cpp libbenchmark.a -lpthread
-- clang++ -std=c++11 testlib.cpp -lz ./libbenchmark.a -lpthread
+- clang++ -std=c++11 testlib.cpp -lz /usr/local/lib/libbenchmark.a -lpthread
 - clang++ -std=c++11 testlib.cpp -L. -lbenchmark -lpthread
 
 compiler: g++
