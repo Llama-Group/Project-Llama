@@ -21,6 +21,8 @@ script:
 - cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
 - export CXX="clang++"
 - ./build/build_cpp.sh all
+- cd ./llama_java
+- ./gradlew assemble
 
 compiler: g++
 
