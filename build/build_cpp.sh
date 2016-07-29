@@ -18,7 +18,7 @@ else
 	if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
 		if [ -d "../Project-Llama/llama_cpp/example/"$2 ]; then
 			echo "Building: Project-Llama/llama_cpp/example/"$2
-			cmake -D$2=$2 ../Project-Llama/llama_cpp/
+			cmake -D$(echo $2 | awk '{print toupper($0)}')=$2 ../Project-Llama/llama_cpp/
 		else
 			echo "No such example."
 			exit -2
@@ -31,7 +31,7 @@ else
 		fi
 		if [ -d "../Project-Llama/llama_cpp/benchmark/"$2 ]; then
 			echo "Building: Project-Llama/llama_cpp/benchmark/"$2
-			cmake -D$2=$2 ../Project-Llama/llama_cpp/
+			cmake -D$(echo $2 | awk '{print toupper($0)}')=$2 ../Project-Llama/llama_cpp/
 		else
 			echo "No such benchmark."
 			ext -4
