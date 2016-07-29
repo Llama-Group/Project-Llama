@@ -1,9 +1,27 @@
 language: cpp
 
-script: 
-- bash ./build/build_cpp.sh
-- bash ./build/build_cpp.sh -e test_build
-- bash ./build/build_cpp.sh -e spam_classification
-- bash ./build/build_cpp.sh -e rsa
+addons:
+  apt:
+    packages:
+      - cmake
+      - g++-5
+      - gcc-5
+    sources:
+      - kalakris-cmake
+      - ubuntu-toolchain-r-test
 
-compiler: clang
+install:
+- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+
+script:
+- cmake ./llama_cpp/benchmark/google_benchmark
+- make
+- mkdir -p ../benchmark_llama_cpp
+- mkdir -p ../benchmark_llama_cpp/src
+- cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
+- export CXX="clang++"
+- ./build/build_cpp.sh all
+
+compiler: g++
+
+sudo: required

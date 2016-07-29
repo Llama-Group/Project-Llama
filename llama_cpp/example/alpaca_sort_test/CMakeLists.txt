@@ -1,7 +1,7 @@
 
 cmake_minimum_required (VERSION 2.8)
 
-project (spam_classification)
+project (alpaca_sort_test)
 
 # Check for C++11 and set
 
@@ -30,7 +30,8 @@ pkg_search_module(CRYPTO REQUIRED libcrypto)
 
 if( CRYPTO_FOUND )
     include_directories(${CRYPTO_INCLUDE_DIRS})
-    message(STATUS "Using Crypto ${CRYPTO_VERSION}")
+    link_directories(${CRYPTO_LIBRARY_DIRS})
+    message(STATUS "Using Crypto ${CRYPTO_VERSION} ${CRYPTO_LIBRARIES}")
 else()
     # Error; with REQUIRED, pkg_search_module() will throw an error by it's own
 endif()
@@ -38,6 +39,6 @@ endif()
 file(GLOB_RECURSE SRC_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE EXAMPLE_FILES ./*.cpp)
 
-add_executable(spam_classification ${SRC_FILES} ${EXAMPLE_FILES})
+add_executable(alpaca_sort_test ${SRC_FILES} ${EXAMPLE_FILES})
 
-target_link_libraries(spam_classification ${CRYPTO_LIBRARIES})
+target_link_libraries(alpaca_sort_test ${CRYPTO_LIBRARIES})
