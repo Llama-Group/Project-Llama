@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #include <stdexcept>
-
+//Sunbelife
 // How to add sort algorithm:
 // Create a template class "template<class T>" inherit Sort.
 // Override void doSort(std::vector<SortObject<T>> *reformedArray).
