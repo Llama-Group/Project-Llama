@@ -115,7 +115,7 @@ ENDIF() # NOT CMAKE_BUILD_TYPE STREQUAL "Debug"
 FUNCTION(SETUP_TARGET_FOR_COVERAGE _targetname _testrunner _outputname)
 
 	IF(NOT LCOV_PATH)
-		MESSAGE(FATAL_ERROR "lcov not found! Aborting...")
+		MESSAGE(STATUS "lcov not found! You must be the travis server.")
 	ENDIF() # NOT LCOV_PATH
 
 	IF(NOT GENHTML_PATH)
