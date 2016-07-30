@@ -6,6 +6,7 @@ addons:
       - cmake
       - g++-5
       - gcc-5
+      - icov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
