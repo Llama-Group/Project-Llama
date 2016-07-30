@@ -24,8 +24,9 @@ script:
 - cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
 - export CXX="clang++"
 - ./build/build_cpp.sh all
-- cd ./llama_java
+- pushd ./llama_java
 - ./gradlew assemble
+- popd
 
 after_success:
 - coveralls --root ../build_llama_cpp/ --build-root ../build_llama_cpp/ --gcov-options '\-lp'
