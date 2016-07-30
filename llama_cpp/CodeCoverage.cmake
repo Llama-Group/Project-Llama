@@ -78,11 +78,11 @@ IF(NOT GCOV_PATH)
 ENDIF() # NOT GCOV_PATH
 
 SET(CMAKE_CXX_FLAGS_COVERAGE
-    "-g -O0 --coverage -fprofile-arcs -ftest-coverage"
+    "-g -O0 -fprofile-arcs -ftest-coverage"
     CACHE STRING "Flags used by the C++ compiler during coverage builds."
     FORCE )
 SET(CMAKE_C_FLAGS_COVERAGE
-    "-g -O0 --coverage -fprofile-arcs -ftest-coverage"
+    "-g -O0 -fprofile-arcs -ftest-coverage"
     CACHE STRING "Flags used by the C compiler during coverage builds."
     FORCE )
 SET(CMAKE_EXE_LINKER_FLAGS_COVERAGE

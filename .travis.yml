@@ -29,7 +29,7 @@ script:
 - popd
 
 after_success:
-- coveralls --root ../build_llama_cpp/ --build-root ../build_llama_cpp/ --gcov-options '\-lp'
+- coveralls --root ../build_llama_cpp/ --build-root ../build_llama_cpp/ --include *.dir --gcov-options '\-lp'
 
 compiler: g++
 
