@@ -10,6 +10,9 @@ addons:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
 
+before_install:
+- pip install --user cpp-coveralls
+
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
@@ -24,6 +27,9 @@ script:
 - cd ./llama_java
 - ./gradlew assemble
 
+after_success:
+- coveralls --root ../build_llama_cpp/ --build-root ../build_llama_cpp/ --gcov-options '\-lp'
+
 compiler: g++
 
-sudo: required
+sudo: false
