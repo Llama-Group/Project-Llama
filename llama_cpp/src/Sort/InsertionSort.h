@@ -14,21 +14,23 @@ namespace llama {
 		InsertionSort(std::vector<T> *inputArray) { this->sort(inputArray); }
 
 		void doSort(std::vector<SortObject<T>> *reformedArray) override {
-			std::vector<SortObject<T>> resultArray(reformedArray->size(), SortObject<T>());
-			for (int i = 0; i < reformedArray->size(); ++ i) {
-				int index = 0;
-				for (int j = 0; j < reformedArray->size(); ++ j) {
-					if (reformedArray->at(i) >= reformedArray->at(j)) {
-						index ++;
-					}
+			for (int i = 1; i < reformedArray->size(); i++) {
+				// Set key value.
+				SortObject<T> key = reformedArray->at(i); 
+				// Set temp value.
+				int index = i;
+				// While the index > 0, comparing the (index-1) with the key
+				// until we find a (index-1) which is smaller than key, end 
+				// the loop.
+				while(index > 0 && reformedArray->at(index-1) > key) { 
+					reformedArray->at(index) = reformedArray->at(index-1);
+					// Move towards the head
+					index--;
 				}
-                index --;
-				while (!resultArray[index].na) {
-					index --;
-				}
-				resultArray[index] = reformedArray->at(i);
+				//Here, we can insert the key data to the index.
+				//that's why we call this algorithm "Insertion Sort"
+				reformedArray->at(index)=key;
 			}
-			std::copy(resultArray.begin(), resultArray.end(), reformedArray->begin());
 		}
 	};
 }

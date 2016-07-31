@@ -29,10 +29,10 @@ namespace llama {
 
 		T getObj() { return obj; }
 
-		bool operator> (const SortObject<T>& s) const { return getValue() > s.getValue(); }
-		bool operator< (const SortObject<T>& s) const { return getValue() < s.getValue(); }
-		bool operator>= (const SortObject<T>& s) const { return getValue() >= s.getValue(); }
-		bool operator<= (const SortObject<T>& s) const { return getValue() <= s.getValue(); }
+		bool operator > (const SortObject<T>& s) const { return getValue() > s.getValue(); }
+		bool operator < (const SortObject<T>& s) const { return getValue() < s.getValue(); }
+		bool operator >= (const SortObject<T>& s) const { return getValue() >= s.getValue(); }
+		bool operator <= (const SortObject<T>& s) const { return getValue() <= s.getValue(); }
 	
 	private:
 		T obj;
@@ -40,7 +40,7 @@ namespace llama {
 	
 	// Template specializations for SortObject class.
 	template<> double SortObject<int>::getValue() const {
-		return (double&)obj;
+		return (double)obj;
 	}
 	template<> double SortObject<std::string>::getValue() const {
 		return obj.size()>0?(double)(obj[0]):0;
