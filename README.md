@@ -1,6 +1,6 @@
 # Project-Llama
 [![Build Status](https://travis-ci.org/Llama-Group/Project-Llama.svg?branch=master)](https://travis-ci.org/Llama-Group/Project-Llama)
-[![Coverage Status](https://coveralls.io/repos/github/Llama-Group/Project-Llama/badge.svg?branch=feature%2Fapply-coverall)](https://coveralls.io/github/Llama-Group/Project-Llama?branch=feature%2Fapply-coverall)
+[![Coverage Status](https://coveralls.io/repos/github/Llama-Group/Project-Llama/badge.svg?branch=master)](https://coveralls.io/github/Llama-Group/Project-Llama?branch=master)
 [![ReviewNinja](https://app.review.ninja/63898156/badge)](https://app.review.ninja/Llama-Group/Project-Llama)
 
 An educational purposed project intends to implement algorithms and models learned during bachelor computer science study, and allow them to solve real-life problems and OJ.
