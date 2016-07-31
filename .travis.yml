@@ -18,11 +18,6 @@ install:
 - gem install coveralls-lcov
 
 script:
-- clang++-3.6 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
-- lcov --zerocounters --directory $TRAVIS_BUILD_DIR/
-- lcov --capture --initial --directory $TRAVIS_BUILD_DIR/ --output-file coverage.info
-- ./a.out
-- lcov --help
 - lcov --no-checksum --compat-libtool --directory $TRAVIS_BUILD_DIR/ --capture --output-file coverage.info
 - lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
 - lcov --list coverage.info
