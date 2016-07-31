@@ -6,7 +6,7 @@ addons:
       - cmake
       - g++-5
       - gcc-5
-      - gcov-5
+      - gcov-4.5
       - lcov
     sources:
       - kalakris-cmake
@@ -14,6 +14,7 @@ addons:
 
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+- sudo apt-get install gcov-4.5
 - gem install coveralls-lcov
 
 script:
@@ -31,14 +32,12 @@ script:
 
 after_success:
 - pushd ../build_llama_cpp
-- rm /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/alpaca_sort_test.dir/src/Cryptography/Cryptography.cpp.gcda
-- rm /home/travis/build/Llama-Group/build_llama_cpp/CMakeFiles/alpaca_sort_test.dir/src/Cryptography/Cryptography.cpp.gcno
-- lcov --gcov-tool /usr/bin/gcov-5 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-5 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-5 --list coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.5 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.5 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.5 --list coverage.info
 - popd
 - coveralls-lcov --repo-token ${COVERALLS_REPO_TOKEN} ../build_llama_cpp/coverage.info
 
 compiler: g++
 
-sudo: false
+sudo: required
