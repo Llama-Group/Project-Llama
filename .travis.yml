@@ -16,14 +16,14 @@ install:
 - gem install coveralls-lcov
 
 script:
-- g++-4.8 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
+- clang++ -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/
-- lcov --gcov-tool /usr/bin/gcov-4.8 --capture --initial --directory $TRAVIS_BUILD_DIR/ --output-file coverage.info
+- lcov --capture --initial --directory $TRAVIS_BUILD_DIR/ --output-file coverage.info
 - ./a.out
 - lcov --help
-- lcov --gcov-tool /usr/bin/gcov-4.8 --no-checksum --compat-libtool --directory $TRAVIS_BUILD_DIR/ --capture --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-4.8 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-4.8 --list coverage.info
+- lcov --no-checksum --compat-libtool --directory $TRAVIS_BUILD_DIR/ --capture --output-file coverage.info
+- lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --list coverage.info
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../benchmark_llama_cpp
