@@ -6,6 +6,7 @@ addons:
       - cmake
       - g++-5
       - gcc-5
+      - gcov-5
       - lcov
     sources:
       - kalakris-cmake
@@ -18,6 +19,8 @@ install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
 script:
+- gcov --version
+- gcov-5 --version
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../benchmark_llama_cpp
