@@ -13,7 +13,7 @@ addons:
       - ubuntu-toolchain-r-test
 
 install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+#- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 - gem install coveralls-lcov
 
 script:
