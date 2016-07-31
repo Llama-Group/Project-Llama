@@ -5,18 +5,15 @@
 class CustomisedClass {
 public:
 	CustomisedClass() {}
-	CustomisedClass(int input) 
-	{
+	CustomisedClass(int input) {
 		this->input = input*10;
 	}
 	
-	int getInput() const 
-	{
+	int getInput() const {
 		return input;
 	}
-	
-	operator std::string() const
-	{
+
+	operator std::string() const {
 		return "CustomisedClass: "+std::to_string(getInput());
 	}
 	
