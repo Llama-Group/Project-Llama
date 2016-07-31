@@ -6,14 +6,14 @@ addons:
       - cmake
       - g++-4.8
       - gcc-4.8
-      #- gcov-5
+      - gcov-4.8
       - lcov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
 
 install:
-#- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 - gem install coveralls-lcov
 
 script:
