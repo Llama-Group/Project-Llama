@@ -4,19 +4,22 @@ addons:
   apt:
     packages:
       - cmake
-      - g++-5
-      - gcc-5
-      - gcov-5
+      - g++-6
+      - gcc-6
+      - gcov-6
       - lcov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
 
 install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
 - gem install coveralls-lcov
 
 script:
+- g++-6 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
+- ./a.out
+- gcov-6 hw
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../benchmark_llama_cpp
@@ -31,9 +34,9 @@ script:
 
 after_success:
 - pushd ../build_llama_cpp
-- lcov --gcov-tool /usr/bin/gcov-5 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-5 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-5 --list coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --list coverage.info
 - popd
 - coveralls-lcov --repo-token ${COVERALLS_REPO_TOKEN} ../build_llama_cpp/coverage.info
 
