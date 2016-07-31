@@ -6,22 +6,19 @@ addons:
       - cmake
       - g++-4.8
       - gcc-4.8
+      - clang++-3.6
       - lcov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
-
-before_install:
-- sudo add-apt-repository ppa:adrozdoff/llvm-backport -y
-- sudo apt-get update -q
-- sudo apt-get install clang-3.7 -y
+      - llvm-toolchain-precise-3.6
 
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 - gem install coveralls-lcov
 
 script:
-- clang++-3.7 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
+- clang++-3.6 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/
 - lcov --capture --initial --directory $TRAVIS_BUILD_DIR/ --output-file coverage.info
 - ./a.out
@@ -34,7 +31,7 @@ script:
 - mkdir -p ../benchmark_llama_cpp
 - mkdir -p ../benchmark_llama_cpp/src
 - cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
-- export CXX="clang++-3.7"
+- export CXX="clang++-3.6"
 - ./build/build_cpp.sh all
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp
 - ./build/build_cpp.sh all coverage
