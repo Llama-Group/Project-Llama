@@ -23,6 +23,7 @@ script:
 - mkdir -p ../benchmark_llama_cpp/src
 - cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
 - ./build/build_cpp.sh all
+- lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp
 - ./build/build_cpp.sh all coverage
 - pushd ./llama_java
 - ./gradlew assemble
@@ -30,7 +31,7 @@ script:
 
 after_success:
 - pushd ../build_llama_cpp
-- lcov --gcov-tool /usr/bin/gcov-5 --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-5 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
 - lcov --gcov-tool /usr/bin/gcov-5 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
 - lcov --gcov-tool /usr/bin/gcov-5 --list coverage.info
 - popd
