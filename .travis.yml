@@ -12,10 +12,13 @@ addons:
       - ubuntu-toolchain-r-test
 
 before_install:
-- pip install --user cpp-coveralls
+- pushd ../build_llama_cpp
+- lcov --directory . --zerocounters
+- popd
 
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+- gem install coveralls-lcov
 
 script:
 - cmake ./llama_cpp/benchmark/google_benchmark
@@ -31,7 +34,12 @@ script:
 - popd
 
 after_success:
-- coveralls --root ../build_llama_cpp/ --build-root ../build_llama_cpp/ --include *.dir --gcov-options '\-lp'
+- pushd ./build_llama_cpp
+- lcov --directory . --capture --output-file coverage.info
+- lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --list coverage.info
+- popd
+- coveralls-lcov --repo-token ${COVERALLS_REPO_TOKEN} ../build_llama_cpp/coverage.info
 
 compiler: g++
 
