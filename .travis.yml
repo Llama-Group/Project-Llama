@@ -6,7 +6,7 @@ addons:
       - cmake
       - g++-6
       - gcc-6
-      - lcov-1.1
+      - lcov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
@@ -19,7 +19,7 @@ script:
 - g++-6 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
 - ./a.out
 - gcov-6 hw
-- lcov --gcov-tool /usr/bin/gcov-6 --directory . --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --no-checksum --directory $TRAVIS_BUILD_DIR/ --capture --output-file coverage.info
 - lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
 - lcov --gcov-tool /usr/bin/gcov-6 --list coverage.info
 - cmake ./llama_cpp/benchmark/google_benchmark
@@ -36,7 +36,7 @@ script:
 
 after_success:
 - pushd ../build_llama_cpp
-- lcov --gcov-tool /usr/bin/gcov-6 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --no-checksum --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
 - lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
 - lcov --gcov-tool /usr/bin/gcov-6 --list coverage.info
 - popd
@@ -44,4 +44,4 @@ after_success:
 
 compiler: g++
 
-sudo: false
+sudo: required
