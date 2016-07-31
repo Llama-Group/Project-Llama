@@ -4,8 +4,8 @@ addons:
   apt:
     packages:
       - cmake
-      - g++-4.8
-      - gcc-4.8
+      - g++-6
+      - gcc-6
       #- gcov-4.8
       - lcov
     sources:
@@ -31,9 +31,9 @@ script:
 
 after_success:
 - pushd ../build_llama_cpp
-- lcov --gcov-tool /usr/bin/gcov-4.8 --debug --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-4.8 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-4.8 --list coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-6 --list coverage.info
 - popd
 - coveralls-lcov --repo-token ${COVERALLS_REPO_TOKEN} ../build_llama_cpp/coverage.info
 
