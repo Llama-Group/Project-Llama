@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 BASEDIR=$(dirname "$0")
 
 #Go to project directory
@@ -42,7 +44,11 @@ else
 			echo "Failed to build Google Benchmark"
 			exit -5
 		fi
-		flags="-DLIBLLAMA=YES"
+		flag=" "
+		if [ "$2" == "coverage" ]; then
+			flags=$flags"-DCMAKE_BUILD_TYPE=Coverage "
+		fi
+		flags=$flags"-DLIBLLAMA=YES"
 		pushd ../Project-Llama/llama_cpp/example >> /dev/null
 		target=($(ls -d */))
 		popd >> /dev/null
@@ -68,4 +74,8 @@ if [ $? != 0 ]; then
 	exit -3
 else
 	echo "Build finished."
+fi
+
+if [ "$2" == "coverage" ]; then
+	make test
 fi
