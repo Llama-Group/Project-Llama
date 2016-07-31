@@ -4,26 +4,26 @@ addons:
   apt:
     packages:
       - cmake
-      - g++-6
-      - gcc-6
+      - g++-4.8
+      - gcc-4.8
       - lcov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
 
 install:
-- if [ "$CXX" = "g++" ]; then export CXX="g++-6" CC="gcc-6"; fi
+- if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
 - gem install coveralls-lcov
 
 script:
-- g++-6 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
+- g++-4.8 -g -O0 -fprofile-arcs -ftest-coverage hw.cpp
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/
-- lcov --gcov-tool /usr/bin/gcov-6 --capture --initial --directory $TRAVIS_BUILD_DIR/ --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.8 --capture --initial --directory $TRAVIS_BUILD_DIR/ --output-file coverage.info
 - ./a.out
 - lcov --help
-- lcov --gcov-tool /usr/bin/gcov-6 --no-checksum --no-compat-libtool --directory $TRAVIS_BUILD_DIR/ --capture --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-6 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
-- lcov --gcov-tool /usr/bin/gcov-6 --list coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.8 --no-checksum --no-compat-libtool --directory $TRAVIS_BUILD_DIR/ --capture --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.8 --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --gcov-tool /usr/bin/gcov-4.8 --list coverage.info
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../benchmark_llama_cpp
