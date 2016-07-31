@@ -29,7 +29,7 @@ script:
 - popd
 
 after_success:
-- pushd ./build_llama_cpp
+- pushd ../build_llama_cpp
 - lcov --directory . --capture --output-file coverage.info
 - lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
 - lcov --list coverage.info
