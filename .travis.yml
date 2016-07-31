@@ -17,14 +17,11 @@ install:
 - gem install coveralls-lcov
 
 script:
-- gcov --version
-- gcov-5 --version
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../benchmark_llama_cpp
 - mkdir -p ../benchmark_llama_cpp/src
 - cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
-- export CXX="clang++"
 - ./build/build_cpp.sh all
 - ./build/build_cpp.sh all coverage
 - pushd ./llama_java
