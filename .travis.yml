@@ -12,6 +12,10 @@ addons:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
       - llvm-toolchain-precise-3.6
+      
+branches:
+  only: 
+    - master
 
 install:
 - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
