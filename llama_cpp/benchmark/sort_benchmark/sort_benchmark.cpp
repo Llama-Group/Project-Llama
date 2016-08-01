@@ -18,7 +18,7 @@ static void StdSortString(benchmark::State& state) {
     }
 }
 
-//BFSort
+// BFSort
 static void BFSortInt(benchmark::State& state) {
     llama::BruteForceSort<int> bfSort = llama::BruteForceSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
@@ -43,7 +43,7 @@ static void BFSortDouble(benchmark::State& state) {
     }
 }
 
-//InSort
+// InSort
 static void InSortInt(benchmark::State& state) {
     llama::InsertionSort<int> inSort = llama::InsertionSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
