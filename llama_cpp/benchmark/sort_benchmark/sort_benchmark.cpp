@@ -3,6 +3,8 @@
 
 #include "Sort/BruteForceSort.h"
 #include "Sort/InsertionSort.h"
+#include "Sort/SelectionSort.h"
+#include "Sort/BubbleSort.h"
 
 static void StdSortInt(benchmark::State& state) {
     std::vector<int> a = {5, 4, 3, 2, 1};
@@ -67,6 +69,55 @@ static void InSortDouble(benchmark::State& state) {
         inSort.sort(&a);
     }
 }
+// SelctionSort
+static void SeSortInt(benchmark::State& state) {
+    llama::SelectionSort<int> SeSort = llama::SelectionSort<int>();
+    std::vector<int> a = {5, 4, 3, 2, 1};
+    while (state.KeepRunning()) {
+        SeSort.sort(&a);
+    }
+}
+
+static void SeSortString(benchmark::State& state) {
+    llama::SelectionSort<std::string> SeSort = llama::SelectionSort<std::string>();
+    std::vector<std::string> a = {"5", "4", "3", "2", "1"};
+    while (state.KeepRunning()) {
+        SeSort.sort(&a);
+    }
+}
+
+static void SeSortDouble(benchmark::State& state) {
+    llama::SelectionSort<double> SeSort = llama::SelectionSort<double>();
+    std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
+    while (state.KeepRunning()) {
+        SeSort.sort(&a);
+    }
+}
+
+// BubbleSort
+static void BuSortInt(benchmark::State& state) {
+    llama::BubbleSort<int> BuSort = llama::BubbleSort<int>();
+    std::vector<int> a = {5, 4, 3, 2, 1};
+    while (state.KeepRunning()) {
+        BuSort.sort(&a);
+    }
+}
+
+static void BuSortString(benchmark::State& state) {
+    llama::BubbleSort<std::string> BuSort = llama::BubbleSort<std::string>();
+    std::vector<std::string> a = {"5", "4", "3", "2", "1"};
+    while (state.KeepRunning()) {
+        BuSort.sort(&a);
+    }
+}
+
+static void BuSortDouble(benchmark::State& state) {
+    llama::BubbleSort<double> BuSort = llama::BubbleSort<double>();
+    std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
+    while (state.KeepRunning()) {
+        BuSort.sort(&a);
+    }
+}
 
 class CustomisedClass {
 public:
@@ -111,6 +162,23 @@ static void InSortClass(benchmark::State& state) {
         inSort.sort(&a);
     }
 }
+static void SeSortClass(benchmark::State& state) {
+    llama::SelectionSort<CustomisedClass> SeSort = llama::SelectionSort<CustomisedClass>();
+    std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
+                          CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
+    while (state.KeepRunning()) {
+        SeSort.sort(&a);
+    }
+}
+
+static void BuSortClass(benchmark::State& state) {
+    llama::BubbleSort<CustomisedClass> BuSort = llama::BubbleSort<CustomisedClass>();
+    std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
+                          CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
+    while (state.KeepRunning()) {
+        BuSort.sort(&a);
+    }
+}
 
 BENCHMARK(StdSortInt);
 BENCHMARK(StdSortString);
@@ -122,5 +190,13 @@ BENCHMARK(InSortInt);
 BENCHMARK(InSortString);
 BENCHMARK(InSortDouble);
 BENCHMARK(InSortClass);
+BENCHMARK(SeSortInt);
+BENCHMARK(SeSortString);
+BENCHMARK(SeSortDouble);
+BENCHMARK(SeSortClass);
+BENCHMARK(BuSortInt);
+BENCHMARK(BuSortString);
+BENCHMARK(BuSortDouble);
+BENCHMARK(BuSortClass);
 
 BENCHMARK_MAIN();
