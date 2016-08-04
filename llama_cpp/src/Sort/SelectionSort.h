@@ -14,21 +14,21 @@ namespace llama {
 		SelectionSort(std::vector<T> *inputArray) { this->sort(inputArray); }
 
 		void doSort(std::vector<SortObject<T>> *reformedArray) override {
-			SortObject<T> temp;
 			for (int i = 0; i < reformedArray->size(); i++) {
-				int flag = i;
 				SortObject<T> key = reformedArray->at(i);
-				//select the min value
+				int flag = i;
+				// Select the min value
 				for (int j = i; j < reformedArray->size(); j++){
-					if (key > reformedArray->at(j))
-					{
+					if (key > reformedArray->at(j)){
 						flag = j;
 					}
 				}
-				//swap between flag and the i
-				temp = reformedArray->at(i);
-				reformedArray->at(i) = reformedArray->at(flag);
-				reformedArray->at(flag) = temp;
+				// Swap between flag and the i if they are different
+				if (flag != i){
+					SortObject<T> temp = reformedArray->at(i);
+					reformedArray->at(i) = reformedArray->at(flag);
+					reformedArray->at(flag) = temp;
+				}
 			}
 		}
 	};

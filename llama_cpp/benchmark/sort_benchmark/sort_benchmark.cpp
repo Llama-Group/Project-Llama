@@ -45,28 +45,28 @@ static void BFSortDouble(benchmark::State& state) {
     }
 }
 
-// InSort
-static void InSortInt(benchmark::State& state) {
-    llama::InsertionSort<int> inSort = llama::InsertionSort<int>();
+// Insort
+static void InsortInt(benchmark::State& state) {
+    llama::InsertionSort<int> Insort = llama::InsertionSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        Insort.sort(&a);
     }
 }
 
-static void InSortString(benchmark::State& state) {
-    llama::InsertionSort<std::string> inSort = llama::InsertionSort<std::string>();
+static void InsortString(benchmark::State& state) {
+    llama::InsertionSort<std::string> Insort = llama::InsertionSort<std::string>();
     std::vector<std::string> a = {"5", "4", "3", "2", "1"};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        Insort.sort(&a);
     }
 }
 
-static void InSortDouble(benchmark::State& state) {
-    llama::InsertionSort<double> inSort = llama::InsertionSort<double>();
+static void InsortDouble(benchmark::State& state) {
+    llama::InsertionSort<double> Insort = llama::InsertionSort<double>();
     std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        Insort.sort(&a);
     }
 }
 // SelctionSort
@@ -154,12 +154,12 @@ static void BFSortClass(benchmark::State& state) {
     }
 }
 
-static void InSortClass(benchmark::State& state) {
-    llama::InsertionSort<CustomisedClass> inSort = llama::InsertionSort<CustomisedClass>();
+static void InsortClass(benchmark::State& state) {
+    llama::InsertionSort<CustomisedClass> Insort = llama::InsertionSort<CustomisedClass>();
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        Insort.sort(&a);
     }
 }
 static void SeSortClass(benchmark::State& state) {
@@ -186,10 +186,10 @@ BENCHMARK(BFSortInt);
 BENCHMARK(BFSortString);
 BENCHMARK(BFSortDouble);
 BENCHMARK(BFSortClass);
-BENCHMARK(InSortInt);
-BENCHMARK(InSortString);
-BENCHMARK(InSortDouble);
-BENCHMARK(InSortClass);
+BENCHMARK(InsortInt);
+BENCHMARK(InsortString);
+BENCHMARK(InsortDouble);
+BENCHMARK(InsortClass);
 BENCHMARK(SeSortInt);
 BENCHMARK(SeSortString);
 BENCHMARK(SeSortDouble);
