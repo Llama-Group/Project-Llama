@@ -1,6 +1,7 @@
 
 #include "Sort/InsertionSort.h"
 #include "Sort/BruteForceSort.h"
+#include "Sort/SelectionSort.h"
 
 class CustomisedClass {
 public:
@@ -84,6 +85,26 @@ int main() {
 	new llama::InsertionSort<CustomisedClass>(&d);
 
 	std::cout << "InsertionSort results:" << std::endl;
+	for (int i = 0; i < 5; i++) {
+		std::cout << a[i] << " ";
+		std::cout << b[i] << " ";
+		std::cout << c[i] << " ";
+		std::cout << std::string(d[i]) << " " << std::endl;
+	}
+
+	// SelectionSort
+	a = {5,4,3,2,1};
+	b = {"5", "4", "3", "2", "1"};
+	c = {5.0, 4.0, 3.0, 2.0, 1.0};
+	d = {CustomisedClass(5), CustomisedClass(4),
+		CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
+
+	new llama::SelectionSort<int>(&a);
+	new llama::SelectionSort<std::string>(&b);
+	new llama::SelectionSort<double>(&c);
+	new llama::SelectionSort<CustomisedClass>(&d);
+
+	std::cout << "SelectionSort results:" << std::endl;
 	for (int i = 0; i < 5; i++) {
 		std::cout << a[i] << " ";
 		std::cout << b[i] << " ";
