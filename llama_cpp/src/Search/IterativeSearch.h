@@ -23,11 +23,11 @@
 
 namespace Llama
 {
-	int tryMe()
-	{
-		std::cout << "I'll not search for you!\n";
-		return -1;
-	}
+    int tryMe()
+    {
+        std::cout << "I'll not search for you!\n";
+        return -1;
+    }
 }
 
 #endif /* ITERATIVESEARCH_H */
