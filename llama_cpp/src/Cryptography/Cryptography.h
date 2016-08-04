@@ -1,7 +1,4 @@
-//
-//  Cryptography.h
-//
-//  Created by BlueCocoa on 2016/7/22.
+
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
