@@ -21,7 +21,7 @@
 #include <iostream>
 #include <vector>
 
-namespace Llama {
+namespace llama {
 class NaiveBayesClassifier {
  public:
     NaiveBayesClassifier();
@@ -49,6 +49,6 @@ class NaiveBayesClassifier {
     double getTheta(int feature, int featureValue, bool targetClass);
     double getPi(bool targetClass);
 };
-} // namespace Llama
+}  // namespace llama
 
 #endif  // LLAMA_CPP_SRC_ML_NAIVEBAYESCLASSIFIER_H_

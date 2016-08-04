@@ -23,7 +23,7 @@ static void BFSortInt(benchmark::State& state) {
     llama::BruteForceSort<int> bfSort = llama::BruteForceSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
     while (state.KeepRunning()) {
-        bfSort.sort(&a);
+        bfSort.performSort(&a);
     }
 }
 
@@ -31,7 +31,7 @@ static void BFSortString(benchmark::State& state) {
     llama::BruteForceSort<std::string> bfSort = llama::BruteForceSort<std::string>();
     std::vector<std::string> a = {"5", "4", "3", "2", "1"};
     while (state.KeepRunning()) {
-        bfSort.sort(&a);
+        bfSort.performSort(&a);
     }
 }
 
@@ -39,7 +39,7 @@ static void BFSortDouble(benchmark::State& state) {
     llama::BruteForceSort<double> bfSort = llama::BruteForceSort<double>();
     std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
     while (state.KeepRunning()) {
-        bfSort.sort(&a);
+        bfSort.performSort(&a);
     }
 }
 
@@ -48,7 +48,7 @@ static void InSortInt(benchmark::State& state) {
     llama::InsertionSort<int> inSort = llama::InsertionSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        inSort.performSort(&a);
     }
 }
 
@@ -56,7 +56,7 @@ static void InSortString(benchmark::State& state) {
     llama::InsertionSort<std::string> inSort = llama::InsertionSort<std::string>();
     std::vector<std::string> a = {"5", "4", "3", "2", "1"};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        inSort.performSort(&a);
     }
 }
 
@@ -64,7 +64,7 @@ static void InSortDouble(benchmark::State& state) {
     llama::InsertionSort<double> inSort = llama::InsertionSort<double>();
     std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        inSort.performSort(&a);
     }
 }
 
@@ -99,7 +99,7 @@ static void BFSortClass(benchmark::State& state) {
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-        bfSort.sort(&a);
+        bfSort.performSort(&a);
     }
 }
 
@@ -108,7 +108,7 @@ static void InSortClass(benchmark::State& state) {
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-        inSort.sort(&a);
+        inSort.performSort(&a);
     }
 }
 

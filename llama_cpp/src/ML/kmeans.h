@@ -27,6 +27,7 @@
 #include <functional>
 #include <map>
 #include <vector>
+#include <utility>
 
 namespace alpaca {
 namespace ML {
@@ -88,7 +89,7 @@ namespace ML {
 
         for (uint32_t i = 0; i < k; i++) {
             auto iter = data.cbegin();
-            for (uint32_t t = 0; t < mt.rand() % randmax; t++, iter++) {};
+            for (uint32_t t = 0; t < mt.rand() % randmax; t++, iter++) {}
             clusters.emplace_back(iter->first);
         }
 
@@ -101,7 +102,7 @@ namespace ML {
                 uint32_t smallestIndex;
                 for (uint32_t i = 0; i < k; i++) {
                     dis = distance(point.first, clusters[i]);
-                    
+
                     if (dis < smallestDistance) {
                         smallestDistance = dis;
                         smallestIndex = i;
@@ -125,7 +126,7 @@ namespace ML {
         }
         return clusters;
     }
-} // namespace ML
-} // namespace alpaca
+}  // namespace ML
+}  // namespace alpaca
 
-#endif // LLAMA_CPP_SRC_ML_KMEANS_H_
+#endif  // LLAMA_CPP_SRC_ML_KMEANS_H_

@@ -19,7 +19,7 @@
 //  limitations under the License.
 //
 
-#include "MersenneTwister.h"
+#include "RNG/MersenneTwister.h"
 
 using namespace alpaca::RNG;
 
@@ -33,15 +33,15 @@ MersenneTwister::MersenneTwister(uint32_t seed) {
 uint32_t MersenneTwister::rand() {
     if (this->index == 0)
         this->reseed();
-    
+
     uint32_t y = this->state[this->index];
     y ^= (y >> 11);
     y ^= (y <<  7) & 0x9D2C5680;
     y ^= (y << 15) & 0xEFC60000;
     y ^= (y >> 18);
-    
+
     this->index = (this->index + 1) % 624;
-    
+
     return y;
 }
 
