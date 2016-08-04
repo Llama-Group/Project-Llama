@@ -38,7 +38,7 @@ export pigSuccess="
      (     )
       )   (
      /     \\
-    (   9   ) 
+    (   9   )
    (_\\_____/_)"
 
 ## DO NOT RUN UNDER PROJECT FOLDER AS IT MAY CORRUPT .git
