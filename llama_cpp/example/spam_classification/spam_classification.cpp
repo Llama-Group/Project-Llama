@@ -23,24 +23,24 @@ using namespace std;
 int main() {
     vector<int> y = {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1};
     vector<int> n = {0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0};
-    
+
     vector<vector<int>> features;
-    
+
     // Gather train data
     features.push_back(y);
     features.push_back(n);
-    
+
     vector<bool> cls;
-    
+
     // Gather class data
     for (int i = 0; i < 19; i++)
         cls.push_back(true);
     for (int i = 0; i < 31; i++)
         cls.push_back(false);
-    
+
     // Create classifier
-    Llama::NaiveBayesClassifier BC = Llama::NaiveBayesClassifier(features, cls);
-    
+    llama::NaiveBayesClassifier BC = llama::NaiveBayesClassifier(features, cls);
+
     cout << "An email contains Viagra and Funds, ths probability for it to be a spam email is: " << BC.getProbability({1,1}, true)*100<<"%" << endl;
     cout << "An email does not contain Viagra and Funds, ths probability for it to be a spam email is: " << BC.getProbability({0,0}, true)*100<<"%" << endl;
 }

@@ -5,9 +5,9 @@
 
 using namespace std;
 
-double Llama::NaiveBayesClassifier::getTheta(int feature, int featureValue, bool targetClass) {
+double llama::NaiveBayesClassifier::getTheta(int feature, int featureValue, bool targetClass) {
     const int l = 1;
-    
+
     double theta = 0;
     vector<int> distinct;
     int countY = 0;
@@ -22,39 +22,39 @@ double Llama::NaiveBayesClassifier::getTheta(int feature, int featureValue, bool
                 theta ++;
         }
     }
-    
+
     theta += l;
     theta = theta/(l*distinct.size() + countY);
     return theta;
 }
 
-double Llama::NaiveBayesClassifier::getPi(bool targetClass) {
+double llama::NaiveBayesClassifier::getPi(bool targetClass) {
     double pi = 0;
-    
+
     for (const bool &c : this->featureClass) {
         if (c == targetClass) {
             pi ++;
         }
     }
-    
+
     pi = pi/this->featureClass.size();
-    
+
     return pi;
 }
 
-double Llama::NaiveBayesClassifier::getEstimation(std::vector<int> X, bool Y) {
+double llama::NaiveBayesClassifier::getEstimation(std::vector<int> X, bool Y) {
     double retVal = 1;
-    
+
     for (auto it = X.begin(); it != X.end(); ++it) {
         retVal *= this->getTheta((int)distance(X.begin(), it), *it, Y);
     }
-    
+
     retVal *= this->getPi(Y);
-    
+
     return retVal;
 }
 
-double Llama::NaiveBayesClassifier::getProbability(std::vector<int> X, bool Y) {
+double llama::NaiveBayesClassifier::getProbability(std::vector<int> X, bool Y) {
     double eY = this->getEstimation(X, Y);
     return eY/(eY+this->getEstimation(X, !Y));
 }

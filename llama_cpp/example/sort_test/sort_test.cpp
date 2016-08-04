@@ -8,7 +8,7 @@ public:
     CustomisedClass(int input) {
         this->input = input*10;
     }
-    
+
     int getInput() const {
         return input;
     }
@@ -16,7 +16,7 @@ public:
     operator std::string() const {
         return "CustomisedClass: "+std::to_string(getInput());
     }
-    
+
 private:
     int input;
 };
@@ -61,7 +61,7 @@ int main() {
     new llama::BruteForceSort<int>(&a);
     new llama::BruteForceSort<std::string>(&b);
     new llama::BruteForceSort<double>(&c);
-    new llama::BruteForceSort<CustomisedClass>(&d); 
+    new llama::BruteForceSort<CustomisedClass>(&d);
 
     std::cout << "BruteForceSort results:" << std::endl;
     for (int i = 0; i < 5; i++) {
