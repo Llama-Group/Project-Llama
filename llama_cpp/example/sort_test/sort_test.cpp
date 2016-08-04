@@ -38,7 +38,7 @@ int main() {
 	std::vector<double> c;
 	std::vector<CustomisedClass> d;
 
-	// Original Data
+	// Set Original Data
 	a = {5,4,3,2,1};
 	b = {"5", "4", "3", "2", "1"};
 	c = {5.0, 4.0, 3.0, 2.0, 1.0};
@@ -53,7 +53,7 @@ int main() {
 		std::cout << std::string(d[i]) << " " << std::endl;
 	}
 
-	// BruteForceSort
+	// BruteForceSort test
 	a = {5,4,3,2,1};
 	b = {"5", "4", "3", "2", "1"};
 	c = {5.0, 4.0, 3.0, 2.0, 1.0};
@@ -73,7 +73,7 @@ int main() {
 		std::cout << std::string(d[i]) << " " << std::endl;
 	}
 
-	// InsertionSort
+	// InsertionSort test
 	a = {5,4,3,2,1};
 	b = {"5", "4", "3", "2", "1"};
 	c = {5.0, 4.0, 3.0, 2.0, 1.0};
@@ -93,7 +93,7 @@ int main() {
 		std::cout << std::string(d[i]) << " " << std::endl;
 	}
 
-	// SelectionSort
+	// SelectionSort test 
 	a = {5,4,3,2,1};
 	b = {"5", "4", "3", "2", "1"};
 	c = {5.0, 4.0, 3.0, 2.0, 1.0};
@@ -113,7 +113,7 @@ int main() {
 		std::cout << std::string(d[i]) << " " << std::endl;
 	}
 
-	// BubbleSort
+	// BubbleSort test
 	a = {5,4,3,2,1};
 	b = {"5", "4", "3", "2", "1"};
 	c = {5.0, 4.0, 3.0, 2.0, 1.0};
