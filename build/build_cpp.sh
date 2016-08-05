@@ -67,9 +67,6 @@ else
 	fi
 fi
 
-# Lint
-../Project-Llama/lint/lint_cpp.sh
-
 # Make
 make
 if [ $? != 0 ]; then
@@ -82,3 +79,6 @@ fi
 if [ "$2" == "coverage" ]; then
 	make test
 fi
+
+# Lint
+../Project-Llama/lint/lint_cpp.sh

@@ -60,6 +60,7 @@ if [ -f /tmp/llama_fail ]; then
     echo
     echo "You have some style error! Please follow google style guide!"
     echo "Do * NOT * push before you fixed these style error!"
+    exit -1
 else
     echo "$pigSuccess"
     echo
