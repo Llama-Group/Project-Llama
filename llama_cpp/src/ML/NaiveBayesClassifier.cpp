@@ -1,9 +1,26 @@
 
+//
+//  Copyright © 2016 Project Llama. All rights reserved.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+#include <ML/NaiveBayesClassifier.h>
+
 #include <algorithm>
+#include <vector>
 
-#include "NaiveBayesClassifier.h"
-
-using namespace std;
+using std::vector;
 
 double llama::NaiveBayesClassifier::getTheta(int feature, int featureValue, bool targetClass) {
     const int l = 1;
@@ -17,9 +34,9 @@ double llama::NaiveBayesClassifier::getTheta(int feature, int featureValue, bool
             distinct.push_back(*it);
         }
         if (this->featureClass[distance(currentFeature.begin(), it)] == targetClass) {
-            countY ++;
+            countY++;
             if (*it == featureValue)
-                theta ++;
+                theta++;
         }
     }
 
@@ -33,7 +50,7 @@ double llama::NaiveBayesClassifier::getPi(bool targetClass) {
 
     for (const bool &c : this->featureClass) {
         if (c == targetClass) {
-            pi ++;
+            pi++;
         }
     }
 
@@ -46,7 +63,7 @@ double llama::NaiveBayesClassifier::getEstimation(std::vector<int> X, bool Y) {
     double retVal = 1;
 
     for (auto it = X.begin(); it != X.end(); ++it) {
-        retVal *= this->getTheta((int)distance(X.begin(), it), *it, Y);
+        retVal *= this->getTheta(static_cast<int>(distance(X.begin(), it)), *it, Y);
     }
 
     retVal *= this->getPi(Y);

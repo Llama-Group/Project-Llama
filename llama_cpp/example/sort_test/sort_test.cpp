@@ -1,5 +1,4 @@
 
-
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
@@ -16,8 +15,8 @@
 //  limitations under the License.
 //
 
-#include "Sort/InsertionSort.h"
-#include "Sort/BruteForceSort.h"
+#include <Sort/InsertionSort.h>
+#include <Sort/BruteForceSort.h>
 
 #include <string>
 #include <vector>
@@ -92,7 +91,7 @@ int main() {
     }
 
     // InsertionSort
-    a = {5,4,3,2,1};
+    a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};
     d = {CustomisedClass(5), CustomisedClass(4),

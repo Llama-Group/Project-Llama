@@ -1,8 +1,4 @@
-//
-//  MersenneTwister.h
-//  Project Llama
-//
-//  Created by BlueCocoa on 2016/7/25.
+
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
@@ -21,7 +17,7 @@
 
 #include "RNG/MersenneTwister.h"
 
-using namespace alpaca::RNG;
+using alpaca::RNG::MersenneTwister;
 
 MersenneTwister::MersenneTwister(uint32_t seed) {
     this->index = 0;

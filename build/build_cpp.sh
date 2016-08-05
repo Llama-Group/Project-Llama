@@ -84,7 +84,8 @@ if [ "$2" == "coverage" ]; then
     if [ "$(uname -s)" == "Darwin" ]; then
         open ./coverage_report/index.html
     fi
+else
+    # Lint
+    echo "Checking code style."
+    ../Project-Llama/lint/lint_cpp.sh
 fi
-
-# Lint
-../Project-Llama/lint/lint_cpp.sh

@@ -1,7 +1,4 @@
-//
-//  Cryptography.cpp
-//
-//  Created by BlueCocoa on 2016/7/22.
+
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
@@ -18,12 +15,15 @@
 //  limitations under the License.
 //
 
-#include "Cryptography.h"
+#include <Cryptography/Cryptography.h>
+
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
 
-using namespace std;
+#include <string>
+
+using std::string;
 
 string alpaca::cryptography::encode(const string& plaintext, const string& publickey) {
     string result = "";
@@ -37,7 +37,9 @@ string alpaca::cryptography::encode(const string& plaintext, const string& publi
 
     ssize_t len = RSA_size(RSAPublicKey);
     char * encode = new char[len + 1];
-    int ret = RSA_public_encrypt((int)plaintext.length(), (const unsigned char *)plaintext.c_str(), (unsigned char *)encode, RSAPublicKey, RSA_PKCS1_PADDING);
+    int ret = RSA_public_encrypt(static_cast<int>(plaintext.length()),
+                                 reinterpret_cast<const unsigned char *>(plaintext.c_str()),
+                                 reinterpret_cast<unsigned char*>(encode), RSAPublicKey, RSA_PKCS1_PADDING);
     if (ret > 0) result = string(encode, ret);
 
     delete[] encode;
@@ -60,7 +62,9 @@ string alpaca::cryptography::decode(const string &ciphertext, const string& priv
     ssize_t len = RSA_size(RSAPrivateKey);
     char * decode = new char[len + 1];
 
-    int ret = RSA_private_decrypt((int)ciphertext.length(), (const unsigned char *)ciphertext.c_str(), (unsigned char*)decode, RSAPrivateKey, RSA_PKCS1_PADDING);
+    int ret = RSA_private_decrypt(static_cast<int>(ciphertext.length()),
+                                  reinterpret_cast<const unsigned char *>(ciphertext.c_str()),
+                                  reinterpret_cast<unsigned char*>(decode), RSAPrivateKey, RSA_PKCS1_PADDING);
     if (ret > 0) result = std::string(decode, ret);
 
     delete[] decode;

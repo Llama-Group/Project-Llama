@@ -64,5 +64,6 @@ if [ -f /tmp/llama_fail ]; then
 else
     echo "$pigSuccess"
     echo
+    echo "==               Oink! Oink!                =="
     echo "== Very Nice, all code style checks passed! =="
 fi
