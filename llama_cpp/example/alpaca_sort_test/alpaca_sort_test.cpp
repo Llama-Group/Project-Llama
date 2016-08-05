@@ -36,6 +36,7 @@ int main(int argc, const char * argv[]) {
 
     restore(array);
     alpaca::sort<int>(alpaca::BUBBLE_SORT, array, 11);
+
     copy(array, array + 11, ostream_iterator<int>(cout, " "));
     cout << '\n';
 

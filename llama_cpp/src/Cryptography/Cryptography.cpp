@@ -65,6 +65,7 @@ string alpaca::cryptography::decode(const string &ciphertext, const string& priv
     int ret = RSA_private_decrypt(static_cast<int>(ciphertext.length()),
                                   reinterpret_cast<const unsigned char *>(ciphertext.c_str()),
                                   reinterpret_cast<unsigned char*>(decode), RSAPrivateKey, RSA_PKCS1_PADDING);
+
     if (ret > 0) result = std::string(decode, ret);
 
     delete[] decode;
