@@ -1,11 +1,31 @@
 
+
+//
+//  Copyright © 2016 Project Llama. All rights reserved.
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
 #include "Sort/InsertionSort.h"
 #include "Sort/BruteForceSort.h"
 
+#include <string>
+#include <vector>
+
 class CustomisedClass {
-public:
+ public:
     CustomisedClass() {}
-    CustomisedClass(int input) {
+    explicit CustomisedClass(int input) {
         this->input = input*10;
     }
 
@@ -17,16 +37,16 @@ public:
         return "CustomisedClass: "+std::to_string(getInput());
     }
 
-private:
+ private:
     int input;
 };
 
 namespace llama {
-    template<>
-    double SortObject<CustomisedClass>::getValue() const {
-        return (double) (obj.getInput());
-    }
+template<>
+double SortObject<CustomisedClass>::getValue() const {
+    return static_cast<double>(obj.getInput());
 }
+}  // namespace llama
 
 int main() {
     // Easy tests
@@ -37,7 +57,7 @@ int main() {
     std::vector<CustomisedClass> d;
 
     // Original Data
-    a = {5,4,3,2,1};
+    a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};
     d = {CustomisedClass(5), CustomisedClass(4),
@@ -52,7 +72,7 @@ int main() {
     }
 
     // BruteForceSort
-    a = {5,4,3,2,1};
+    a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};
     d = {CustomisedClass(5), CustomisedClass(4),

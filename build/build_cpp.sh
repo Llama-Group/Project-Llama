@@ -77,7 +77,13 @@ else
 fi
 
 if [ "$2" == "coverage" ]; then
-	make test
+	make coverage
+    tput setaf 2
+    echo "Coverage report generated: $(pwd)coverage_report/index.html"
+    tput sgr0
+    if [ "$(uname -s)" == "Darwin" ]; then
+        open ./coverage_report/index.html
+    fi
 fi
 
 # Lint
