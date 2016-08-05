@@ -1,6 +1,7 @@
 
 #include "Sort/InsertionSort.h"
 #include "Sort/BruteForceSort.h"
+#include "DataGenerator.h"
 
 class CustomisedClass {
 public:
@@ -36,8 +37,11 @@ int main() {
 	std::vector<double> c;
 	std::vector<CustomisedClass> d;
 
-	// Original Data
-	a = {5,4,3,2,1};
+    llama::DataGenerator mDataGenerator = llama::DataGenerator();
+    
+    // Original Data
+	//a = {5,4,3,2,1};
+    mDataGenerator.generateSequenceVector(&a);
 	b = {"5", "4", "3", "2", "1"};
 	c = {5.0, 4.0, 3.0, 2.0, 1.0};
 	d = {CustomisedClass(5), CustomisedClass(4),
@@ -52,12 +56,6 @@ int main() {
 	}
 
 	// BruteForceSort
-	a = {5,4,3,2,1};
-	b = {"5", "4", "3", "2", "1"};
-	c = {5.0, 4.0, 3.0, 2.0, 1.0};
-	d = {CustomisedClass(5), CustomisedClass(4),
-		CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
-
 	new llama::BruteForceSort<int>(&a);
 	new llama::BruteForceSort<std::string>(&b);
 	new llama::BruteForceSort<double>(&c);
