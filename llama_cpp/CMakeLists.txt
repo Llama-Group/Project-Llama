@@ -100,10 +100,15 @@ macro(BuildExample FOLDER_NAME)
 		message("[+E] Will build ${FOLDER_NAME}.")
 		include_directories(${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/)
 		file(GLOB_RECURSE TEMP_TARGET_SOURCE_FILES ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/*.cpp)
-        add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
-        add_dependencies(${FOLDER_NAME} llama)
-        target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${SOURCE_LIBRARIES})
+		add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
+		add_dependencies(${FOLDER_NAME} llama)
+		target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${SOURCE_LIBRARIES})
 		add_test(NAME ${FOLDER_NAME}_test COMMAND ${FOLDER_NAME})
+		message("[+R] Will copy resources of ${FOLDER_NAME} (if any).")
+		ADD_CUSTOM_COMMAND(
+			TARGET ${FOLDER_NAME}
+			COMMAND find ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources/* -print0 | xargs -0 -I{} cp {} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+		)
 	endif()
 endmacro()
 
