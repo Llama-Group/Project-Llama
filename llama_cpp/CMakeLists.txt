@@ -104,11 +104,11 @@ macro(BuildExample FOLDER_NAME)
 		add_dependencies(${FOLDER_NAME} llama)
 		target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${SOURCE_LIBRARIES})
 		add_test(NAME ${FOLDER_NAME}_test COMMAND ${FOLDER_NAME})
-		if(NOT ${FOLDER_NAME}/Resources STREQUAL "")
+		if(NOT "${FOLDER_NAME}/Resources" STREQUAL "")
 			message("[+R] Will copy resources of ${FOLDER_NAME}.")
 			ADD_CUSTOM_COMMAND(
 				TARGET ${FOLDER_NAME}
-				COMMAND cp -rf ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources/* ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+				COMMAND cp -rf ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 			)
 		endif()
 	endif()
