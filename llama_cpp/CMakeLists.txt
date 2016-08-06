@@ -107,7 +107,7 @@ macro(BuildExample FOLDER_NAME)
 		message("[+R] Will copy resources of ${FOLDER_NAME} (if any).")
 		ADD_CUSTOM_COMMAND(
 			TARGET ${FOLDER_NAME}
-			COMMAND bash -c "if [ -d \"${FOLDER_NAME}/Resources\" ]; then cp -rf ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}; fi"
+			COMMAND bash -c "if [ -d ${FOLDER_NAME}/Resources ] then cp -rf ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}; fi"
 		)
 	endif()
 endmacro()
