@@ -148,6 +148,17 @@ macro(BuildExample FOLDER_NAME)
 	endif()
 endmacro()
 
+# Copy resources of example (if any)
+macro(CopyResource FOLDER_NAME)
+	if(NOT ${FOLDER_NAME} STREQUAL "")
+		message("[+E] Will copy resources of ${FOLDER_NAME} (if any).")
+		ADD_CUSTOM_COMMAND(
+			TARGET ${FOLDER_NAME}
+			COMMAND cp -rf ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources/* ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+		)
+	endif()
+endmacro()
+
 # Benchmarks
 macro(BuildBenchmark FOLDER_NAME)
 	if(NOT ${FOLDER_NAME} STREQUAL "")
@@ -168,6 +179,8 @@ BuildExample("${SORT_TEST}")
 BuildExample("${MERSENNE_TWISTER}")
 BuildExample("${KMEANS}")
 BuildExample("${ALPACA_SORT_TEST}")
+
+CopyResource("${RSA}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 
