@@ -620,7 +620,7 @@
 				en,
 			);
 			mainGroup = F297CD78340E4250BF1321B5;
-			projectDirPath = "/Users/sun/Documents/development/llama/Project-Llama/llama_cpp";
+			projectDirPath = ".";
 			projectRoot = "";
 			targets = (
 				9B056BD5FFFB42C0921B83AA /* rsa */,
