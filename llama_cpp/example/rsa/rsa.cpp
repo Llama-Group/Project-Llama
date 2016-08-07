@@ -17,7 +17,6 @@
 
 #include <Cryptography/Cryptography.h>
 
-#include <sys/syslimits.h>
 #include <unistd.h>
 
 #include <iostream>
