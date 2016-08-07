@@ -9,3 +9,7 @@
 # gedit
 .*~
 
+# Xcode
+*.xcuserdatad
+xcuserdata
+
