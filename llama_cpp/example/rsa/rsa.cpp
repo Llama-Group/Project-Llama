@@ -26,6 +26,10 @@
 using std::cout;
 using std::string;
 
+#ifndef PATH_MAX
+#define PATH_MAX 1024
+#endif
+
 int main(int argc, const char * argv[]) {
     char temp[PATH_MAX];
     getcwd(temp, PATH_MAX);
