@@ -17,10 +17,25 @@
 
 #include <Cryptography/Cryptography.h>
 
+#include <unistd.h>
+
 #include <iostream>
+#include <string>
+
 
 using std::cout;
+using std::string;
+
+#ifndef PATH_MAX
+#define PATH_MAX 1024
+#endif
 
 int main(int argc, const char * argv[]) {
+    char temp[PATH_MAX];
+    getcwd(temp, PATH_MAX);
+    string argv_str(argv[0]);
+    string base = argv_str.substr(0, argv_str.find_last_of("/"));
+    chdir(base.c_str());
     cout << alpaca::cryptography::decode(alpaca::cryptography::encode("Hello, World!\n", "public.pem"), "private.pem");
+    chdir(temp);
 }
