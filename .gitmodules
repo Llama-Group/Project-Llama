@@ -1,6 +1,7 @@
 [submodule "llama_cpp/benchmark/google_benchmark"]
 	path = llama_cpp/benchmark/google_benchmark
 	url = https://github.com/google/benchmark.git
+	ignore = dirty
 [submodule "lint/styleguide"]
 	path = lint/google_lint
 	url = https://github.com/google/styleguide.git
