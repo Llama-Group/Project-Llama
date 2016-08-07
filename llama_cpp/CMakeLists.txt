@@ -107,7 +107,7 @@ macro(BuildExample FOLDER_NAME)
 		message("[+R] Will copy resources of ${FOLDER_NAME} (if any).")
 		ADD_CUSTOM_COMMAND(
 			TARGET ${FOLDER_NAME}
-			COMMAND find ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources/* -print0 | xargs -0 -I{} cp {} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+			COMMAND if [ -d '${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources' ]; then find "${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources/*" -print0 | xargs -0 -I{} cp {} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} \; fi ; 
 		)
 	endif()
 endmacro()
