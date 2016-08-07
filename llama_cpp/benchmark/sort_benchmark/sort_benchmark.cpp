@@ -47,26 +47,18 @@ static void BFSortDouble(benchmark::State& state) {
 
 // Insort
 static void InsortInt(benchmark::State& state) {
-    llama::InsertionSort<int> Insort = llama::InsertionSort<int>();
+    llama::InsertionSort<int> InSort = llama::InsertionSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
     while (state.KeepRunning()) {
-<<<<<<< HEAD
-        Insort.sort(&a);
-=======
-        inSort.performSort(&a);
->>>>>>> master
+        InSort.performSort(&a);
     }
 }
 
 static void InsortString(benchmark::State& state) {
-    llama::InsertionSort<std::string> Insort = llama::InsertionSort<std::string>();
+    llama::InsertionSort<std::string> InSort = llama::InsertionSort<std::string>();
     std::vector<std::string> a = {"5", "4", "3", "2", "1"};
     while (state.KeepRunning()) {
-<<<<<<< HEAD
-        Insort.sort(&a);
-=======
-        inSort.performSort(&a);
->>>>>>> master
+        InSort.performSort(&a);
     }
 }
 
@@ -74,8 +66,7 @@ static void InsortDouble(benchmark::State& state) {
     llama::InsertionSort<double> Insort = llama::InsertionSort<double>();
     std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
     while (state.KeepRunning()) {
-<<<<<<< HEAD
-        Insort.sort(&a);
+        Insort.performSort(&a);
     }
 }
 // SelctionSort
@@ -83,7 +74,7 @@ static void SeSortInt(benchmark::State& state) {
     llama::SelectionSort<int> SeSort = llama::SelectionSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
     while (state.KeepRunning()) {
-        SeSort.sort(&a);
+        SeSort.performSort(&a);
     }
 }
 
@@ -91,7 +82,7 @@ static void SeSortString(benchmark::State& state) {
     llama::SelectionSort<std::string> SeSort = llama::SelectionSort<std::string>();
     std::vector<std::string> a = {"5", "4", "3", "2", "1"};
     while (state.KeepRunning()) {
-        SeSort.sort(&a);
+        SeSort.performSort(&a);
     }
 }
 
@@ -99,7 +90,7 @@ static void SeSortDouble(benchmark::State& state) {
     llama::SelectionSort<double> SeSort = llama::SelectionSort<double>();
     std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
     while (state.KeepRunning()) {
-        SeSort.sort(&a);
+        SeSort.performSort(&a);
     }
 }
 
@@ -108,7 +99,7 @@ static void BuSortInt(benchmark::State& state) {
     llama::BubbleSort<int> BuSort = llama::BubbleSort<int>();
     std::vector<int> a = {5, 4, 3, 2, 1};
     while (state.KeepRunning()) {
-        BuSort.sort(&a);
+        BuSort.performSort(&a);
     }
 }
 
@@ -116,7 +107,7 @@ static void BuSortString(benchmark::State& state) {
     llama::BubbleSort<std::string> BuSort = llama::BubbleSort<std::string>();
     std::vector<std::string> a = {"5", "4", "3", "2", "1"};
     while (state.KeepRunning()) {
-        BuSort.sort(&a);
+        BuSort.performSort(&a);
     }
 }
 
@@ -124,10 +115,7 @@ static void BuSortDouble(benchmark::State& state) {
     llama::BubbleSort<double> BuSort = llama::BubbleSort<double>();
     std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
     while (state.KeepRunning()) {
-        BuSort.sort(&a);
-=======
-        inSort.performSort(&a);
->>>>>>> master
+        BuSort.performSort(&a);
     }
 }
 
@@ -171,7 +159,7 @@ static void InsortClass(benchmark::State& state) {
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-        Insort.sort(&a);
+        Insort.performSort(&a);
     }
 }
 static void SeSortClass(benchmark::State& state) {
@@ -179,7 +167,7 @@ static void SeSortClass(benchmark::State& state) {
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-        SeSort.sort(&a);
+        SeSort.performSort(&a);
     }
 }
 
@@ -188,11 +176,7 @@ static void BuSortClass(benchmark::State& state) {
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-<<<<<<< HEAD
-        BuSort.sort(&a);
-=======
-        inSort.performSort(&a);
->>>>>>> master
+        BuSort.performSort(&a);
     }
 }
 
