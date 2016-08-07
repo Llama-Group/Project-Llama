@@ -44,14 +44,14 @@ export pigSuccess="
 ## DO NOT RUN UNDER PROJECT FOLDER AS IT MAY CORRUPT .git
 
 # Change tab to 4 spaces.
-find . \( -path "./benchmark/google_benchmark" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+find . \( -path "./benchmark/google_benchmark" -or -path "./test/google_test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c 'expand -t 4 "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
 
 # Remove lines end with whitespaces.
-find . \( -path "./benchmark/google_benchmark" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c 'sed "s/[[:blank:]]*$//" "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
+find . \( -path "./benchmark/google_benchmark" -or -path "./test/google_test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c 'sed "s/[[:blank:]]*$//" "$0" > /tmp/e && mv /tmp/e "$0"' {} \;
 
 # Run lint.
 rm -f /tmp/llama_fail
-find . \( -path "./benchmark" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c '../lint/google_lint/cpplint/cpplint.py --linelength=120 "$0";if [ $? != 0 ]; then echo > /tmp/llama_fail; fi' {} \;
+find . \( -path "./benchmark" -or -path "./test/google_test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c '../lint/google_lint/cpplint/cpplint.py --linelength=120 "$0";if [ $? != 0 ]; then echo > /tmp/llama_fail; fi' {} \;
 
 echo $retVal
 if [ -f /tmp/llama_fail ]; then
