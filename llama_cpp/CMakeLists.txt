@@ -69,47 +69,6 @@ find_package(Threads)
 # Coverage
 #
 
-FUNCTION(SETUP_TARGET_FOR_COVERAGE _targetname _testrunner _outputname)
-
-IF(NOT LCOV_PATH)
-MESSAGE(FATAL_ERROR "lcov not found! Aborting...")
-ENDIF() # NOT LCOV_PATH
-
-IF(NOT GENHTML_PATH)
-MESSAGE(FATAL_ERROR "genhtml not found! Aborting...")
-ENDIF() # NOT GENHTML_PATH
-
-SET(coverage_info "${CMAKE_BINARY_DIR}/${_outputname}.info")
-SET(coverage_cleaned "${coverage_info}.cleaned")
-
-SEPARATE_ARGUMENTS(test_command UNIX_COMMAND "${_testrunner}")
-
-# Setup target
-ADD_CUSTOM_TARGET(${_targetname}
-
-# Cleanup lcov
-${LCOV_PATH} --directory . --zerocounters
-
-# Run tests
-COMMAND ${test_command} ${ARGV3}
-
-# Capturing lcov counters and generating report
-COMMAND ${LCOV_PATH} --directory . --capture --output-file ${coverage_info}
-COMMAND ${LCOV_PATH} --remove ${coverage_info} 'tests/*' '/usr/*' --output-file ${coverage_cleaned}
-COMMAND ${GENHTML_PATH} -o ${_outputname} ${coverage_cleaned}
-COMMAND ${CMAKE_COMMAND} -E remove ${coverage_info} ${coverage_cleaned}
-
-WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-COMMENT "Resetting code coverage counters to zero.\nProcessing code coverage counters and generating report."
-)
-
-# Show info where to find the report
-ADD_CUSTOM_COMMAND(TARGET ${_targetname} POST_BUILD
-COMMAND ;
-COMMENT "Open ./${_outputname}/index.html in your browser to view the coverage report."
-)
-
-ENDFUNCTION()
 
 #
 # Setting flags
@@ -127,14 +86,13 @@ endif()
 #
 
 list(APPEND SOURCE_LIBRARIES "${CRYPTO_LIBRARIES}")
+list(APPEND BIN_LIBRARIES "-lz ${PROJECT_ROOT_DIRECTORY}/../build_llama_cpp/libllama.a")
 list(APPEND BENCHMARK_LIBRARIES "${GOOGLE_BENCHMARK}" ${CMAKE_THREAD_LIBS_INIT})
 
 # Library
-if(NOT "${LIBLLAMA}" STREQUAL "")
-	message("[+L] Will build llama library")
-	add_library(llama ${SOURCE_FILES})
-	target_link_libraries(llama ${SOURCE_LIBRARIES})
-endif()
+message("[+L] Will build llama library")
+add_library(llama ${SOURCE_FILES})
+target_link_libraries(llama ${SOURCE_LIBRARIES})
 
 # Examples
 macro(BuildExample FOLDER_NAME)
@@ -142,9 +100,15 @@ macro(BuildExample FOLDER_NAME)
 		message("[+E] Will build ${FOLDER_NAME}.")
 		include_directories(${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/)
 		file(GLOB_RECURSE TEMP_TARGET_SOURCE_FILES ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/*.cpp)
-		add_executable(${FOLDER_NAME} ${SOURCE_FILES} ${TEMP_TARGET_SOURCE_FILES})
-		target_link_libraries(${FOLDER_NAME} ${SOURCE_LIBRARIES})
+		add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
+		add_dependencies(${FOLDER_NAME} llama)
+		target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${SOURCE_LIBRARIES})
 		add_test(NAME ${FOLDER_NAME}_test COMMAND ${FOLDER_NAME})
+		message("[+R] Will copy resources of ${FOLDER_NAME} (if any).")
+		ADD_CUSTOM_COMMAND(
+			TARGET ${FOLDER_NAME}
+			COMMAND find ${PROJECT_EXAMPLE_DIRECTORY}/${FOLDER_NAME}/Resources/* -print0 | xargs -0 -I{} cp {} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+		)
 	endif()
 endmacro()
 
@@ -154,8 +118,9 @@ macro(BuildBenchmark FOLDER_NAME)
 		message("[+B] Will build ${FOLDER_NAME}.")
 		include_directories(${PROJECT_BENCHMARK_DIRECTORY}/${FOLDER_NAME}/)
 		file(GLOB_RECURSE TEMP_TARGET_SOURCE_FILES ${PROJECT_BENCHMARK_DIRECTORY}/${FOLDER_NAME}/*.cpp)
-		add_executable(${FOLDER_NAME} ${SOURCE_FILES} ${TEMP_TARGET_SOURCE_FILES})
-		target_link_libraries(${FOLDER_NAME} ${BENCHMARK_LIBRARIES} ${SOURCE_LIBRARIES})
+		add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
+        add_dependencies(${FOLDER_NAME} llama)
+		target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${BENCHMARK_LIBRARIES} ${SOURCE_LIBRARIES})
 		add_test(NAME ${FOLDER_NAME}_test COMMAND ${FOLDER_NAME})
 	endif()
 endmacro()

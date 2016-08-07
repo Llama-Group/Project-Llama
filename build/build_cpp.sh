@@ -48,7 +48,7 @@ else
 		if [ "$2" == "coverage" ]; then
 			flags=$flags"-DCMAKE_BUILD_TYPE=Coverage "
 		fi
-		flags=$flags"-DLIBLLAMA=YES"
+		flags=$flags
 		pushd ../Project-Llama/llama_cpp/example >> /dev/null
 		target=($(ls -d */))
 		popd >> /dev/null
@@ -77,5 +77,15 @@ else
 fi
 
 if [ "$2" == "coverage" ]; then
-	make test
+	make coverage
+    tput setaf 2
+    echo "Coverage report generated: $(pwd)coverage_report/index.html"
+    tput sgr0
+    if [ "$(uname -s)" == "Darwin" ]; then
+        open ./coverage_report/index.html
+    fi
+else
+    # Lint
+    echo "Checking code style."
+    ../Project-Llama/lint/lint_cpp.sh
 fi
