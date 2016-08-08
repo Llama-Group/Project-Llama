@@ -11,5 +11,9 @@
 
 # Xcode
 *.xcuserdatad
+*.xcsettings
+*.xcuserstate
+*.xcbkptlist
+*.xcscheme
 xcuserdata
 
