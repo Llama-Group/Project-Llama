@@ -24,6 +24,11 @@ elif [ "$1" == "Xcode" ]; then
 	# Generate Xcode Project
 	cmake -G Xcode ../Project-Llama/llama_cpp
 else
+	# Create build folder
+	rm -rf ../build_llama_cpp
+	mkdir -p ../build_llama_cpp
+	cd ../build_llama_cpp
+	
 	# Build examples
 	if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
 		if [ -d "../Project-Llama/llama_cpp/example/"$2 ]; then
