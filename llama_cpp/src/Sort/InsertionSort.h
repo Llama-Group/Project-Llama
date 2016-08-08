@@ -44,7 +44,7 @@ class InsertionSort : public Sort<T> {
                 index--;
             }
             // Here, we can insert the key data to the index.
-            // that's why we call this algorithm "Insertion Sort"
+            // that's why we call this algorithm "Insertion Sort".
             reformedArray->at(index) = key;
         }
     }

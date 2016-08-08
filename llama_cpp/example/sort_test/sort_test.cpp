@@ -47,14 +47,14 @@ double SortObject<CustomisedClass>::getValue() const {
 }  // namespace llama
 
 int main() {
-    // Easy tests
+    // Easy tests.
     // Set the test value.
     std::vector<int> a;
     std::vector<std::string> b;
     std::vector<double> c;
     std::vector<CustomisedClass> d;
 
-    // Original Data
+    // Set Original Data.
     a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};
@@ -69,7 +69,7 @@ int main() {
         std::cout << std::string(d[i]) << " " << std::endl;
     }
 
-    // BruteForceSort
+    // Sorting with BruteForceSort.
     a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};
@@ -89,7 +89,7 @@ int main() {
         std::cout << std::string(d[i]) << " " << std::endl;
     }
 
-    // InsertionSort
+    // Sorting with InsertionSort.
     a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};

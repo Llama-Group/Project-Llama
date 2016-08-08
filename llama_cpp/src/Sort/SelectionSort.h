@@ -33,13 +33,13 @@ class SelectionSort : public Sort<T> {
             for (int i = 0; i < reformedArray->size(); i++) {
                 SortObject<T> key = reformedArray->at(i);
                 int flag = i;
-                // Select the min value
+                // Select the min value.
                 for (int j = i; j < reformedArray->size(); j++) {
                     if (key > reformedArray->at(j)) {
                         flag = j;
                     }
                 }
-                // Swap between flag and the i if they are different
+                // Swap between flag and the i if they are different.
                 if (flag != i) {
                     SortObject<T> temp = reformedArray->at(i);
                     reformedArray->at(i) = reformedArray->at(flag);
