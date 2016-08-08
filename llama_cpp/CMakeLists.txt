@@ -96,8 +96,8 @@ add_library(llama ${SOURCE_FILES})
 target_link_libraries(llama ${SOURCE_LIBRARIES})
 add_custom_command(
     TARGET llama
-    WORKING_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/../xcode_llama
-    COMMAND if [ -d Debug ]\; then cp ./Debug/libllama.a ../build_llama_cpp/\; fi
+    WORKING_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/..
+    COMMAND if [ -d ./xcode_llama/Debug ]\; then cp ./xcode_llama/Debug/libllama.a ./build_llama_cpp/\; fi
 )
 
 # Examples
