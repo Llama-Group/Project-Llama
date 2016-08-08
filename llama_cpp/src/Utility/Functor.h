@@ -27,17 +27,8 @@ class function_traits : public function_traits<decltype(&Function::operator())> 
 template <typename ClassType, typename ReturnType, typename ... Args>
 class function_traits<ReturnType(ClassType::*)(Args...) const> {
 public:
-    typedef ReturnType (*pointer)(Args...);
     typedef std::function<ReturnType(Args...)> function;
 };
-
-/**
- *  @brief Template function for getting the pointer to the lambda expression
- */
-template <typename Function>
-constexpr typename function_traits<Function>::pointer to_function_pointer(const Function& lambda) {
-    return static_cast<typename function_traits<Function>::pointer>(lambda);
-}
 
 /**
  *  @brief Template function for getting corresponding std::function to the lambda expression
