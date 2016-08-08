@@ -7,15 +7,32 @@ BASEDIR=$(dirname "$0")
 #Go to project directory
 cd $BASEDIR/../
 
-# Create build folder
-rm -rf ../build_llama_cpp
-mkdir -p ../build_llama_cpp
-cd ../build_llama_cpp
+# Note that we'll be in project directory after every if-else block
 
 if [ "$1" == "" ]; then
+	# Create build folder
+	rm -rf ../build_llama_cpp
+	mkdir -p ../build_llama_cpp
+	pushd ../build_llama_cpp >> /dev/null
+	
 	# Build library
 	cmake ../Project-Llama/llama_cpp
+	popd >> /dev/null
+elif [ "$1" == "Xcode" ]; then
+	# Create Xcode project folder
+	rm -rf ../llama_xcode
+	mkdir -p ../llama_xcode
+	pushd ../llama_xcode >> /dev/null
+	
+	# Generate Xcode Project
+	cmake -G Xcode ../Project-Llama/llama_cpp
+	popd >> /dev/null
 else
+	# Create build folder
+	rm -rf ../build_llama_cpp
+	mkdir -p ../build_llama_cpp
+	pushd ../build_llama_cpp >> /dev/null
+	
 	# Build examples
 	if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
 		if [ -d "../Project-Llama/llama_cpp/example/"$2 ]; then
@@ -60,32 +77,59 @@ else
 			flags=$flags\ -D$(echo $i | awk '{print toupper($0)}')=$i
 		done
 		cmake $flags ../Project-Llama/llama_cpp/
+		popd >> /dev/null
 	else
 		echo "Usage: ./build_cpp.sh 	[-e|--example] [example name]|all"
 		echo "			[-b|--benchmark] [benchmark name]|all"
+		if [ "$(uname -s)" == "Darwin" ]; then
+			echo "			Xcode"
+		fi
 		exit -1
 	fi
 fi
 
-# Make
-make
-if [ $? != 0 ]; then
-	echo "Failed to make."
-	exit -3
+# Note that we're in project directory
+
+# Make / Build
+if [ "$1" == "Xcode" ]; then
+	pushd ../llama_xcode >> /dev/null
+	if [ "$(uname -s)" == "Darwin" ]; then
+		xcodebuild
+		if [ $? != 0 ]; then
+			echo "Failed to do xcodebuild."
+			exit -3
+		else
+			echo "Build finished."
+			open ./
+		fi
+	else
+		echo "Xcode Project generated at ../llama_xcode/llama_cpp.xcodeproj"
+	fi
+	popd >> /dev/null
 else
-	echo "Build finished."
+	pushd ../build_llama_cpp >> /dev/null 
+	make
+	if [ $? != 0 ]; then
+		echo "Failed to make."
+		exit -3
+	else
+		echo "Build finished."
+	fi
+	popd >> /dev/null
 fi
 
 if [ "$2" == "coverage" ]; then
+	pushd ../build_llama_cpp >> /dev/null 
 	make coverage
-    tput setaf 2
-    echo "Coverage report generated: $(pwd)coverage_report/index.html"
-    tput sgr0
-    if [ "$(uname -s)" == "Darwin" ]; then
-        open ./coverage_report/index.html
-    fi
+	tput setaf 2
+	echo "Coverage report generated: $(pwd)coverage_report/index.html"
+	tput sgr0
+	if [ "$(uname -s)" == "Darwin" ]; then
+		open ./coverage_report/index.html
+	fi
+	popd >> /dev/null
 else
-    # Lint
-    echo "Checking code style."
-    ../Project-Llama/lint/lint_cpp.sh
+	# Lint
+	echo "Checking code style."
+	./lint/lint_cpp.sh
 fi
