@@ -119,15 +119,17 @@ else
 fi
 
 if [ "$2" == "coverage" ]; then
+	pushd ../build_llama_cpp >> /dev/null 
 	make coverage
-    tput setaf 2
-    echo "Coverage report generated: $(pwd)coverage_report/index.html"
-    tput sgr0
-    if [ "$(uname -s)" == "Darwin" ]; then
-        open ./coverage_report/index.html
-    fi
+	tput setaf 2
+	echo "Coverage report generated: $(pwd)coverage_report/index.html"
+	tput sgr0
+	if [ "$(uname -s)" == "Darwin" ]; then
+		open ./coverage_report/index.html
+	fi
+	popd >> /dev/null
 else
-    # Lint
-    echo "Checking code style."
-    ../Project-Llama/lint/lint_cpp.sh
+	# Lint
+	echo "Checking code style."
+	./lint/lint_cpp.sh
 fi
