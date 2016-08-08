@@ -11,5 +11,11 @@
 
 # Xcode
 *.xcuserdatad
+*.xcsettings
+*.xcuserstate
+*.xcbkptlist
+*.xcscheme
+*.xcworkspacedata
+*.pbxproj
 xcuserdata
 
