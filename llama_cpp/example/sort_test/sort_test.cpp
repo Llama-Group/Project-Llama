@@ -1,26 +1,10 @@
-//
-//  Copyright © 2016 Project Llama. All rights reserved.
-//
-//  Licensed under the Apache License,  Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//   http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing,  software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,  either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//
+
+
+#include <Sort/InsertionSort.h>
+#include <Sort/BruteForceSort.h>
 
 #include <string>
 #include <vector>
-
-#include "Sort/InsertionSort.h"
-#include "Sort/BruteForceSort.h"
-#include "Sort/SelectionSort.h"
-#include "Sort/BubbleSort.h"
 
 class CustomisedClass {
  public:
@@ -49,7 +33,6 @@ double SortObject<CustomisedClass>::getValue() const {
 }  // namespace llama
 
 int main() {
-// <<<<<<< HEAD
     // Easy tests
     // Set the test value.
     std::vector<int> a;
@@ -57,12 +40,12 @@ int main() {
     std::vector<double> c;
     std::vector<CustomisedClass> d;
 
-    // Set Original Data
+    // Original Data
     a = {5, 4, 3, 2, 1};
-    b = {"5",  "4",  "3",  "2",  "1"};
-    c = {5.0,  4.0,  3.0,  2.0,  1.0};
-    d = {CustomisedClass(5),  CustomisedClass(4),
-        CustomisedClass(3),  CustomisedClass(2),  CustomisedClass(1)};
+    b = {"5","4","3","2","1"};
+    c = {5.0,4.0,3.0,2.0,1.0};
+    d = {CustomisedClass(5),CustomisedClass(4),
+        CustomisedClass(3),CustomisedClass(2),CustomisedClass(1)};
 
     std::cout << "Original data:" << std::endl;
     for (int i = 0; i < 5; i++) {
@@ -72,12 +55,12 @@ int main() {
         std::cout << std::string(d[i]) << " " << std::endl;
     }
 
-    // BruteForceSort test
+    // BruteForceSort
     a = {5, 4, 3, 2, 1};
-    b = {"5",  "4",  "3",  "2",  "1"};
-    c = {5.0,  4.0,  3.0,  2.0,  1.0};
-    d = {CustomisedClass(5),  CustomisedClass(4),
-        CustomisedClass(3),  CustomisedClass(2),  CustomisedClass(1)};
+    b = {"5","4","3","2","1"};
+    c = {5.0,4.0,3.0,2.0,1.0};
+    d = {CustomisedClass(5),CustomisedClass(4),
+        CustomisedClass(3),CustomisedClass(2),CustomisedClass(1)};
 
     new llama::BruteForceSort<int>(&a);
     new llama::BruteForceSort<std::string>(&b);
@@ -92,12 +75,12 @@ int main() {
         std::cout << std::string(d[i]) << " " << std::endl;
     }
 
-    // InsertionSort test
+    // InsertionSort
     a = {5, 4, 3, 2, 1};
-    b = {"5",  "4",  "3",  "2",  "1"};
-    c = {5.0,  4.0,  3.0,  2.0,  1.0};
-    d = {CustomisedClass(5),  CustomisedClass(4),
-        CustomisedClass(3),  CustomisedClass(2),  CustomisedClass(1)};
+    b = {"5","4","3","2","1"};
+    c = {5.0,4.0,3.0,2.0,1.0};
+    d = {CustomisedClass(5),CustomisedClass(4),
+        CustomisedClass(3),CustomisedClass(2),CustomisedClass(1)};
 
     new llama::InsertionSort<int>(&a);
     new llama::InsertionSort<std::string>(&b);
@@ -105,46 +88,6 @@ int main() {
     new llama::InsertionSort<CustomisedClass>(&d);
 
     std::cout << "InsertionSort results:" << std::endl;
-    for (int i = 0; i < 5; i++) {
-        std::cout << a[i] << " ";
-        std::cout << b[i] << " ";
-        std::cout << c[i] << " ";
-        std::cout << std::string(d[i]) << " " << std::endl;
-    }
-
-    // SelectionSort test
-    a = {5, 4, 3, 2, 1};
-    b = {"5",  "4",  "3",  "2",  "1"};
-    c = {5.0,  4.0,  3.0,  2.0,  1.0};
-    d = {CustomisedClass(5),  CustomisedClass(4),
-        CustomisedClass(3),  CustomisedClass(2),  CustomisedClass(1)};
-
-    new llama::SelectionSort<int>(&a);
-    new llama::SelectionSort<std::string>(&b);
-    new llama::SelectionSort<double>(&c);
-    new llama::SelectionSort<CustomisedClass>(&d);
-
-    std::cout << "SelectionSort results:" << std::endl;
-    for (int i = 0; i < 5; i++) {
-        std::cout << a[i] << " ";
-        std::cout << b[i] << " ";
-        std::cout << c[i] << " ";
-        std::cout << std::string(d[i]) << " " << std::endl;
-    }
-
-    // BubbleSort test
-    a = {5, 4, 3, 2, 1};
-    b = {"5",  "4",  "3",  "2",  "1"};
-    c = {5.0,  4.0,  3.0,  2.0,  1.0};
-    d = {CustomisedClass(5),  CustomisedClass(4),
-        CustomisedClass(3),  CustomisedClass(2),  CustomisedClass(1)};
-
-    new llama::BubbleSort<int>(&a);
-    new llama::BubbleSort<std::string>(&b);
-    new llama::BubbleSort<double>(&c);
-    new llama::BubbleSort<CustomisedClass>(&d);
-
-    std::cout << "BubbleSort results:" << std::endl;
     for (int i = 0; i < 5; i++) {
         std::cout << a[i] << " ";
         std::cout << b[i] << " ";
