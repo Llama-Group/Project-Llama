@@ -10,7 +10,7 @@ namespace llama {
     class DataGenerator {
     public:
         DataGenerator() {}
-        
+
         void generateSequenceVector(std::vector<int> *targetVector, int count=5, bool reverse=true);
     };
 }

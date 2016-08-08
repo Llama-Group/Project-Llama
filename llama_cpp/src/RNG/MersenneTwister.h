@@ -1,8 +1,4 @@
-//
-//  MersenneTwister.h
-//  Project Llama
-//
-//  Created by BlueCocoa on 2016/7/25.
+
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
@@ -19,24 +15,26 @@
 //  limitations under the License.
 //
 
-#ifndef MERSENNETWISTER_H
-#define MERSENNETWISTER_H
+#ifndef LLAMA_CPP_SRC_RNG_MERSENNETWISTER_H_
+#define LLAMA_CPP_SRC_RNG_MERSENNETWISTER_H_
 
 #include <stdint.h>
 #include <sys/types.h>
 
 namespace alpaca {
-    namespace RNG {
-        class MersenneTwister {
-        public:
-            MersenneTwister(uint32_t seed);
-            uint32_t rand();
-        private:
-            uint32_t state[624];
-            size_t index;
-            void reseed();
-        };
-    }
-}
+namespace RNG {
 
-#endif /* MERSENNETWISTER_H */
+class MersenneTwister {
+ public:
+    explicit MersenneTwister(uint32_t seed);
+    uint32_t rand();
+ private:
+    uint32_t state[624];
+    size_t index;
+    void reseed();
+};
+
+}  // namespace RNG
+}  // namespace alpaca
+
+#endif  // LLAMA_CPP_SRC_RNG_MERSENNETWISTER_H_

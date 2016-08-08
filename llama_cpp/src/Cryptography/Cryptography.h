@@ -1,7 +1,4 @@
-//
-//  Cryptography.h
-//
-//  Created by BlueCocoa on 2016/7/22.
+
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
@@ -18,33 +15,34 @@
 //  limitations under the License.
 //
 
-#ifndef CRYPTOGRAPHY_H
-#define CRYPTOGRAPHY_H
+#ifndef LLAMA_CPP_SRC_CRYPTOGRAPHY_CRYPTOGRAPHY_H_
+#define LLAMA_CPP_SRC_CRYPTOGRAPHY_CRYPTOGRAPHY_H_
 
 #include <string>
 
 namespace alpaca {
-    namespace cryptography {
-        /**
-         *  @brief Encode the plain text with public key
-         *
-         *  @param plaintext Plain text
-         *  @param publickey The path of the public key
-         *
-         *  @return Cipher text or "" if failed
-         */
-        std::string encode(const std::string& plaintext, const std::string& publickey);
-        
-        /**
-         *  @brief Decode the cipher text with private key
-         *
-         *  @param ciphertext Cipher text
-         *  @param privatekey The path of the private key
-         *
-         *  @return Plain text or "" if failed
-         */
-        std::string decode(const std::string& ciphertext, const std::string& privatekey);
-    };
-};
+namespace cryptography {
+/**
+ *  @brief Encode the plain text with public key
+ *
+ *  @param plaintext Plain text
+ *  @param publickey The path of the public key
+ *
+ *  @return Cipher text or "" if failed
+ */
+std::string encode(const std::string& plaintext, const std::string& publickey);
 
-#endif /* CRYPTOGRAPHY_H */
+/**
+ *  @brief Decode the cipher text with private key
+ *
+ *  @param ciphertext Cipher text
+ *  @param privatekey The path of the private key
+ *
+ *  @return Plain text or "" if failed
+ */
+std::string decode(const std::string& ciphertext, const std::string& privatekey);
+
+};  // namespace cryptography
+};  // namespace alpaca
+
+#endif  // LLAMA_CPP_SRC_CRYPTOGRAPHY_CRYPTOGRAPHY_H_

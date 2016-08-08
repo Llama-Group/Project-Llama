@@ -1,5 +1,4 @@
-//
-//  IterativeSearch.h
+
 //
 //  Copyright © 2016 Project Llama. All rights reserved.
 //
@@ -16,18 +15,18 @@
 //  limitations under the License.
 //
 
-#ifndef ITERATIVESEARCH_H
-#define ITERATIVESEARCH_H
+#ifndef LLAMA_CPP_SRC_SEARCH_ITERATIVESEARCH_H_
+#define LLAMA_CPP_SRC_SEARCH_ITERATIVESEARCH_H_
 
 #include <iostream>
 
-namespace Llama
-{
-	int tryMe()
-	{
-		std::cout << "I'll not search for you!\n";
-		return -1;
-	}
+namespace Llama {
+
+int tryMe() {
+    std::cout << "I'll not search for you!\n";
+    return -1;
 }
 
-#endif /* ITERATIVESEARCH_H */
+}  // Llama
+
+#endif  // LLAMA_CPP_SRC_SEARCH_ITERATIVESEARCH_H_
