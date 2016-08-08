@@ -71,6 +71,10 @@ else
 	else
 		echo "Usage: ./build_cpp.sh 	[-e|--example] [example name]|all"
 		echo "			[-b|--benchmark] [benchmark name]|all"
+		case `uname` in 
+			Darwin*) echo "			Xcode" ;;
+			**) ;;
+		esac
 		exit -1
 	fi
 fi
@@ -78,7 +82,7 @@ fi
 # Make
 if [ "$1" == "Xcode" ]; then
 	case `uname` in 
-		Darwin*) open llama_cpp.xcodeproj ;;
+		Darwin*) xcodebuild && open ./;;
 		**) echo "Xcode Project generated at ../llama_xcode/llama_cpp.xcodeproj" ;;
 	esac
 else
