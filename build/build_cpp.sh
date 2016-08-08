@@ -79,7 +79,7 @@ else
 	fi
 fi
 
-# Make
+# Make / Build
 if [ "$1" == "Xcode" ]; then
 	case `uname` in 
 		Darwin*) xcodebuild && open ./;;
@@ -87,24 +87,25 @@ if [ "$1" == "Xcode" ]; then
 	esac
 else
 	make
-	if [ $? != 0 ]; then
-		echo "Failed to make."
-		exit -3
-	else
-		echo "Build finished."
-	fi
-	
-	if [ "$2" == "coverage" ]; then
-		make coverage
-	    tput setaf 2
-	    echo "Coverage report generated: $(pwd)coverage_report/index.html"
-	    tput sgr0
-	    if [ "$(uname -s)" == "Darwin" ]; then
-	        open ./coverage_report/index.html
-	    fi
-	else
-	    # Lint
-	    echo "Checking code style."
-	    ../Project-Llama/lint/lint_cpp.sh
-	fi
+fi
+
+if [ $? != 0 ]; then
+	echo "Failed to make."
+	exit -3
+else
+	echo "Build finished."
+fi
+
+if [ "$2" == "coverage" ]; then
+	make coverage
+    tput setaf 2
+    echo "Coverage report generated: $(pwd)coverage_report/index.html"
+    tput sgr0
+    if [ "$(uname -s)" == "Darwin" ]; then
+        open ./coverage_report/index.html
+    fi
+else
+    # Lint
+    echo "Checking code style."
+    ../Project-Llama/lint/lint_cpp.sh
 fi
