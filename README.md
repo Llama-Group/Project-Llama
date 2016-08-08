@@ -16,9 +16,3 @@ Installation
 ```bash
 git clone --recursive https://github.com/Llama-Group/Project-Llama.git
 ```
-
-### Xcode build
-```
-cd llama_cpp/
-cmake -G Xcode
-```

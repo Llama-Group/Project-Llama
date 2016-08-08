@@ -11,23 +11,25 @@ if [ "$1" == "" ]; then
 	# Create build folder
 	rm -rf ../build_llama_cpp
 	mkdir -p ../build_llama_cpp
-	cd ../build_llama_cpp
+	pushd ../build_llama_cpp >> /dev/null
 	
 	# Build library
 	cmake ../Project-Llama/llama_cpp
+	popd >> /dev/null
 elif [ "$1" == "Xcode" ]; then
 	# Create Xcode project folder
 	rm -rf ../llama_xcode
 	mkdir -p ../llama_xcode
-	cd ../llama_xcode
+	pushd ../llama_xcode >> /dev/null
 	
 	# Generate Xcode Project
 	cmake -G Xcode ../Project-Llama/llama_cpp
+	popd >> /dev/null
 else
 	# Create build folder
 	rm -rf ../build_llama_cpp
 	mkdir -p ../build_llama_cpp
-	cd ../build_llama_cpp
+	pushd ../build_llama_cpp >> /dev/null
 	
 	# Build examples
 	if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
@@ -76,29 +78,37 @@ else
 	else
 		echo "Usage: ./build_cpp.sh 	[-e|--example] [example name]|all"
 		echo "			[-b|--benchmark] [benchmark name]|all"
-		case `uname` in 
-			Darwin*) echo "			Xcode" ;;
-			**) ;;
-		esac
+		if [ "$(uname -s)" == "Darwin" ]; then
+			echo "			Xcode"
+		fi
 		exit -1
 	fi
 fi
 
 # Make / Build
 if [ "$1" == "Xcode" ]; then
-	case `uname` in 
-		Darwin*) xcodebuild && open ./;;
-		**) echo "Xcode Project generated at ../llama_xcode/llama_cpp.xcodeproj" ;;
-	esac
+	pushd ../build_llama_cpp >> /dev/null
+	if [ "$(uname -s)" == "Darwin" ]; then
+		xcodebuild
+		if [ $? != 0 ]; then
+			echo "Failed to do xcodebuild."
+			exit -3
+		else
+			echo "Build finished."
+			open ./
+		fi
+	else
+		echo "Xcode Project generated at ../llama_xcode/llama_cpp.xcodeproj"
+	fi
+	popd >> /dev/null
 else
 	make
-fi
-
-if [ $? != 0 ]; then
-	echo "Failed to make."
-	exit -3
-else
-	echo "Build finished."
+	if [ $? != 0 ]; then
+		echo "Failed to make."
+		exit -3
+	else
+		echo "Build finished."
+	fi
 fi
 
 if [ "$2" == "coverage" ]; then
