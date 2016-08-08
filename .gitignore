@@ -15,5 +15,7 @@
 *.xcuserstate
 *.xcbkptlist
 *.xcscheme
+*.xcworkspacedata
+*.pbxproj
 xcuserdata
 
