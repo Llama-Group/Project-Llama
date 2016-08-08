@@ -22,21 +22,21 @@
 using std::cout;
 
 int main(int argc, const char * argv[]) {
-    Functor test = []() -> void {
+    Functor test = Functor([]() -> void {
         std::cout << "ax^2 + bx + c:\n";
 
-        Functor formular = [](int a) -> Functor {
+        Functor formular = Functor([](int a) -> auto {
             cout << "a inited to " << a << '\n';
-            return [a](int b) -> Functor {
+            return Functor([a](int b) -> auto {
                 cout << "with a = " << a << ", b inited to " << b << '\n';
-                return [a, b](int c) -> Functor {
+                return Functor([a, b](int c) -> auto {
                     cout << "with a = " << a << ", b = " << b << ", c inited to " << c << '\n';
-                    return [a, b, c](int x) -> int {
+                    return FunctorWrapper<int>([a, b, c](int x) -> int {
                         return a*x*x + b*x + c;
-                    };
-                };
-            };
-        };
+                    });
+                });
+            });
+        });
 
 
         int a = 1, b = 2, c = 3, x = 4;
@@ -48,10 +48,10 @@ int main(int argc, const char * argv[]) {
         cout << formular_with_abc.as<int>()(x) << '\n';
 
         cout << formular.as<Functor>()(a)
-        .as<Functor>()(b)
-        .as<Functor>()(c)
-        .as<int>()(x) << '\n';
-    };
+                        .as<Functor>()(b)
+                        .as<Functor>()(c)
+                        .as<int>()(x) << '\n';
+    });
     test.as<void>()();
     return 0;
 }

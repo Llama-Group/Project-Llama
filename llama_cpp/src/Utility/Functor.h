@@ -45,20 +45,9 @@ template <typename R = void>
 class FunctorWrapper final {
  public:
     /**
-     *  @brief A structure to record the pointer to the function and its signature
-     *
-     *  @note  The signature stored is used for matching the parameter and return type
+     *  @brief Store the pointer to the function
      */
-    struct _Functor final {
-        void * function;
-        const std::type_info * signature;
-    };
-    _Functor _functor;
-
-    /**
-     *  @brief Should we check the signature of this function when called
-     */
-    bool _exactly;
+    void * _function;
 
     /**
      *  @brief Constructor
@@ -67,19 +56,18 @@ class FunctorWrapper final {
      *  @param exactly Should we check the signature of this function when called
      */
     template <typename Function>
-    FunctorWrapper(Function lambda, bool exactly = false) : _exactly(exactly) {
+    explicit FunctorWrapper(Function lambda) {
         // using decltype to new a corresponding std::function with lambda
         auto function = new decltype(to_function(lambda))(to_function(lambda));
 
-        _functor.function = static_cast<void *>(function);
-        _functor.signature = &typeid(function);
+        _function = static_cast<void *>(function);
     }
 
     /**
      *  @brief Deconstructor
      */
     ~FunctorWrapper() {
-        delete static_cast<std::function<void()>*>(_functor.function);
+        delete static_cast<std::function<void()>*>(_function);
     }
 
     /**
@@ -88,7 +76,7 @@ class FunctorWrapper final {
     template <typename AS>
     FunctorWrapper<AS> as() {
         // cast _functor.function to std::function
-        auto function = static_cast<std::function<AS()>*>(_functor.function);
+        auto function = static_cast<std::function<AS()>*>(_function);
         return FunctorWrapper<AS>(*function);
     }
 
@@ -100,10 +88,7 @@ class FunctorWrapper final {
     template <typename ... Args>
     R operator() (Args&& ... args) {
         // cast _functor.function to std::function
-        auto function = static_cast<std::function<R(Args ...)>*>(_functor.function);
-
-        // if we would like to check the parameter type
-        if (_exactly && typeid(function) != *(_functor.signature)) throw std::bad_typeid();
+        auto function = static_cast<std::function<R(Args ...)>*>(_function);
 
         // call it
         if (!std::is_same<R, void>::value) {
