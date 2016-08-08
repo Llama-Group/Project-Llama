@@ -7,14 +7,22 @@ BASEDIR=$(dirname "$0")
 #Go to project directory
 cd $BASEDIR/../
 
-# Create build folder
-rm -rf ../build_llama_cpp
-mkdir -p ../build_llama_cpp
-cd ../build_llama_cpp
-
 if [ "$1" == "" ]; then
+	# Create build folder
+	rm -rf ../build_llama_cpp
+	mkdir -p ../build_llama_cpp
+	cd ../build_llama_cpp
+	
 	# Build library
 	cmake ../Project-Llama/llama_cpp
+elif [ "$1" == "Xcode" ]; then
+	# Create Xcode project folder
+	rm -rf ../llama_xcode
+	mkdir -p ../llama_xcode
+	cd ../llama_xcode
+	
+	# Generate Xcode Project
+	cmake -G Xcode ../Project-Llama/llama_cpp
 else
 	# Build examples
 	if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
@@ -68,24 +76,31 @@ else
 fi
 
 # Make
-make
-if [ $? != 0 ]; then
-	echo "Failed to make."
-	exit -3
+if [ "$1" == "Xcode" ]; then
+	case `uname` in 
+		Darwin*) open llama_cpp.xcodeproj ;;
+		**) echo "Xcode Project generated at ../llama_xcode/llama_cpp.xcodeproj" ;;
+	esac
 else
-	echo "Build finished."
-fi
-
-if [ "$2" == "coverage" ]; then
-	make coverage
-    tput setaf 2
-    echo "Coverage report generated: $(pwd)coverage_report/index.html"
-    tput sgr0
-    if [ "$(uname -s)" == "Darwin" ]; then
-        open ./coverage_report/index.html
-    fi
-else
-    # Lint
-    echo "Checking code style."
-    ../Project-Llama/lint/lint_cpp.sh
+	make
+	if [ $? != 0 ]; then
+		echo "Failed to make."
+		exit -3
+	else
+		echo "Build finished."
+	fi
+	
+	if [ "$2" == "coverage" ]; then
+		make coverage
+	    tput setaf 2
+	    echo "Coverage report generated: $(pwd)coverage_report/index.html"
+	    tput sgr0
+	    if [ "$(uname -s)" == "Darwin" ]; then
+	        open ./coverage_report/index.html
+	    fi
+	else
+	    # Lint
+	    echo "Checking code style."
+	    ../Project-Llama/lint/lint_cpp.sh
+	fi
 fi
