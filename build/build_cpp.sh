@@ -7,6 +7,8 @@ BASEDIR=$(dirname "$0")
 #Go to project directory
 cd $BASEDIR/../
 
+# Note that we'll be in project directory after every if-else block
+
 if [ "$1" == "" ]; then
 	# Create build folder
 	rm -rf ../build_llama_cpp
@@ -75,6 +77,7 @@ else
 			flags=$flags\ -D$(echo $i | awk '{print toupper($0)}')=$i
 		done
 		cmake $flags ../Project-Llama/llama_cpp/
+		popd >> /dev/null
 	else
 		echo "Usage: ./build_cpp.sh 	[-e|--example] [example name]|all"
 		echo "			[-b|--benchmark] [benchmark name]|all"
@@ -85,9 +88,11 @@ else
 	fi
 fi
 
+# Note that we're in project directory
+
 # Make / Build
 if [ "$1" == "Xcode" ]; then
-	pushd ../build_llama_cpp >> /dev/null
+	pushd ../llama_xcode >> /dev/null
 	if [ "$(uname -s)" == "Darwin" ]; then
 		xcodebuild
 		if [ $? != 0 ]; then
@@ -102,6 +107,7 @@ if [ "$1" == "Xcode" ]; then
 	fi
 	popd >> /dev/null
 else
+	pushd ../build_llama_cpp >> /dev/null 
 	make
 	if [ $? != 0 ]; then
 		echo "Failed to make."
@@ -109,6 +115,7 @@ else
 	else
 		echo "Build finished."
 	fi
+	popd >> /dev/null
 fi
 
 if [ "$2" == "coverage" ]; then
