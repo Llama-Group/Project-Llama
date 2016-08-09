@@ -17,7 +17,7 @@
 
 #include <vector>
 #include <iostream>
-#include "DataGenerator.hpp"
+#include "DataGenerator.h"
 
 int main(int argc, const char * argv[]) {
     std::vector<int> a;

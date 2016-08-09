@@ -15,8 +15,8 @@
 //  limitations under the License.
 //
 
-#ifndef LLAMA_CPP_EXAMPLE_SORT_TEST_DATAGENERATOR_H_ 
-#define LLAMA_CPP_EXAMPLE_SORT_TEST_DATAGENERATOR_H_ 
+#ifndef LLAMA_CPP_EXAMPLE_SORT_TEST_DATAGENERATOR_H_
+#define LLAMA_CPP_EXAMPLE_SORT_TEST_DATAGENERATOR_H_
 
 #include <stdio.h>
 #include <vector>
@@ -26,18 +26,18 @@ namespace llama {
 class RandomData {
  public:
     RandomData() {}
-        
-        
+
+
     template<typename T>
     void generateRandomData(std::vector<T> *targetVector, int count);
     };
-    
+
 template<>
 void RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count);
-    
+
 template<>
 void RandomData::generateRandomData<bool>(std::vector<bool> *targetVector, int count);
-    
+
 template<>
 void RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count);
 
