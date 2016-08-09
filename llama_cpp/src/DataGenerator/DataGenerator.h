@@ -30,7 +30,7 @@ class RandomData {
 
     template<typename T>
     void generateRandomData(std::vector<T> *targetVector, int count);
-                  };
+};
 
 template<>
 void RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count);

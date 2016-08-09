@@ -21,8 +21,6 @@
 #include <string>
 #include <vector>
 
-#include "DataGenerator.h"
-
 class CustomisedClass {
  public:
     CustomisedClass() {}
@@ -57,10 +55,8 @@ int main() {
     std::vector<double> c;
     std::vector<CustomisedClass> d;
 
-    llama::DataGenerator mDataGenerator = llama::DataGenerator();
-
     // Original Data
-    mDataGenerator.generateSequenceVector(&a);
+    a = {5, 4, 3, 2, 1};
     b = {"5", "4", "3", "2", "1"};
     c = {5.0, 4.0, 3.0, 2.0, 1.0};
     d = {CustomisedClass(5), CustomisedClass(4),
