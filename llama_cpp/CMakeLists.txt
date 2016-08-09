@@ -42,6 +42,8 @@ include_directories("${PROJECT_ROOT_DIRECTORY}/llama_cpp/benchmark/google_benchm
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/*.h)
 
+source_group("Headers" ${HEADER_FILES})
+
 set(PROJECT_EXAMPLE_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/example")
 set(PROJECT_BENCHMARK_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/benchmark")
 
@@ -93,6 +95,7 @@ list(APPEND BENCHMARK_LIBRARIES "${GOOGLE_BENCHMARK}" ${CMAKE_THREAD_LIBS_INIT})
 # Library
 message("[+L] Will build llama library")
 add_library(llama ${SOURCE_FILES})
+add_library(llama ${SOURCE_FILES} ${HEADER_FILES})
 target_link_libraries(llama ${SOURCE_LIBRARIES})
 add_custom_command(
     TARGET llama
