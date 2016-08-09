@@ -55,7 +55,7 @@ void llama::RandomData::generateRandomData<bool>(std::vector<bool> *targetVector
 
 template<>
 void llama::RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count) {
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    unsigned seed = static_cast<unsigned>(time(NULL));
     std::default_random_engine generator(seed);
     std::normal_distribution<double> distribution(5.0, 2.0);
 
