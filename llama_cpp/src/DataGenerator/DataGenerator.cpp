@@ -15,7 +15,7 @@
 //  limitations under the License.
 //
 
-#include "DataGenerator.h"
+#include "DataGenerator/DataGenerator.h"
 
 #include <vector>
 #include <ctime>
