@@ -27,7 +27,6 @@ class RandomData {
  public:
     RandomData() {}
 
-
     template<typename T>
     void generateRandomData(std::vector<T> *targetVector, int count);
 };

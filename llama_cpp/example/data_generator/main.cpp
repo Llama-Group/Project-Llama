@@ -15,9 +15,9 @@
 //  limitations under the License.
 //
 
+#include <DataGenerator/DataGenerator.h>
 #include <vector>
 #include <iostream>
-#include "DataGenerator.h"
 
 int main(int argc, const char * argv[]) {
     std::vector<int> a;

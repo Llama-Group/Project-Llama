@@ -140,6 +140,7 @@ BuildExample("${MERSENNE_TWISTER}")
 BuildExample("${KMEANS}")
 BuildExample("${ALPACA_SORT_TEST}")
 BuildExample("${FUNCTOR_TEST}")
+BuildExample("${DATA_GENERATOR}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 
