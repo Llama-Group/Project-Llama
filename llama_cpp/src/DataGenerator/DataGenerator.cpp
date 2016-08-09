@@ -15,10 +15,10 @@
 //  limitations under the License.
 //
 
+#include "DataGenerator.h"
+
 #include <vector>
 #include <ctime>
-
-#include "DataGenerator.h"
 
 template<typename T>
 void llama::RandomData::generateRandomData(std::vector<T> *targetVector, int count) {
