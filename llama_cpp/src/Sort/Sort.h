@@ -41,28 +41,31 @@ class SortObject {
         na = true;
     }
 
-    double getValue() const;
-
+    int compare(SortObject<T> comparedObject) const {
+        return obj - comparedObject.getObj();
+    }
+    
     T getObj() { return obj; }
 
-    bool operator > (const SortObject<T>& s) const { return getValue() > s.getValue(); }
-    bool operator < (const SortObject<T>& s) const { return getValue() < s.getValue(); }
-    bool operator >= (const SortObject<T>& s) const { return getValue() >= s.getValue(); }
-    bool operator <= (const SortObject<T>& s) const { return getValue() <= s.getValue(); }
+    bool operator > (const SortObject<T>& s) const { return compare(s) > 0; }
+    bool operator < (const SortObject<T>& s) const { return compare(s) < 0; }
+    bool operator >= (const SortObject<T>& s) const { return compare(s) >= 0; }
+    bool operator <= (const SortObject<T>& s) const { return compare(s) <= 0; }
+    bool operator == (const SortObject<T>& s) const { return compare(s) == 0; }
 
  private:
     T obj;
 };
 
-// Template specializations for SortObject class.
-template<> double SortObject<int>::getValue() const {
-    return static_cast<double>(obj);
-}
-template<> double SortObject<std::string>::getValue() const {
-    return obj.size() > 0 ? static_cast<double>(obj[0]) : 0;
-}
-template<> double SortObject<double>::getValue() const {
-    return obj;
+template<>
+int SortObject<std::string>::compare(SortObject<std::string> comparedObject) const {
+    if (obj.size() > 0 && comparedObject.getObj().size() > 0) {
+        return obj[0] - comparedObject.getObj()[0];
+    } else if (obj.size() > 0) {
+        return 1;
+    } else {
+        return -1;
+    }
 }
 
 // Sort class

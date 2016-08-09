@@ -42,8 +42,8 @@ class CustomisedClass {
 
 namespace llama {
 template<>
-double SortObject<CustomisedClass>::getValue() const {
-    return static_cast<double>(obj.getInput());
+int SortObject<CustomisedClass>::compare(SortObject<CustomisedClass> comparedObject) const {
+    return obj.getInput() - comparedObject.getObj().getInput();
 }
 }  // namespace llama
 
