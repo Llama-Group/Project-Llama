@@ -40,11 +40,9 @@ class InsertionSort : public Sort<T> {
             // the loop.
             while (index > 0 && reformedArray->at(index-1) > key) {
                 reformedArray->at(index) = reformedArray->at(index-1);
-                // Move towards the head
+                // Move towards the head.
                 index--;
             }
-            // Here, we can insert the key data to the index.
-            // that's why we call this algorithm "Insertion Sort".
             reformedArray->at(index) = key;
         }
     }
