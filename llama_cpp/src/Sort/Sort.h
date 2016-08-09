@@ -44,7 +44,7 @@ class SortObject {
     int compare(SortObject<T> comparedObject) const {
         return obj - comparedObject.getObj();
     }
-    
+
     T getObj() { return obj; }
 
     bool operator > (const SortObject<T>& s) const { return compare(s) > 0; }
