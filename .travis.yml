@@ -38,7 +38,7 @@ script:
 after_success:
 - pushd ../build_llama_cpp
 - lcov --no-checksum --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
-- lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --remove coverage.info 'tests/*' '/usr/*' 'gtest/*' --output-file coverage.info
 - lcov --list coverage.info
 - popd
 - coveralls-lcov --repo-token ${COVERALLS_REPO_TOKEN} ../build_llama_cpp/coverage.info
