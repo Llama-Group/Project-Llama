@@ -30,7 +30,7 @@ script:
 - export CXX="clang++-3.6"
 - ./build/build_cpp.sh all
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp
-- ./build/build_cpp.sh all coverage
+- ./build/build_cpp.sh coverage
 - pushd ./llama_java
 - ./gradlew assemble
 - popd

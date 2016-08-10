@@ -60,9 +60,6 @@ else
             exit -5
         fi
         flags=""
-        if [ "$2" == "coverage" ]; then
-            flags=$flags"-DCMAKE_BUILD_TYPE=Coverage "
-        fi
         flags=$flags
         pushd ../Project-Llama/llama_cpp/example >> /dev/null
         target=($(ls -d */))
@@ -78,11 +75,14 @@ else
         if [ "$2" == "xcode" ]; then
             CMAKEFLAGS+=" -G Xcode"
         fi
+    # Build lib coverage
+    elif [ "$1" == "coverage" ]; then
+        CMAKEFLAGS="-DCMAKE_BUILD_TYPE=Coverage"
     # Show help
     else
         echo "Usage: ./build_cpp.sh  [-e|--example] [example name]|all (xcode)"
         echo "                       [-b|--benchmark] [benchmark name]|all (xcode)"
-        echo "                       all coverage"
+        echo "                       coverage"
 
         exit -1
     fi
@@ -116,7 +116,7 @@ if [[ ! $CMAKEFLAGS == *"-G Xcode"* ]]; then
 fi
 
 # Post make
-if [ "$2" == "coverage" ]; then
+if [ "$1" == "coverage" ]; then
     make coverage
     tput setaf 2
     echo "Coverage report generated: $(pwd)coverage_report/index.html"
