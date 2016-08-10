@@ -20,12 +20,15 @@
 #include <vector>
 #include <random>
 #include <string>
+#include <limits>
 
 template<>
 void llama::RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count) {
+    int intMin = std::numeric_limits<int>::min();
+    int intMax = std::numeric_limits<int>::max();
     std::random_device intRandomDevice;
     std::mt19937 intRandomEngine(intRandomDevice());
-    std::uniform_int_distribution<int> uniformIntDistribution(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+    std::uniform_int_distribution<int> uniformIntDistribution(intMin, intMax);
 
     for (int i = 0; i < count; i++) {
         targetVector->push_back(uniformIntDistribution(intRandomEngine));
@@ -34,9 +37,11 @@ void llama::RandomData::generateRandomData<int>(std::vector<int> *targetVector, 
 
 template<>
 void llama::RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count) {
+    double doubleMin = std::numeric_limits<double>::min();
+    double doubleMax = std::numeric_limits<double>::max();
     std::random_device doubleRandomDevice;
     std::mt19937 doubleRandomEngine(doubleRandomDevice());
-    std::uniform_real_distribution<double> uniformDoubleDistribution(std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
+    std::uniform_real_distribution<double> uniformDoubleDistribution(doubleMin, doubleMax);
 
     for (int i = 0; i < count; i++) {
         targetVector->push_back(uniformDoubleDistribution(doubleRandomEngine));
@@ -45,13 +50,14 @@ void llama::RandomData::generateRandomData<double>(std::vector<double> *targetVe
 
 template<>
 void llama::RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
-    static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ§1234567890-=[]\';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+    static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                "§1234567890-=[]\';\\,./`±!@£$^&*()_+{}:\"|<>?~";
 
     for (int i = 0; i < count; i++) {
         std::string generateString;
         std::random_device stringRandomDevice;
         std::mt19937 stringRandomEngine(stringRandomDevice());
-        std::uniform_int_distribution<int> uniformStringDistribution(1, generateString.max_size());
+        std::uniform_int_distribution<int> uniformStringDistribution(1, 20);
 
         for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
             std::random_device stringIndexRandomDevice;
