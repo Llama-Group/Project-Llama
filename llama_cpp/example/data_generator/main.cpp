@@ -26,9 +26,9 @@ int main(int argc, const char * argv[]) {
     std::vector<double> b;
     std::vector<std::string> c;
     llama::RandomData mRandomData = llama::RandomData();
-    int ct = 10;
+    int counter = 10;
 
-    mRandomData.generateRandomData(&a, ct);
+    mRandomData.generateRandomData(&a, counter);
 
     for (const auto &n : a) {
         std::cout << n << std::endl;
@@ -36,7 +36,7 @@ int main(int argc, const char * argv[]) {
 
     std::cout << "==========" << std::endl;
 
-    mRandomData.generateRandomData(&b, ct);
+    mRandomData.generateRandomData(&b, counter);
 
     for (const auto &n : b) {
         std::cout << n << std::endl;
@@ -44,7 +44,7 @@ int main(int argc, const char * argv[]) {
 
     std::cout << "==========" << std::endl;
 
-    mRandomData.generateRandomData(&c, ct);
+    mRandomData.generateRandomData(&c, counter);
 
     for (const auto &n : c) {
         std::cout << n << std::endl;

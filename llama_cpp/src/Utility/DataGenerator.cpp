@@ -8,7 +8,7 @@
 //
 //   http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless requniformIntDistributionred by applicable law or agreed to in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
@@ -23,43 +23,43 @@
 
 template<>
 void llama::RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count) {
-    std::random_device rd_int;
-    std::mt19937 re_int(rd_int());
-    std::uniform_int_distribution<int> ui(1, 100);
+    std::random_device intRandomDevice;
+    std::mt19937 intRandomEngine(intRandomDevice());
+    std::uniform_int_distribution<int> uniformIntDistribution(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
     for (int i = 0; i < count; i++) {
-        targetVector->push_back(ui(re_int));
+        targetVector->push_back(uniformIntDistribution(intRandomEngine));
     }
 }
 
 template<>
 void llama::RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count) {
-    std::random_device rd_double;
-    std::mt19937 re_double(rd_double());
-    std::uniform_real_distribution<double> ud(1, 100);
+    std::random_device doubleRandomDevice;
+    std::mt19937 doubleRandomEngine(doubleRandomDevice());
+    std::uniform_real_distribution<double> uniformDoubleDistribution(std::numeric_limits<double>::min(), std::numeric_limits<double>::max());
 
     for (int i = 0; i < count; i++) {
-        targetVector->push_back(ud(re_double));
+        targetVector->push_back(uniformDoubleDistribution(doubleRandomEngine));
     }
 }
 
 template<>
 void llama::RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
-    static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ§1234567890-=[]\';\\,./`±!@£$^&*()_+{}:\"|<>?~";
 
     for (int i = 0; i < count; i++) {
-        std::string generateStr;
-        std::random_device rd_string;
-        std::mt19937 re_string(rd_string());
-        std::uniform_int_distribution<int> us(1, 10);
+        std::string generateString;
+        std::random_device stringRandomDevice;
+        std::mt19937 stringRandomEngine(stringRandomDevice());
+        std::uniform_int_distribution<int> uniformStringDistribution(1, generateString.max_size());
 
-        for (int i = 0; i < us(re_string); i++) {
-            std::random_device rd_string_index;
-            std::mt19937 re_string_index(rd_string_index());
-            std::uniform_int_distribution<int> us_index(0, 51);
-            generateStr += alpha[us_index(re_string_index)];
-            }
+        for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+            std::random_device stringIndexRandomDevice;
+            std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+            std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+            generateString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+        }
 
-        targetVector->push_back(generateStr);
+        targetVector->push_back(generateString);
         }
 }
