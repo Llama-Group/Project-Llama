@@ -104,11 +104,11 @@ private:
     int input;
 };
 namespace llama {
-    template<>
-    double SortObject<CustomisedClass>::getValue() const {
-        return (double) (obj.getInput());
-    }
+template<>
+int SortObject<CustomisedClass>::compare(SortObject<CustomisedClass> comparedObject) const {
+    return obj.getInput() - comparedObject.getObj().getInput();
 }
+}  // namespace llama
 
 static void BFSortClass(benchmark::State& state) {
     llama::BruteForceSort<CustomisedClass> bfSort = llama::BruteForceSort<CustomisedClass>();
