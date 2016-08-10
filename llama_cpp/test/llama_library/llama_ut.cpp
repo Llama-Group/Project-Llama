@@ -76,16 +76,16 @@ TEST_F(SortObjectTest, EqualString) {
 
 // std::string greater than.
 TEST_F(SortObjectTest, GreaterString) {
-    objString1 = SortObject<std::string>("abc");
-    objString2 = SortObject<std::string>("bcd");
+    objString1 = SortObject<std::string>("bcd");
+    objString2 = SortObject<std::string>("abc");
     EXPECT_GT(objString1, objString2);
     EXPECT_GE(objString1, objString2);
 }
 
 // std::string less than.
 TEST_F(SortObjectTest, LessString) {
-    objString1 = SortObject<std::string>("bcd");
-    objString2 = SortObject<std::string>("abc");
+    objString1 = SortObject<std::string>("abc");
+    objString2 = SortObject<std::string>("bcd");
     EXPECT_LT(objString1, objString2);
     EXPECT_LE(objString1, objString2);
 }
