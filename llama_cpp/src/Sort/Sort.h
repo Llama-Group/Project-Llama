@@ -59,13 +59,7 @@ class SortObject {
 
 template<>
 int SortObject<std::string>::compare(SortObject<std::string> comparedObject) const {
-    if (obj.size() > 0 && comparedObject.getObj().size() > 0) {
-        return obj[0] - comparedObject.getObj()[0];
-    } else if (obj.size() > 0) {
-        return 1;
-    } else {
-        return -1;
-    }
+    return obj.compare(comparedObject.getObj());
 }
 
 // Sort class
