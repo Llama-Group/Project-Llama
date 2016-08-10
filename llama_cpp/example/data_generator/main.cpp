@@ -15,16 +15,18 @@
 //  limitations under the License.
 //
 
-#include <DataGenerator/DataGenerator.h>
+#include <Utility/DataGenerator.h>
+
 #include <vector>
 #include <iostream>
+#include <string>
 
 int main(int argc, const char * argv[]) {
     std::vector<int> a;
-    std::vector<bool> b;
-    std::vector<double> c;
+    std::vector<double> b;
+    std::vector<std::string> c;
     llama::RandomData mRandomData = llama::RandomData();
-    int ct = 20;
+    int ct = 10;
 
     mRandomData.generateRandomData(&a, ct);
 
