@@ -19,6 +19,9 @@ cd ../build_llama_cpp
 
 CMAKEFLAGS=""
 
+# Build Google Test
+../Project-Llama/llama_cpp/test/install_test.sh
+
 if [ "$1" == "" ]; then
     # Build library
     cmake ../Project-Llama/llama_cpp
