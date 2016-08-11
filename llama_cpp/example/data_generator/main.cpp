@@ -15,36 +15,64 @@
 //  limitations under the License.
 //
 
-#include <DataGenerator/DataGenerator.h>
 #include <vector>
 #include <iostream>
+#include <string>
+
+#include "Utility/DataGenerator.h"
 
 int main(int argc, const char * argv[]) {
-    std::vector<int> a;
-    std::vector<bool> b;
-    std::vector<double> c;
+    std::vector<int> ar, ac;
+    std::vector<double> br, bc;
+    std::vector<std::string> cr, cc;
     llama::RandomData mRandomData = llama::RandomData();
-    int ct = 20;
+    llama::ContinuousData mContinuousData = llama::ContinuousData();
+    int counter = 10;
+    bool reverse = true;
 
-    mRandomData.generateRandomData(&a, ct);
+    mRandomData.generateRandomData(&ar, counter);
 
-    for (const auto &n : a) {
-        std::cout << n << std::endl;
+    for (const auto &n : ar) {
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
-    mRandomData.generateRandomData(&b, ct);
+    mRandomData.generateRandomData(&br, counter);
 
-    for (const auto &n : b) {
-        std::cout << n << std::endl;
+    for (const auto &n : br) {
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
-    mRandomData.generateRandomData(&c, ct);
+    mRandomData.generateRandomData(&cr, counter);
 
-    for (const auto &n : c) {
-        std::cout << n << std::endl;
+    for (const auto &n : cr) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "==========" << '\n';
+
+    mContinuousData.generateContinuousData(&ac, counter, reverse);
+
+    for (const auto &n : ac) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "==========" << '\n';
+
+    mContinuousData.generateContinuousData(&bc, counter, reverse);
+
+    for (const auto &n : bc) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "==========" << '\n';
+
+    mContinuousData.generateContinuousData(&cc, counter, reverse);
+
+    for (const auto &n : cc) {
+        std::cout << n << '\n';
     }
 }

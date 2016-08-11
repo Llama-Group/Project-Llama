@@ -15,14 +15,16 @@
 //  limitations under the License.
 //
 
-#ifndef LLAMA_CPP_SRC_DATAGENERATOR_DATAGENERATOR_H_
-#define LLAMA_CPP_SRC_DATAGENERATOR_DATAGENERATOR_H_
+#ifndef LLAMA_CPP_SRC_UTILITY_DATAGENERATOR_H_
+#define LLAMA_CPP_SRC_UTILITY_DATAGENERATOR_H_
 
 #include <stdio.h>
 #include <vector>
 #include <random>
+#include <string>
 
 namespace llama {
+
 class RandomData {
  public:
     RandomData() {}
@@ -35,11 +37,19 @@ template<>
 void RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count);
 
 template<>
-void RandomData::generateRandomData<bool>(std::vector<bool> *targetVector, int count);
+void RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count);
 
 template<>
-void RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count);
+void RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count);
+
+class ContinuousData {
+ public:
+    ContinuousData() {}
+
+    template<typename T>
+    void generateContinuousData(std::vector<T> *targetVector, int count, bool reverse);
+};
 
 }  // namespace llama
 
-#endif  // LLAMA_CPP_SRC_DATAGENERATOR_DATAGENERATOR_H_
+#endif  // LLAMA_CPP_SRC_UTILITY_DATAGENERATOR_H_
