@@ -158,7 +158,7 @@ macro(BuildBenchmark FOLDER_NAME)
 endmacro()
 
 # List of building targets
-BuildUnitTest("llama_library")
+BuildUnitTest("Sort_UnitTest")
 
 BuildExample("${TEST_BUILD}")
 BuildExample("${SPAM_CLASSIFICATION}")

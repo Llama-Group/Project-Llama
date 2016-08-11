@@ -18,11 +18,18 @@
 #include <gtest/gtest.h>
 #include <Sort/Sort.h>
 
+#include <vector>
 #include <string>
 
 using std::string;
+using std::vector;
 
 using llama::SortObject;
+using llama::Sort;
+
+//
+// SortObject Test.
+//
 
 struct SortObjectTest : public ::testing::Test {
     SortObject<int> objInt1;
@@ -89,6 +96,25 @@ TEST_F(SortObjectTest, LessString) {
     EXPECT_LT(objString1, objString2);
     EXPECT_LE(objString1, objString2);
 }
+
+//
+// Sort Abstract Class test.
+//
+
+struct SortAbstractClassTest : public ::testing::Test {
+    Sort<int> objSort = Sort<int>();
+};
+
+TEST_F(SortAbstractClassTest, CallVirtualFunction) {
+    vector<int> v1 = {5, 4, 3, 2, 1};
+    vector<int> v2(v1);
+    testing::internal::CaptureStderr();
+    objSort.performSort(&v1);
+    std::string output = testing::internal::GetCapturedStderr();
+    EXPECT_EQ(output, "Abstract function, do not call!\n") << "Virtual function not called.";
+    EXPECT_EQ(v1, v2) << "Vector should not be changed.";
+}
+
 
 int main(int ac, char* av[])
 {
