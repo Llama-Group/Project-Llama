@@ -148,9 +148,8 @@ struct SortCorrectnessTest : public ::testing::Test {
         
     virtual void SetUp() {
         randomInts = new vector<int>();
-        randomIntsCorrect = new vector<int>(10);
         
-        mRandomData.generateRandomData(randomInts, 10);
+        mRandomData.generateRandomData(randomInts, 5);
         mRandomData.generateRandomData(&randomDoubles, 10);
         mRandomData.generateRandomData(&randomStrings, 10);
         mContinuousData.generateContinuousData(&continuousInts, 10, false);
@@ -159,6 +158,8 @@ struct SortCorrectnessTest : public ::testing::Test {
         mContinuousData.generateContinuousData(&continuousIntsReversed, 10, true);
         mContinuousData.generateContinuousData(&continuousDoublesReversed, 10, true);
         mContinuousData.generateContinuousData(&continuousStringsReversed, 10, true);
+        
+        randomIntsCorrect = new vector<int>(*randomInts);
         
         copy(randomInts->begin(), randomInts->end(), randomIntsCorrect->begin());
         randomDoublesCorrect = randomDoubles;
@@ -186,7 +187,7 @@ struct SortCorrectnessTest : public ::testing::Test {
         
         mRandomData.generateRandomData(randomIntsMassive, vecIntCount);
         
-        randomIntsMassiveCorrect = new vector<int>(vecIntCount);
+        randomIntsMassiveCorrect = new vector<int>(*randomIntsMassive);
         
         copy(randomIntsMassive->begin(), randomIntsMassive->end(), randomIntsMassiveCorrect->begin());
         

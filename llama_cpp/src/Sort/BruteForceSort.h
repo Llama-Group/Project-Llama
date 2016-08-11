@@ -35,7 +35,7 @@ class BruteForceSort : public Sort<T> {
         for (int i = 0; i < reformedArray->size(); ++i) {
             int index = 0;
             for (int j = 0; j < reformedArray->size(); ++j) {
-                if (reformedArray->at(i) > reformedArray->at(j)) {
+                if (j != i && reformedArray->at(i) > reformedArray->at(j)) {
                     index++;
                 }
             }
@@ -43,6 +43,7 @@ class BruteForceSort : public Sort<T> {
             while (!resultArray[index].na) {
                 index++;
             }
+            std::cout << index << " ";
             resultArray[index] = reformedArray->at(i);
         }
         std::copy(resultArray.begin(), resultArray.end(), reformedArray->begin());
