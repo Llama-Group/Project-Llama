@@ -176,5 +176,5 @@ BuildExample("${DATA_GENERATOR}")
 BuildBenchmark("${SORT_BENCHMARK}")
 
 if( CMAKE_BUILD_TYPE STREQUAL "Coverage" )
-    SETUP_TARGET_FOR_COVERAGE(coverage "make test" coverage_report)
+    SETUP_TARGET_FOR_COVERAGE(coverage "make test || true" coverage_report)
 endif()

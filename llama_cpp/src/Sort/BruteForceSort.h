@@ -43,7 +43,6 @@ class BruteForceSort : public Sort<T> {
             while (!resultArray[index].na) {
                 index++;
             }
-            std::cout << index << " ";
             resultArray[index] = reformedArray->at(i);
         }
         std::copy(resultArray.begin(), resultArray.end(), reformedArray->begin());

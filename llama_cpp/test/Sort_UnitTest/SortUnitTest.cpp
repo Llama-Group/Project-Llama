@@ -129,14 +129,14 @@ TEST_F(SortAbstractClassTest, CallVirtualFunction) {
 //
 
 struct SortCorrectnessTest : public ::testing::Test {
-    vector<int> *randomInts, continuousInts, continuousIntsReversed, *randomIntsMassive;
+    vector<int> randomInts, continuousInts, continuousIntsReversed, *randomIntsMassive;
     vector<double> randomDoubles, continuousDoubles, continuousDoublesReversed;
     vector<string> randomStrings, continuousStrings, continuousStringsReversed;
     
     llama::RandomData mRandomData = llama::RandomData();
     llama::ContinuousData mContinuousData = llama::ContinuousData();
     
-    vector<int> *randomIntsCorrect, continuousIntsCorrect, continuousIntsReversedCorrect, *randomIntsMassiveCorrect;
+    vector<int> randomIntsCorrect, continuousIntsCorrect, continuousIntsReversedCorrect, *randomIntsMassiveCorrect;
     vector<double> randomDoublesCorrect, continuousDoublesCorrect,
         continuousDoublesReversedCorrect;
     vector<string> randomStringsCorrect, continuousStringsCorrect,
@@ -145,11 +145,17 @@ struct SortCorrectnessTest : public ::testing::Test {
     llama::BruteForceSort<int> intBF;
     llama::BruteForceSort<double> doubleBF;
     llama::BruteForceSort<string> stringBF;
+    
+    llama::InsertionSort<int> intIn;
+    llama::InsertionSort<double> doubleIn;
+    llama::InsertionSort<string> stringIn;
+    
+    llama::BubbleSort<int> intBu;
+    llama::BubbleSort<double> doubleBu;
+    llama::BubbleSort<string> stringBu;
         
     virtual void SetUp() {
-        randomInts = new vector<int>();
-        
-        mRandomData.generateRandomData(randomInts, 5);
+        mRandomData.generateRandomData(&randomInts, 10);
         mRandomData.generateRandomData(&randomDoubles, 10);
         mRandomData.generateRandomData(&randomStrings, 10);
         mContinuousData.generateContinuousData(&continuousInts, 10, false);
@@ -159,9 +165,7 @@ struct SortCorrectnessTest : public ::testing::Test {
         mContinuousData.generateContinuousData(&continuousDoublesReversed, 10, true);
         mContinuousData.generateContinuousData(&continuousStringsReversed, 10, true);
         
-        randomIntsCorrect = new vector<int>(*randomInts);
-        
-        copy(randomInts->begin(), randomInts->end(), randomIntsCorrect->begin());
+        randomIntsCorrect = randomInts;
         randomDoublesCorrect = randomDoubles;
         randomStringsCorrect = randomStrings;
         continuousIntsCorrect = continuousInts;
@@ -171,7 +175,7 @@ struct SortCorrectnessTest : public ::testing::Test {
         continuousDoublesReversedCorrect = continuousDoublesReversed;
         continuousStringsReversedCorrect = continuousStringsReversed;
         
-        sort(randomIntsCorrect->begin(), randomIntsCorrect->end());
+        sort(randomIntsCorrect.begin(), randomIntsCorrect.end());
         sort(randomDoublesCorrect.begin(), randomDoublesCorrect.end());
         sort(randomStringsCorrect.begin(), randomStringsCorrect.end());
         sort(continuousIntsCorrect.begin(), continuousIntsCorrect.end());
@@ -195,17 +199,16 @@ struct SortCorrectnessTest : public ::testing::Test {
     }
     
     virtual void TearDown() {
-        delete randomInts;
-        delete randomIntsCorrect;
         delete randomIntsMassive;
         delete randomIntsMassiveCorrect;
     }
     
 };
 
+// Testing for Brute Force Sort.
 TEST_F(SortCorrectnessTest, BruteForceRandomIntsCorrectness) {
-    intBF.performSort(randomInts);
-    EXPECT_EQ(*randomIntsCorrect, *randomInts);
+    intBF.performSort(&randomInts);
+    EXPECT_EQ(randomIntsCorrect, randomInts);
 }
 
 TEST_F(SortCorrectnessTest, BruteForceRandomDoublesCorrectness) {
@@ -218,15 +221,38 @@ TEST_F(SortCorrectnessTest, BruteForceRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-/*
-TEST_F(SortCorrectnessTest, BruteForceDoubleCorrectness) {
- 
+// Testing for Insertion Sort.
+TEST_F(SortCorrectnessTest, InsertionRandomIntsCorrectness) {
+    intIn.performSort(&randomInts);
+    EXPECT_EQ(randomIntsCorrect, randomInts);
 }
 
-TEST_F(SortCorrectnessTest, BruteForceStringCorrectness) {
- 
+TEST_F(SortCorrectnessTest, InsertionRandomDoublesCorrectness) {
+    doubleIn.performSort(&randomDoubles);
+    EXPECT_EQ(randomDoublesCorrect, randomDoubles);
 }
-*/
+
+TEST_F(SortCorrectnessTest, InsertionRandomStringsCorrectness) {
+    stringIn.performSort(&randomStrings);
+    EXPECT_EQ(randomStringsCorrect, randomStrings);
+}
+
+// Testing for Bubble Sort.
+TEST_F(SortCorrectnessTest, BubbleRandomIntsCorrectness) {
+    intBu.performSort(&randomInts);
+    EXPECT_EQ(randomIntsCorrect, randomInts);
+}
+
+TEST_F(SortCorrectnessTest, BubbleRandomDoublesCorrectness) {
+    doubleBu.performSort(&randomDoubles);
+    EXPECT_EQ(randomDoublesCorrect, randomDoubles);
+}
+
+TEST_F(SortCorrectnessTest, BubbleRandomStringsCorrectness) {
+    stringBu.performSort(&randomStrings);
+    EXPECT_EQ(randomStringsCorrect, randomStrings);
+}
+
 int main(int ac, char* av[])
 {
   testing::InitGoogleTest(&ac, av);
