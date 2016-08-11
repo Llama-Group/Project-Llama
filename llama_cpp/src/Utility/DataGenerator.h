@@ -50,16 +50,6 @@ class ContinuousData {
     void generateContinuousData(std::vector<T> *targetVector, int count, bool reverse);
 };
 
-template<>
-void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
-
-template<>
-void ContinuousData::generateContinuousData<double>(std::vector<double> *targetVector, int count, bool reverse);
-
-template<>
-void ContinuousData::generateContinuousData<std::string>
-(std::vector<std::string> *targetVector, int count, bool reverse);
-
 }  // namespace llama
 
 #endif  // LLAMA_CPP_SRC_UTILITY_DATAGENERATOR_H_
