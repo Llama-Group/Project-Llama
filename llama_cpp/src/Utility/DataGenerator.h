@@ -54,10 +54,11 @@ template<>
 void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
 
 template<>
-void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
+void ContinuousData::generateContinuousData<double>(std::vector<double> *targetVector, int count, bool reverse);
 
 template<>
-void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
+void ContinuousData::generateContinuousData<std::string>
+(std::vector<std::string> *targetVector, int count, bool reverse);
 
 }  // namespace llama
 
