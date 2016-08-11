@@ -33,46 +33,46 @@ int main(int argc, const char * argv[]) {
     mRandomData.generateRandomData(&ar, counter);
 
     for (const auto &n : ar) {
-        std::cout << n << std::endl;
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
     mRandomData.generateRandomData(&br, counter);
 
     for (const auto &n : br) {
-        std::cout << n << std::endl;
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
     mRandomData.generateRandomData(&cr, counter);
 
     for (const auto &n : cr) {
-        std::cout << n << std::endl;
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
     mContinuousData.generateContinuousData(&ac, counter, reverse);
 
     for (const auto &n : ac) {
-        std::cout << n << std::endl;
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
     mContinuousData.generateContinuousData(&bc, counter, reverse);
 
     for (const auto &n : bc) {
-        std::cout << n << std::endl;
+        std::cout << n << '\n';
     }
 
-    std::cout << "==========" << std::endl;
+    std::cout << "==========" << '\n';
 
     mContinuousData.generateContinuousData(&cc, counter, reverse);
 
     for (const auto &n : cc) {
-        std::cout << n << std::endl;
+        std::cout << n << '\n';
     }
 }
