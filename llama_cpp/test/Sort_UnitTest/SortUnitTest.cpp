@@ -17,12 +17,19 @@
 
 #include <gtest/gtest.h>
 #include <Sort/Sort.h>
+#include <Utility/DataGenerator.h>
+#include <Sort/BruteForceSort.h>
+#include <Sort/InsertionSort.h>
+#include <Sort/BubbleSort.h>
+#include <Sort/SelectionSort.h>
 
 #include <vector>
 #include <string>
 
 using std::string;
 using std::vector;
+using std::copy;
+using std::sort;
 
 using llama::SortObject;
 using llama::Sort;
@@ -103,6 +110,8 @@ TEST_F(SortObjectTest, LessString) {
 
 struct SortAbstractClassTest : public ::testing::Test {
     Sort<int> objSort = Sort<int>();
+    
+    FRIEND_TEST(SortAbstractClassTest, Sort);
 };
 
 TEST_F(SortAbstractClassTest, CallVirtualFunction) {
@@ -115,7 +124,108 @@ TEST_F(SortAbstractClassTest, CallVirtualFunction) {
     EXPECT_EQ(v1, v2) << "Vector should not be changed.";
 }
 
+//
+// Sort Correctness test.
+//
 
+struct SortCorrectnessTest : public ::testing::Test {
+    vector<int> *randomInts, continuousInts, continuousIntsReversed, *randomIntsMassive;
+    vector<double> randomDoubles, continuousDoubles, continuousDoublesReversed;
+    vector<string> randomStrings, continuousStrings, continuousStringsReversed;
+    
+    llama::RandomData mRandomData = llama::RandomData();
+    llama::ContinuousData mContinuousData = llama::ContinuousData();
+    
+    vector<int> *randomIntsCorrect, continuousIntsCorrect, continuousIntsReversedCorrect, *randomIntsMassiveCorrect;
+    vector<double> randomDoublesCorrect, continuousDoublesCorrect,
+        continuousDoublesReversedCorrect;
+    vector<string> randomStringsCorrect, continuousStringsCorrect,
+        continuousStringsReversedCorrect;
+    
+    llama::BruteForceSort<int> intBF;
+    llama::BruteForceSort<double> doubleBF;
+    llama::BruteForceSort<string> stringBF;
+        
+    virtual void SetUp() {
+        randomInts = new vector<int>();
+        randomIntsCorrect = new vector<int>(10);
+        
+        mRandomData.generateRandomData(randomInts, 10);
+        mRandomData.generateRandomData(&randomDoubles, 10);
+        mRandomData.generateRandomData(&randomStrings, 10);
+        mContinuousData.generateContinuousData(&continuousInts, 10, false);
+        mContinuousData.generateContinuousData(&continuousDoubles, 10, false);
+        mContinuousData.generateContinuousData(&continuousStrings, 10, false);
+        mContinuousData.generateContinuousData(&continuousIntsReversed, 10, true);
+        mContinuousData.generateContinuousData(&continuousDoublesReversed, 10, true);
+        mContinuousData.generateContinuousData(&continuousStringsReversed, 10, true);
+        
+        copy(randomInts->begin(), randomInts->end(), randomIntsCorrect->begin());
+        randomDoublesCorrect = randomDoubles;
+        randomStringsCorrect = randomStrings;
+        continuousIntsCorrect = continuousInts;
+        continuousDoublesCorrect = continuousDoubles;
+        continuousStringsCorrect = continuousStrings;
+        continuousIntsReversedCorrect = continuousIntsReversed;
+        continuousDoublesReversedCorrect = continuousDoublesReversed;
+        continuousStringsReversedCorrect = continuousStringsReversed;
+        
+        sort(randomIntsCorrect->begin(), randomIntsCorrect->end());
+        sort(randomDoublesCorrect.begin(), randomDoublesCorrect.end());
+        sort(randomStringsCorrect.begin(), randomStringsCorrect.end());
+        sort(continuousIntsCorrect.begin(), continuousIntsCorrect.end());
+        sort(continuousDoublesCorrect.begin(), continuousDoublesCorrect.end());
+        sort(continuousStringsCorrect.begin(), continuousStringsCorrect.end());
+        sort(continuousIntsReversedCorrect.begin(), continuousIntsReversedCorrect.end());
+        sort(continuousDoublesReversedCorrect.begin(), continuousDoublesReversedCorrect.end());
+        sort(continuousStringsReversedCorrect.begin(), continuousStringsReversedCorrect.end());
+
+        const int vecIntCount = 100000;
+        
+        randomIntsMassive = new vector<int>();
+        
+        mRandomData.generateRandomData(randomIntsMassive, vecIntCount);
+        
+        randomIntsMassiveCorrect = new vector<int>(vecIntCount);
+        
+        copy(randomIntsMassive->begin(), randomIntsMassive->end(), randomIntsMassiveCorrect->begin());
+        
+        sort(randomIntsMassiveCorrect->begin(), randomIntsMassiveCorrect->end());
+    }
+    
+    virtual void TearDown() {
+        delete randomInts;
+        delete randomIntsCorrect;
+        delete randomIntsMassive;
+        delete randomIntsMassiveCorrect;
+    }
+    
+};
+
+TEST_F(SortCorrectnessTest, BruteForceRandomIntsCorrectness) {
+    intBF.performSort(randomInts);
+    EXPECT_EQ(*randomIntsCorrect, *randomInts);
+}
+
+TEST_F(SortCorrectnessTest, BruteForceRandomDoublesCorrectness) {
+    doubleBF.performSort(&randomDoubles);
+    EXPECT_EQ(randomDoublesCorrect, randomDoubles);
+}
+
+TEST_F(SortCorrectnessTest, BruteForceRandomStringsCorrectness) {
+    stringBF.performSort(&randomStrings);
+    EXPECT_EQ(randomStringsCorrect, randomStrings);
+}
+
+/*
+TEST_F(SortCorrectnessTest, BruteForceDoubleCorrectness) {
+ 
+}
+
+TEST_F(SortCorrectnessTest, BruteForceStringCorrectness) {
+ 
+}
+*/
 int main(int ac, char* av[])
 {
   testing::InitGoogleTest(&ac, av);

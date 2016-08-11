@@ -158,7 +158,10 @@ macro(BuildBenchmark FOLDER_NAME)
 endmacro()
 
 # List of building targets
+# BuildUnitTest("Utility_UnitTest")
+
 BuildUnitTest("Sort_UnitTest")
+# add_dependencies(Sort_UnitTest Utility_UnitTest)
 
 BuildExample("${TEST_BUILD}")
 BuildExample("${SPAM_CLASSIFICATION}")

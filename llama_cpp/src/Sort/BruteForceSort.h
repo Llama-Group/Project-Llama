@@ -35,13 +35,13 @@ class BruteForceSort : public Sort<T> {
         for (int i = 0; i < reformedArray->size(); ++i) {
             int index = 0;
             for (int j = 0; j < reformedArray->size(); ++j) {
-                if (reformedArray->at(i) >= reformedArray->at(j)) {
+                if (reformedArray->at(i) > reformedArray->at(j)) {
                     index++;
                 }
             }
-            index--;
+            
             while (!resultArray[index].na) {
-                index--;
+                index++;
             }
             resultArray[index] = reformedArray->at(i);
         }
