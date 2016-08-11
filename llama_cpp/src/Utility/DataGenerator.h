@@ -24,6 +24,7 @@
 #include <string>
 
 namespace llama {
+
 class RandomData {
  public:
     RandomData() {}
@@ -40,6 +41,23 @@ void RandomData::generateRandomData<double>(std::vector<double> *targetVector, i
 
 template<>
 void RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count);
+
+class ContinuousData {
+ public:
+    ContinuousData() {}
+
+    template<typename T>
+    void generateContinuousData(std::vector<T> *targetVector, int count, bool reverse);
+};
+
+template<>
+void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
+
+template<>
+void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
+
+template<>
+void ContinuousData::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse);
 
 }  // namespace llama
 

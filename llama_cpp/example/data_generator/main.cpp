@@ -15,38 +15,64 @@
 //  limitations under the License.
 //
 
-#include <Utility/DataGenerator.h>
-
 #include <vector>
 #include <iostream>
 #include <string>
 
+#include "Utility/DataGenerator.h"
+
 int main(int argc, const char * argv[]) {
-    std::vector<int> a;
-    std::vector<double> b;
-    std::vector<std::string> c;
+    std::vector<int> ar, ac;
+    std::vector<double> br, bc;
+    std::vector<std::string> cr, cc;
     llama::RandomData mRandomData = llama::RandomData();
+    llama::ContinuousData mContinuousData = llama::ContinuousData();
     int counter = 10;
+    bool reverse = true;
 
-    mRandomData.generateRandomData(&a, counter);
+    mRandomData.generateRandomData(&ar, counter);
 
-    for (const auto &n : a) {
+    for (const auto &n : ar) {
         std::cout << n << std::endl;
     }
 
     std::cout << "==========" << std::endl;
 
-    mRandomData.generateRandomData(&b, counter);
+    mRandomData.generateRandomData(&br, counter);
 
-    for (const auto &n : b) {
+    for (const auto &n : br) {
         std::cout << n << std::endl;
     }
 
     std::cout << "==========" << std::endl;
 
-    mRandomData.generateRandomData(&c, counter);
+    mRandomData.generateRandomData(&cr, counter);
 
-    for (const auto &n : c) {
+    for (const auto &n : cr) {
+        std::cout << n << std::endl;
+    }
+
+    std::cout << "==========" << std::endl;
+
+    mContinuousData.generateContinuousData(&ac, counter, reverse);
+
+    for (const auto &n : ac) {
+        std::cout << n << std::endl;
+    }
+
+    std::cout << "==========" << std::endl;
+
+    mContinuousData.generateContinuousData(&bc, counter, reverse);
+
+    for (const auto &n : bc) {
+        std::cout << n << std::endl;
+    }
+
+    std::cout << "==========" << std::endl;
+
+    mContinuousData.generateContinuousData(&cc, counter, reverse);
+
+    for (const auto &n : cc) {
         std::cout << n << std::endl;
     }
 }
