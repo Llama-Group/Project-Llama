@@ -129,14 +129,14 @@ TEST_F(SortAbstractClassTest, CallVirtualFunction) {
 //
 
 struct SortCorrectnessTest : public ::testing::Test {
-    vector<int> randomInts, continuousInts, continuousIntsReversed, *randomIntsMassive;
+    vector<int> randomInts, continuousInts, continuousIntsReversed;
     vector<double> randomDoubles, continuousDoubles, continuousDoublesReversed;
     vector<string> randomStrings, continuousStrings, continuousStringsReversed;
     
     llama::RandomData mRandomData = llama::RandomData();
     llama::ContinuousData mContinuousData = llama::ContinuousData();
     
-    vector<int> randomIntsCorrect, continuousIntsCorrect, continuousIntsReversedCorrect, *randomIntsMassiveCorrect;
+    vector<int> randomIntsCorrect, continuousIntsCorrect, continuousIntsReversedCorrect;
     vector<double> randomDoublesCorrect, continuousDoublesCorrect,
         continuousDoublesReversedCorrect;
     vector<string> randomStringsCorrect, continuousStringsCorrect,
@@ -153,8 +153,12 @@ struct SortCorrectnessTest : public ::testing::Test {
     llama::BubbleSort<int> intBu;
     llama::BubbleSort<double> doubleBu;
     llama::BubbleSort<string> stringBu;
-        
-    virtual void SetUp() {
+    
+    llama::SelectionSort<int> intSe;
+    llama::SelectionSort<double> doubleSe;
+    llama::SelectionSort<string> stringSe;
+    
+    virtual void SetUp() override {
         mRandomData.generateRandomData(&randomInts, 10);
         mRandomData.generateRandomData(&randomDoubles, 10);
         mRandomData.generateRandomData(&randomStrings, 10);
@@ -184,25 +188,7 @@ struct SortCorrectnessTest : public ::testing::Test {
         sort(continuousIntsReversedCorrect.begin(), continuousIntsReversedCorrect.end());
         sort(continuousDoublesReversedCorrect.begin(), continuousDoublesReversedCorrect.end());
         sort(continuousStringsReversedCorrect.begin(), continuousStringsReversedCorrect.end());
-
-        const int vecIntCount = 100000;
-        
-        randomIntsMassive = new vector<int>();
-        
-        mRandomData.generateRandomData(randomIntsMassive, vecIntCount);
-        
-        randomIntsMassiveCorrect = new vector<int>(*randomIntsMassive);
-        
-        copy(randomIntsMassive->begin(), randomIntsMassive->end(), randomIntsMassiveCorrect->begin());
-        
-        sort(randomIntsMassiveCorrect->begin(), randomIntsMassiveCorrect->end());
     }
-    
-    virtual void TearDown() {
-        delete randomIntsMassive;
-        delete randomIntsMassiveCorrect;
-    }
-    
 };
 
 // Testing for Brute Force Sort.
@@ -251,6 +237,75 @@ TEST_F(SortCorrectnessTest, BubbleRandomDoublesCorrectness) {
 TEST_F(SortCorrectnessTest, BubbleRandomStringsCorrectness) {
     stringBu.performSort(&randomStrings);
     EXPECT_EQ(randomStringsCorrect, randomStrings);
+}
+
+// Testing for Selection Sort.
+TEST_F(SortCorrectnessTest, SelectionRandomIntsCorrectness) {
+    intSe.performSort(&randomInts);
+    EXPECT_EQ(randomIntsCorrect, randomInts);
+}
+
+TEST_F(SortCorrectnessTest, SelectionRandomDoublesCorrectness) {
+    doubleSe.performSort(&randomDoubles);
+    EXPECT_EQ(randomDoublesCorrect, randomDoubles);
+}
+
+TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
+    stringSe.performSort(&randomStrings);
+    EXPECT_EQ(randomStringsCorrect, randomStrings);
+}
+
+
+//
+// Sort Massive Test
+//
+
+struct SortMassiveTest : public ::testing::Test {
+    vector<int> *randomIntsMassive, *randomIntsMassiveCorrect;
+    
+    llama::RandomData mRandomData = llama::RandomData();
+    
+    llama::BruteForceSort<int> intBF;
+    llama::InsertionSort<int> intIn;
+    llama::BubbleSort<int> intBu;
+    llama::SelectionSort<int> intSe;
+    
+    virtual void SetUp() override {
+        randomIntsMassive = new vector<int>();
+        
+        mRandomData.generateRandomData(randomIntsMassive, 10000);
+        
+        randomIntsMassiveCorrect = new vector<int>(*randomIntsMassive);
+        
+        copy(randomIntsMassive->begin(), randomIntsMassive->end(), randomIntsMassiveCorrect->begin());
+        
+        sort(randomIntsMassiveCorrect->begin(), randomIntsMassiveCorrect->end());
+    }
+    
+    virtual void TearDown() override {
+        delete randomIntsMassive;
+        delete randomIntsMassiveCorrect;
+    }
+};
+
+TEST_F(SortMassiveTest, BruteForceMassive) {
+    intBF.performSort(randomIntsMassive);
+    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
+}
+
+TEST_F(SortMassiveTest, InsertionMassive) {
+    intIn.performSort(randomIntsMassive);
+    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
+}
+
+TEST_F(SortMassiveTest, BubbleMassive) {
+    intBu.performSort(randomIntsMassive);
+    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
+}
+
+TEST_F(SortMassiveTest, SelectionMassive) {
+    intSe.performSort(randomIntsMassive);
+    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
 }
 
 int main(int ac, char* av[])
