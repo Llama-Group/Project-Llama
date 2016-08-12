@@ -262,31 +262,49 @@ TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
 
 struct SortMassiveTest : public ::testing::Test {
     vector<int> *randomIntsMassive, *randomIntsMassiveCorrect;
+    vector<int> *randomIntsSuperMassive, *randomIntsSuperMassiveCorrect;
     
     llama::RandomData mRandomData = llama::RandomData();
+    
+    llama::Sort<int> intSort;
     
     llama::BruteForceSort<int> intBF;
     llama::InsertionSort<int> intIn;
     llama::BubbleSort<int> intBu;
     llama::SelectionSort<int> intSe;
     
+    void setupVector(vector<int> *&m, vector<int> *&mCorrect, int count) {
+        m = new vector<int>();
+        
+        mRandomData.generateRandomData(m, count);
+        
+        mCorrect = new vector<int>(*m);
+        
+        copy(m->begin(), m->end(), mCorrect->begin());
+        
+        sort(mCorrect->begin(), mCorrect->end());
+    }
+    
     virtual void SetUp() override {
-        randomIntsMassive = new vector<int>();
-        
-        mRandomData.generateRandomData(randomIntsMassive, 10000);
-        
-        randomIntsMassiveCorrect = new vector<int>(*randomIntsMassive);
-        
-        copy(randomIntsMassive->begin(), randomIntsMassive->end(), randomIntsMassiveCorrect->begin());
-        
-        sort(randomIntsMassiveCorrect->begin(), randomIntsMassiveCorrect->end());
+        setupVector(randomIntsMassive, randomIntsMassiveCorrect, 10000);
+        setupVector(randomIntsSuperMassive, randomIntsSuperMassiveCorrect, 100000);
     }
     
     virtual void TearDown() override {
         delete randomIntsMassive;
         delete randomIntsMassiveCorrect;
+        
+        delete randomIntsSuperMassive;
+        delete randomIntsSuperMassiveCorrect;
     }
 };
+
+TEST_F(SortMassiveTest, SortAbstractClassMassive) {
+    vector<int> *originalVector = new vector<int>(*randomIntsMassive);
+    intSort.performSort(randomIntsMassive);
+    ASSERT_EQ(*originalVector, *randomIntsMassive);
+    delete originalVector;
+}
 
 TEST_F(SortMassiveTest, BruteForceMassive) {
     intBF.performSort(randomIntsMassive);
