@@ -19,6 +19,7 @@
 #define LLAMA_CPP_SRC_UTILITY_DATAGENERATOR_H_
 
 #include <stdio.h>
+#include <iterator>
 #include <vector>
 #include <random>
 #include <string>
@@ -30,24 +31,36 @@ class RandomData {
     RandomData() {}
 
     template<typename T>
-    void generateRandomData(std::vector<T> *targetVector, int count);
+    static void generateRandomData(std::vector<T> *targetVector, int count);
+
+    static void generateRandomDataFromSet(const std::string& set, std::vector<std::string> *targetVector, int count);
+
+    template <typename _RandomAccessIterator>
+    static void generateRandomDataFromSet(_RandomAccessIterator __first,
+                                          _RandomAccessIterator __last,
+                                          std::vector<
+                                              typename std::iterator_traits<_RandomAccessIterator>::value_type
+                                          > *targetVector,
+                                          int count) {
+        typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+        difference_type length = std::distance(__first, __last);
+
+        std::random_device intRandomDevice;
+        std::mt19937 intRandomEngine(intRandomDevice());
+        std::uniform_int_distribution<int> uniformIntDistribution(0, static_cast<int>(length - 1));
+
+        for (int i = 0; i < count; i++) {
+            targetVector->push_back(*(__first + uniformIntDistribution(intRandomEngine)));
+        }
+    }
 };
-
-template<>
-void RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count);
-
-template<>
-void RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count);
-
-template<>
-void RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count);
 
 class ContinuousData {
  public:
     ContinuousData() {}
 
     template<typename T>
-    void generateContinuousData(std::vector<T> *targetVector, int count, bool reverse);
+    static void generateContinuousData(std::vector<T> *targetVector, int count, bool reverse);
 };
 
 }  // namespace llama

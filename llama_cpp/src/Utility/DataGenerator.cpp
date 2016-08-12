@@ -50,9 +50,14 @@ void llama::RandomData::generateRandomData<double>(std::vector<double> *targetVe
 
 template<>
 void llama::RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
-    static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                "§1234567890-=[]\';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+    static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                               "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+    llama::RandomData::generateRandomDataFromSet(alpha, targetVector, count);
+}
 
+void llama::RandomData::generateRandomDataFromSet(const std::string& set,
+                                                  std::vector<std::string> *targetVector,
+                                                  int count) {
     for (int i = 0; i < count; i++) {
         std::string generateRandomString;
         std::random_device stringRandomDevice;
@@ -62,8 +67,8 @@ void llama::RandomData::generateRandomData<std::string>(std::vector<std::string>
         for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
             std::random_device stringIndexRandomDevice;
             std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
-            std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
-            generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+            std::uniform_int_distribution<int> uniformIndexStringDistribution(0, static_cast<int>(set.size() - 1));
+            generateRandomString += set[uniformIndexStringDistribution(stringIndexRandomEngine)];
         }
 
         targetVector->push_back(generateRandomString);
