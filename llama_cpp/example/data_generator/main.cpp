@@ -22,57 +22,63 @@
 #include "Utility/DataGenerator.h"
 
 int main(int argc, const char * argv[]) {
+    int as;
+    double bs;
+    std::string cs;
     std::vector<int> ar, ac;
     std::vector<double> br, bc;
     std::vector<std::string> cr, cc;
-    llama::RandomData mRandomData = llama::RandomData();
-    llama::ContinuousData mContinuousData = llama::ContinuousData();
-    int counter = 10;
-    bool reverse = true;
 
-    mRandomData.generateRandomData(&ar, counter);
+    llama::DataGenerator mRandomData = llama::DataGenerator();
+    llama::DataGenerator mContinuousData = llama::DataGenerator();
+    llama::DataGenerator mSingleData = llama::DataGenerator();
 
+    mRandomData.generateRandomData(&ar);
+    mRandomData.generateRandomData(&br);
+    mRandomData.generateRandomData(&cr);
+    mContinuousData.generateContinuousData(&ac);
+    mContinuousData.generateContinuousData(&bc);
+    mContinuousData.generateContinuousData(&cc);
+    mSingleData.generateSingleData(&as);
+    mSingleData.generateSingleData(&bs);
+    mSingleData.generateSingleData(&cs);
+
+    std::cout << "===== Random Int =====" << '\n';
     for (const auto &n : ar) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mRandomData.generateRandomData(&br, counter);
-
+    std::cout << "===== Random Double =====" << '\n';
     for (const auto &n : br) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mRandomData.generateRandomData(&cr, counter);
-
+    std::cout << "===== Random String =====" << '\n';
     for (const auto &n : cr) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mContinuousData.generateContinuousData(&ac, counter, reverse);
-
+    std::cout << "===== Continuous Int =====" << '\n';
     for (const auto &n : ac) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mContinuousData.generateContinuousData(&bc, counter, reverse);
-
+    std::cout << "===== Continuous Double =====" << '\n';
     for (const auto &n : bc) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mContinuousData.generateContinuousData(&cc, counter, reverse);
-
+    std::cout << "===== Continuous String =====" << '\n';
     for (const auto &n : cc) {
         std::cout << n << '\n';
     }
+
+    std::cout << "===== Single Int =====" << '\n';
+    std::cout << as << '\n';
+
+    std::cout << "===== Single Double =====" << '\n';
+    std::cout << bs << '\n';
+
+    std::cout << "===== Single String =====" << '\n';
+    std::cout << cs << '\n';
 }

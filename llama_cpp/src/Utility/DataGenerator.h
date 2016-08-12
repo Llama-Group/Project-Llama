@@ -25,20 +25,16 @@
 
 namespace llama {
 
-class RandomData {
+class DataGenerator {
  public:
-    RandomData() {}
+    DataGenerator() {}
 
     template<typename T>
-    void generateRandomData(std::vector<T> *targetVector, int count);
-};
-
-class ContinuousData {
- public:
-    ContinuousData() {}
-
+    void generateRandomData(std::vector<T> *targetVector, int count = 10);
     template<typename T>
-    void generateContinuousData(std::vector<T> *targetVector, int count, bool reverse);
+    void generateContinuousData(std::vector<T> *targetVector, int count = 10, bool reverse = false);
+    template<typename T>
+    void generateSingleData(T *targetData, T *givenData = NULL, int switchCase = 0);
 };
 
 }  // namespace llama
