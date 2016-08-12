@@ -33,15 +33,6 @@ class RandomData {
     void generateRandomData(std::vector<T> *targetVector, int count);
 };
 
-template<>
-void RandomData::generateRandomData<int>(std::vector<int> *targetVector, int count);
-
-template<>
-void RandomData::generateRandomData<double>(std::vector<double> *targetVector, int count);
-
-template<>
-void RandomData::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count);
-
 class ContinuousData {
  public:
     ContinuousData() {}
