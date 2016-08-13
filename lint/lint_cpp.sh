@@ -51,15 +51,15 @@ find . \( -path "./benchmark/google_benchmark" -or -path "./test/google_test" \)
 
 # Run lint.
 rm -f /tmp/llama_fail
-find . \( -path "./benchmark" -or -path "./test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c '../lint/google_lint/cpplint/cpplint.py --linelength=120 "$0";if [ $? != 0 ]; then echo > /tmp/llama_fail; fi' {} \;
+find . \( -path "./benchmark" -or -path "./test/google_test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c '../lint/google_lint/cpplint/cpplint.py --linelength=120 "$0";if [ $? != 0 ]; then echo > /tmp/llama_fail; fi' {} \;
 
 echo $retVal
 if [ -f /tmp/llama_fail ]; then
     rm /tmp/llama_fail
     echo "$pig"
     echo
-    echo "You have some style error! Please follow google style guide!"
-    echo "Do * NOT * push before you fixed these style error!"
+    echo "!!! You have some style error! Please follow google style guide! !!!"
+    echo "!!!      Do * NOT * push before you fixed these style error!     !!!"
     exit -1
 else
     echo "$pigSuccess"

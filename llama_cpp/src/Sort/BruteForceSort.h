@@ -39,7 +39,7 @@ class BruteForceSort : public Sort<T> {
                     index++;
                 }
             }
-            
+
             while (!resultArray[index].na) {
                 index++;
             }

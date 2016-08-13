@@ -25,6 +25,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using std::string;
 using std::vector;
@@ -110,7 +111,7 @@ TEST_F(SortObjectTest, LessString) {
 
 struct SortAbstractClassTest : public ::testing::Test {
     Sort<int> objSort = Sort<int>();
-    
+
     FRIEND_TEST(SortAbstractClassTest, Sort);
 };
 
@@ -132,33 +133,33 @@ struct SortCorrectnessTest : public ::testing::Test {
     vector<int> randomInts, continuousInts, continuousIntsReversed;
     vector<double> randomDoubles, continuousDoubles, continuousDoublesReversed;
     vector<string> randomStrings, continuousStrings, continuousStringsReversed;
-    
+
     llama::RandomData mRandomData = llama::RandomData();
     llama::ContinuousData mContinuousData = llama::ContinuousData();
-    
+
     vector<int> randomIntsCorrect, continuousIntsCorrect, continuousIntsReversedCorrect;
     vector<double> randomDoublesCorrect, continuousDoublesCorrect,
         continuousDoublesReversedCorrect;
     vector<string> randomStringsCorrect, continuousStringsCorrect,
         continuousStringsReversedCorrect;
-    
+
     llama::BruteForceSort<int> intBF;
     llama::BruteForceSort<double> doubleBF;
     llama::BruteForceSort<string> stringBF;
-    
+
     llama::InsertionSort<int> intIn;
     llama::InsertionSort<double> doubleIn;
     llama::InsertionSort<string> stringIn;
-    
+
     llama::BubbleSort<int> intBu;
     llama::BubbleSort<double> doubleBu;
     llama::BubbleSort<string> stringBu;
-    
+
     llama::SelectionSort<int> intSe;
     llama::SelectionSort<double> doubleSe;
     llama::SelectionSort<string> stringSe;
-    
-    virtual void SetUp() override {
+
+    void SetUp() override {
         mRandomData.generateRandomData(&randomInts, 10);
         mRandomData.generateRandomData(&randomDoubles, 10);
         mRandomData.generateRandomData(&randomStrings, 10);
@@ -168,7 +169,7 @@ struct SortCorrectnessTest : public ::testing::Test {
         mContinuousData.generateContinuousData(&continuousIntsReversed, 10, true);
         mContinuousData.generateContinuousData(&continuousDoublesReversed, 10, true);
         mContinuousData.generateContinuousData(&continuousStringsReversed, 10, true);
-        
+
         randomIntsCorrect = randomInts;
         randomDoublesCorrect = randomDoubles;
         randomStringsCorrect = randomStrings;
@@ -178,7 +179,7 @@ struct SortCorrectnessTest : public ::testing::Test {
         continuousIntsReversedCorrect = continuousIntsReversed;
         continuousDoublesReversedCorrect = continuousDoublesReversed;
         continuousStringsReversedCorrect = continuousStringsReversed;
-        
+
         sort(randomIntsCorrect.begin(), randomIntsCorrect.end());
         sort(randomDoublesCorrect.begin(), randomDoublesCorrect.end());
         sort(randomStringsCorrect.begin(), randomStringsCorrect.end());
@@ -263,37 +264,37 @@ TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
 struct SortMassiveTest : public ::testing::Test {
     vector<int> *randomIntsMassive, *randomIntsMassiveCorrect;
     vector<int> *randomIntsSuperMassive, *randomIntsSuperMassiveCorrect;
-    
+
     llama::RandomData mRandomData = llama::RandomData();
-    
+
     llama::Sort<int> intSort;
-    
+
     llama::BruteForceSort<int> intBF;
     llama::InsertionSort<int> intIn;
     llama::BubbleSort<int> intBu;
     llama::SelectionSort<int> intSe;
-    
-    void setupVector(vector<int> *&m, vector<int> *&mCorrect, int count) {
-        m = new vector<int>();
-        
-        mRandomData.generateRandomData(m, count);
-        
-        mCorrect = new vector<int>(*m);
-        
-        copy(m->begin(), m->end(), mCorrect->begin());
-        
-        sort(mCorrect->begin(), mCorrect->end());
+
+    void setupVector(vector<int> **m, vector<int> **mCorrect, int count) {
+        *m = new vector<int>();
+
+        mRandomData.generateRandomData(*m, count);
+
+        *mCorrect = new vector<int>(**m);
+
+        copy((*m)->begin(), (*m)->end(), (*mCorrect)->begin());
+
+        sort((*mCorrect)->begin(), (*mCorrect)->end());
     }
-    
-    virtual void SetUp() override {
-        setupVector(randomIntsMassive, randomIntsMassiveCorrect, 10000);
-        setupVector(randomIntsSuperMassive, randomIntsSuperMassiveCorrect, 100000);
+
+    void SetUp() override {
+        setupVector(&randomIntsMassive, &randomIntsMassiveCorrect, 10000);
+        setupVector(&randomIntsSuperMassive, &randomIntsSuperMassiveCorrect, 100000);
     }
-    
-    virtual void TearDown() override {
+
+    void TearDown() override {
         delete randomIntsMassive;
         delete randomIntsMassiveCorrect;
-        
+
         delete randomIntsSuperMassive;
         delete randomIntsSuperMassiveCorrect;
     }
@@ -326,8 +327,7 @@ TEST_F(SortMassiveTest, SelectionMassive) {
     EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
 }
 
-int main(int ac, char* av[])
-{
+int main(int ac, char* av[]) {
   testing::InitGoogleTest(&ac, av);
   return RUN_ALL_TESTS();
 }
