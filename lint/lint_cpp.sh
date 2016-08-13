@@ -2,7 +2,14 @@
 
 BASEDIR=$(dirname "$0")
 
-cd $BASEDIR/../llama_cpp
+cd $BASEDIR/google_lint
+
+if [ ! -d cpplint ]; then
+    git submodule init
+    git submodule update
+fi
+
+cd ../../llama_cpp
 
 export pig="
          ___
