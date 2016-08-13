@@ -38,12 +38,14 @@ set(CMAKE_SOURCE_DIR "${PROJECT_ROOT_DIRECTORY}/llama_cpp/src")
 
 include_directories("${CMAKE_SOURCE_DIR}/")
 include_directories("${PROJECT_ROOT_DIRECTORY}/llama_cpp/benchmark/google_benchmark/include/")
+include_directories("${PROJECT_ROOT_DIRECTORY}/llama_cpp/test/google_test/googletest/include/")
 
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/*.h)
 
 set(PROJECT_EXAMPLE_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/example")
 set(PROJECT_BENCHMARK_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/benchmark")
+set(PROJECT_TEST_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/test")
 
 #
 # Preparing libraries
@@ -61,44 +63,70 @@ else()
 endif()
 
 # Google benchmark
-set(GOOGLE_BENCHMARK "${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
+set(GOOGLE_BENCHMARK "${PROJECT_ROOT_DIRECTORY}/../build_cpp_benchmark/src/libbenchmark.a")
+
+# Google test
+set(GOOGLE_TEST "${PROJECT_ROOT_DIRECTORY}/../google_test/googlemock/gtest/libgtest.a")
 
 # pthread
 find_package(Threads)
-
-#
-# Coverage
-#
-
-
-#
-# Setting flags
-#
-
-if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "")
-    include(${CMAKE_SOURCE_DIR}/../CodeCoverage.cmake)
-    set(CMAKE_CXX_FLAGS "${COVERAGE_FLAGS}")
-    set(CMAKE_C_FLAGS "${COVERAGE_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS ${COVERAGE_FLAGS})
-endif()
 
 #
 # Build targets
 #
 
 list(APPEND SOURCE_LIBRARIES "${CRYPTO_LIBRARIES}")
+list(APPEND TEST_LIBRARIES "-lz ${PROJECT_ROOT_DIRECTORY}/../google_test/googlemock/gtest/libgtest.a" ${CMAKE_THREAD_LIBS_INIT})
 list(APPEND BIN_LIBRARIES "-lz ${PROJECT_ROOT_DIRECTORY}/../build_llama_cpp/libllama.a")
 list(APPEND BENCHMARK_LIBRARIES "${GOOGLE_BENCHMARK}" ${CMAKE_THREAD_LIBS_INIT})
 
 # Library
-message("[+L] Will build llama library")
-add_library(llama ${SOURCE_FILES})
-target_link_libraries(llama ${SOURCE_LIBRARIES})
-add_custom_command(
-    TARGET llama
-    WORKING_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/..
-    COMMAND if [ -d ./xcode_llama/Debug ]\; then cp ./xcode_llama/Debug/libllama.a ./build_llama_cpp/\; fi
-)
+if( CMAKE_BUILD_TYPE STREQUAL "Coverage" )
+    include(${CMAKE_SOURCE_DIR}/../CodeCoverage.cmake)
+
+    set(TEMP_CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    set(TEMP_CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
+    set(TEMP_CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS})
+    
+    set(CMAKE_CXX_FLAGS "${COVERAGE_FLAGS}")
+    set(CMAKE_C_FLAGS "${COVERAGE_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS ${COVERAGE_FLAGS})
+
+    message("[+L] Will build llama library for coverage")
+    add_library(llama ${SOURCE_FILES})
+    target_link_libraries(llama ${SOURCE_LIBRARIES})
+    add_custom_command(
+        TARGET llama
+        WORKING_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/..
+        COMMAND if [ -d ./xcode_llama/Debug ]\; then cp ./xcode_llama/Debug/libllama.a ./build_llama_cpp/\; fi
+    )
+
+    set(CMAKE_CXX_FLAGS "${TEMP_CMAKE_CXX_FLAGS}")
+    set(CMAKE_C_FLAGS "${TEMP_CMAKE_C_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS ${TEMP_CMAKE_EXE_LINKER_FLAGS})
+else()
+    message("[+L] Will build llama library")
+    add_library(llama ${SOURCE_FILES})
+    target_link_libraries(llama ${SOURCE_LIBRARIES})
+    add_custom_command(
+        TARGET llama
+        WORKING_DIRECTORY ${PROJECT_ROOT_DIRECTORY}/..
+        COMMAND if [ -d ./xcode_llama/Debug ]\; then cp ./xcode_llama/Debug/libllama.a ./build_llama_cpp/\; fi
+    )
+endif()
+
+# Unit Test
+macro(BuildUnitTest FOLDER_NAME)
+    if(NOT ${FOLDER_NAME} STREQUAL "")
+        message("[+T] Will build ${FOLDER_NAME} unit test")
+        include_directories(${PROJECT_TEST_DIRECTORY}/${FOLDER_NAME}/)
+        file(GLOB_RECURSE TEMP_TARGET_SOURCE_FILES ${PROJECT_TEST_DIRECTORY}/${FOLDER_NAME}/*.cpp)
+        add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
+        add_dependencies(${FOLDER_NAME} llama)
+        target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${TEST_LIBRARIES} ${SOURCE_LIBRARIES})
+        add_test(NAME ${FOLDER_NAME} COMMAND ${FOLDER_NAME})
+    endif()
+endmacro()
 
 # Examples
 macro(BuildExample FOLDER_NAME)
@@ -109,7 +137,6 @@ macro(BuildExample FOLDER_NAME)
         add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
         add_dependencies(${FOLDER_NAME} llama)
         target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${SOURCE_LIBRARIES})
-        add_test(NAME ${FOLDER_NAME}_test COMMAND ${FOLDER_NAME})
         message("[+R] Will copy resources of ${FOLDER_NAME} (if any).")
         ADD_CUSTOM_COMMAND(
             TARGET ${FOLDER_NAME}
@@ -127,11 +154,15 @@ macro(BuildBenchmark FOLDER_NAME)
         add_executable(${FOLDER_NAME} ${TEMP_TARGET_SOURCE_FILES})
         add_dependencies(${FOLDER_NAME} llama)
         target_link_libraries(${FOLDER_NAME} ${BIN_LIBRARIES} ${BENCHMARK_LIBRARIES} ${SOURCE_LIBRARIES})
-        add_test(NAME ${FOLDER_NAME}_test COMMAND ${FOLDER_NAME})
     endif()
 endmacro()
 
 # List of building targets
+# BuildUnitTest("Utility_UnitTest")
+
+BuildUnitTest("Sort_UnitTest")
+# add_dependencies(Sort_UnitTest Utility_UnitTest)
+
 BuildExample("${TEST_BUILD}")
 BuildExample("${SPAM_CLASSIFICATION}")
 BuildExample("${RSA}")
@@ -144,6 +175,6 @@ BuildExample("${DATA_GENERATOR}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 
-if(NOT ${CMAKE_BUILD_TYPE} STREQUAL "")
-    SETUP_TARGET_FOR_COVERAGE(coverage "make test" coverage_report)
+if( CMAKE_BUILD_TYPE STREQUAL "Coverage" )
+    SETUP_TARGET_FOR_COVERAGE(coverage "make test || true" coverage_report)
 endif()

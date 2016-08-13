@@ -26,6 +26,7 @@ template<>
 void llama::DataGenerator::generateRandomData<int>(std::vector<int> *targetVector, int count) {
     int intMin = std::numeric_limits<int>::min();
     int intMax = std::numeric_limits<int>::max();
+
     std::random_device intRandomDevice;
     std::mt19937 intRandomEngine(intRandomDevice());
     std::uniform_int_distribution<int> uniformIntDistribution(intMin, intMax);

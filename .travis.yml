@@ -24,13 +24,13 @@ install:
 script:
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
-- mkdir -p ../benchmark_llama_cpp
-- mkdir -p ../benchmark_llama_cpp/src
-- cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
+- mkdir -p ../build_cpp_benchmark
+- mkdir -p ../build_cpp_benchmark/src
+- cp ./src/libbenchmark.a ../build_cpp_benchmark/src/libbenchmark.a
 - export CXX="clang++-3.6"
 - ./build/build_cpp.sh all
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp
-- ./build/build_cpp.sh all coverage
+- ./build/build_cpp.sh coverage
 - pushd ./llama_java
 - ./gradlew assemble
 - popd
@@ -38,7 +38,7 @@ script:
 after_success:
 - pushd ../build_llama_cpp
 - lcov --no-checksum --directory $TRAVIS_BUILD_DIR/../build_llama_cpp --capture --output-file coverage.info
-- lcov --remove coverage.info 'tests/*' '/usr/*' --output-file coverage.info
+- lcov --remove coverage.info 'tests/*' '/usr/*' 'gtest/*' --output-file coverage.info
 - lcov --list coverage.info
 - popd
 - coveralls-lcov --repo-token ${COVERALLS_REPO_TOKEN} ../build_llama_cpp/coverage.info
