@@ -24,9 +24,9 @@ install:
 script:
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
-- mkdir -p ../benchmark_llama_cpp
-- mkdir -p ../benchmark_llama_cpp/src
-- cp ./src/libbenchmark.a ../benchmark_llama_cpp/src/libbenchmark.a
+- mkdir -p ../build_cpp_benchmark
+- mkdir -p ../build_cpp_benchmark/src
+- cp ./src/libbenchmark.a ../build_cpp_benchmark/src/libbenchmark.a
 - export CXX="clang++-3.6"
 - ./build/build_cpp.sh all
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp

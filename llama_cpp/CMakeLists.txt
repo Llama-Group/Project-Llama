@@ -63,7 +63,7 @@ else()
 endif()
 
 # Google benchmark
-set(GOOGLE_BENCHMARK "${PROJECT_ROOT_DIRECTORY}/../benchmark_llama_cpp/src/libbenchmark.a")
+set(GOOGLE_BENCHMARK "${PROJECT_ROOT_DIRECTORY}/../build_cpp_benchmark/src/libbenchmark.a")
 
 # Google test
 set(GOOGLE_TEST "${PROJECT_ROOT_DIRECTORY}/../google_test/googlemock/gtest/libgtest.a")
