@@ -23,6 +23,8 @@
 #include <random>
 #include <string>
 
+typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
+
 namespace llama {
 
 class DataGenerator {
@@ -34,7 +36,7 @@ class DataGenerator {
     template<typename T>
     void generateContinuousData(std::vector<T> *targetVector, int count = 10, bool reverse = false);
     template<typename T>
-    void generateSingleData(T *targetData, T *givenData = NULL, int switchCase = 0);
+    T generateSingleDatum(T *givenData = NULL, Cases = RD);
 };
 
 }  // namespace llama

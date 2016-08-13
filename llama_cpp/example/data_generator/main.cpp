@@ -22,16 +22,16 @@
 #include "Utility/DataGenerator.h"
 
 int main(int argc, const char * argv[]) {
-    int as;
-    double bs;
-    std::string cs;
+    int as = 100;
+    double bs = 7.11836e+307;
+    std::string cs = "asd";
     std::vector<int> ar, ac;
     std::vector<double> br, bc;
     std::vector<std::string> cr, cc;
 
     llama::DataGenerator mRandomData = llama::DataGenerator();
     llama::DataGenerator mContinuousData = llama::DataGenerator();
-    llama::DataGenerator mSingleData = llama::DataGenerator();
+    llama::DataGenerator mSingleDatum = llama::DataGenerator();
 
     mRandomData.generateRandomData(&ar);
     mRandomData.generateRandomData(&br);
@@ -39,9 +39,9 @@ int main(int argc, const char * argv[]) {
     mContinuousData.generateContinuousData(&ac);
     mContinuousData.generateContinuousData(&bc);
     mContinuousData.generateContinuousData(&cc);
-    mSingleData.generateSingleData(&as);
-    mSingleData.generateSingleData(&bs);
-    mSingleData.generateSingleData(&cs);
+    mSingleDatum.generateSingleDatum(&as);
+    mSingleDatum.generateSingleDatum(&bs);
+    mSingleDatum.generateSingleDatum(&cs);
 
     std::cout << "===== Random Int =====" << '\n';
     for (const auto &n : ar) {
@@ -74,11 +74,11 @@ int main(int argc, const char * argv[]) {
     }
 
     std::cout << "===== Single Int =====" << '\n';
-    std::cout << as << '\n';
+    std::cout << mSingleDatum.generateSingleDatum(&as) << '\n';
 
     std::cout << "===== Single Double =====" << '\n';
-    std::cout << bs << '\n';
+    std::cout << mSingleDatum.generateSingleDatum(&bs, LT) << '\n';
 
     std::cout << "===== Single String =====" << '\n';
-    std::cout << cs << '\n';
+    std::cout << mSingleDatum.generateSingleDatum(&cs, EQ) << '\n';
 }

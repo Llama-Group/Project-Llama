@@ -15,12 +15,12 @@
 //  limitations under the License.
 //
 
-#include "Utility/DataGenerator.h"
-
 #include <vector>
 #include <random>
 #include <string>
 #include <limits>
+
+#include "Utility/DataGenerator.h"
 
 template<>
 void llama::DataGenerator::generateRandomData<int>(std::vector<int> *targetVector, int count) {
@@ -51,7 +51,7 @@ void llama::DataGenerator::generateRandomData<double>(std::vector<double> *targe
 template<>
 void llama::DataGenerator::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
     static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                "§1234567890-=[]\';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+                                "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
 
     for (int i = 0; i < count; i++) {
         std::string generateRandomString;
@@ -105,42 +105,198 @@ void llama::DataGenerator::generateContinuousData<std::string>
 }
 
 template<>
-void llama::DataGenerator::generateSingleData<int>(int *targetData, int *givenData, int caseSwitch) {
+int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
+    int temp;
     int intMin = std::numeric_limits<int>::min();
     int intMax = std::numeric_limits<int>::max();
     std::random_device intRandomDevice;
     std::mt19937 intRandomEngine(intRandomDevice());
     std::uniform_int_distribution<int> uniformIntDistribution(intMin, intMax);
-    *targetData = uniformIntDistribution(intRandomEngine);
+
+    switch (switcher) {
+        case RD: {
+            return uniformIntDistribution(intRandomEngine);
+        }
+
+        case LE: {
+            do {
+                temp = uniformIntDistribution(intRandomEngine);
+            } while (temp > *givenData);
+            return temp;
+        }
+
+        case GE: {
+            do {
+                temp = uniformIntDistribution(intRandomEngine);
+            } while (temp < *givenData);
+            return temp;
+        }
+
+        case LT: {
+            do {
+                temp = uniformIntDistribution(intRandomEngine);
+            } while (temp >= *givenData);
+            return temp;
+        }
+
+        case GT: {
+            do {
+                temp = uniformIntDistribution(intRandomEngine);
+            } while (temp <= *givenData);
+            return temp;
+        }
+
+        case EQ: {
+            return *givenData;
+        }
+
+        case NE: {
+            do {
+                temp = uniformIntDistribution(intRandomEngine);
+            } while (temp == *givenData);
+            return temp;
+        }
+    }
 }
 
 template<>
-void llama::DataGenerator::generateSingleData<double>(double *targetData, double *givenData, int caseSwitch) {
+double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Cases switcher) {
+    double temp;
     double doubleMin = std::numeric_limits<double>::min();
     double doubleMax = std::numeric_limits<double>::max();
     std::random_device doubleRandomDevice;
     std::mt19937 doubleRandomEngine(doubleRandomDevice());
     std::uniform_real_distribution<double> uniformDoubleDistribution(doubleMin, doubleMax);
-    *targetData = uniformDoubleDistribution(doubleRandomEngine);
+
+    switch (switcher) {
+        case RD: {
+            return uniformDoubleDistribution(doubleRandomEngine);
+        }
+
+        case LE: {
+            do {
+                temp = uniformDoubleDistribution(doubleRandomEngine);
+            } while (temp > *givenData);
+            return temp;
+        }
+
+        case GE: {
+            do {
+                temp = uniformDoubleDistribution(doubleRandomEngine);
+            } while (temp < *givenData);
+            return temp;
+        }
+
+        case LT: {
+            do {
+                temp = uniformDoubleDistribution(doubleRandomEngine);
+            } while (temp >= *givenData);
+            return temp;
+        }
+
+        case GT: {
+            do {
+                temp = uniformDoubleDistribution(doubleRandomEngine);
+            } while (temp <= *givenData);
+            return temp;
+        }
+
+        case EQ: {
+            return *givenData;
+        }
+
+        case NE: {
+            do {
+                temp = uniformDoubleDistribution(doubleRandomEngine);
+            } while (temp == *givenData);
+            return temp;
+        }
+    }
 }
 
 template<>
-void llama::DataGenerator::generateSingleData<std::string>
-(std::string *targetData, std::string *givenData, int caseSwitch) {
+std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *givenData, Cases switcher) {
     static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "§1234567890-=[]\';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+    "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
 
     std::string generateRandomString;
     std::random_device stringRandomDevice;
     std::mt19937 stringRandomEngine(stringRandomDevice());
     std::uniform_int_distribution<int> uniformStringDistribution(1, 20);
 
-    for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
-        std::random_device stringIndexRandomDevice;
-        std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
-        std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
-        generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
-    }
+    switch (switcher) {
+        case RD: {
+            for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+                std::random_device stringIndexRandomDevice;
+                std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+                std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+                generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+            }
+            return generateRandomString;
+        }
 
-    *targetData = generateRandomString;
+        case LE: {
+            do {
+                for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+                    std::random_device stringIndexRandomDevice;
+                    std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+                    std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+                    generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+                }
+            } while (generateRandomString.compare(*givenData) > 0);
+            return generateRandomString;
+        }
+
+        case GE: {
+            do {
+                for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+                    std::random_device stringIndexRandomDevice;
+                    std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+                    std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+                    generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+                }
+            } while (generateRandomString.compare(*givenData) < 0);
+            return generateRandomString;
+        }
+
+        case LT: {
+            do {
+                for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+                    std::random_device stringIndexRandomDevice;
+                    std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+                    std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+                    generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+                }
+            } while (generateRandomString.compare(*givenData) >= 0);
+            return generateRandomString;
+        }
+
+        case GT: {
+            do {
+                for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+                    std::random_device stringIndexRandomDevice;
+                    std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+                    std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+                    generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+                }
+            } while (generateRandomString.compare(*givenData) <= 0);
+            return generateRandomString;
+        }
+
+        case EQ: {
+            return *givenData;
+        }
+
+        case NE: {
+            do {
+                for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+                    std::random_device stringIndexRandomDevice;
+                    std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+                    std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
+                    generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+                }
+            } while (generateRandomString.compare(*givenData) == 0);
+            return generateRandomString;
+        }
+    }
 }
