@@ -18,7 +18,3 @@
 #include <gtest/gtest.h>
 
 #include <ML/NaiveBayesClassifier.h>
-
-TEST(aaa, bbb) {
-    
-}
