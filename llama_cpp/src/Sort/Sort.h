@@ -42,7 +42,7 @@ class SortObject {
     }
 
     int compare(SortObject<T> comparedObject) const {
-        return obj - comparedObject.getObj();
+        return (obj > comparedObject.getObj())?1:((obj < comparedObject.getObj())?-1:0);
     }
 
     T getObj() { return obj; }

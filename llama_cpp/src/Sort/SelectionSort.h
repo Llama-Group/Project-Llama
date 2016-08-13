@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <utility>
 
 #include "Sort.h"
 
@@ -31,20 +32,19 @@ class SelectionSort : public Sort<T> {
         explicit SelectionSort(std::vector<T> *inputArray) { this->performSort(inputArray); }
 
         void doSort(std::vector<SortObject<T>> *reformedArray) override {
-            for (int i = 0; i < reformedArray->size(); i++) {
-                SortObject<T> key = reformedArray->at(i);
-                int flag = i;
+            int n = reformedArray->size();
+            int min;
+            for (int i = 0; i < n - 1; i++) {
+                min = i;
                 // Select the min value.
-                for (int j = i; j < reformedArray->size(); j++) {
-                    if (key > reformedArray->at(j)) {
-                        flag = j;
+                for (int j = i + 1; j < n; j++) {
+                    if (reformedArray->at(min) > reformedArray->at(j)) {
+                        min = j;
                     }
                 }
                 // Swap between flag and the i if they are different.
-                if (flag != i) {
-                    SortObject<T> temp = reformedArray->at(i);
-                    reformedArray->at(i) = reformedArray->at(flag);
-                    reformedArray->at(flag) = temp;
+                if (min != i) {
+                    std::swap(reformedArray->at(i), reformedArray->at(min));
                 }
             }
         }

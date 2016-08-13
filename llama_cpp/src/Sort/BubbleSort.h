@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <utility>
 
 #include "Sort.h"
 
@@ -32,13 +33,12 @@ class BubbleSort : public Sort<T> {
 
     void doSort(std::vector<SortObject<T>> *reformedArray) override {
         SortObject<T> temp;
-        for (int i = 0; i < reformedArray->size()-1; i++) {
-            for (int j = 0; j < reformedArray->size()-1-i; j++) {
-                if (reformedArray->at(j) > reformedArray->at(j+1))
-                // Swap i+1 and i.
-                temp = reformedArray->at(j);
-                reformedArray->at(j) = reformedArray->at(j+1);
-                reformedArray->at(j+1) = temp;
+        int n = reformedArray->size();
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (reformedArray->at(j) > reformedArray->at(j+1)) {
+                std::swap(reformedArray->at(j), reformedArray->at(j+1));
+            }
             }
         }
     }
