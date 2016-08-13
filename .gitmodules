@@ -5,6 +5,8 @@
 [submodule "lint/styleguide"]
 	path = lint/google_lint
 	url = https://github.com/google/styleguide.git
+	ignore = dirty
 [submodule "llama_cpp/test/googletest"]
 	path = llama_cpp/test/google_test
 	url = https://github.com/google/googletest.git
+	ignore = dirty
