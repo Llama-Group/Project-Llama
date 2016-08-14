@@ -326,9 +326,3 @@ TEST_F(SortMassiveTest, SelectionMassive) {
     intSe.performSort(randomIntsMassive);
     EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
 }
-
-int main(int ac, char* av[]) {
-  testing::InitGoogleTest(&ac, av);
-  return RUN_ALL_TESTS();
-}
-
