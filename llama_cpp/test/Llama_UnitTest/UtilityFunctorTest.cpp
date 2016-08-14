@@ -37,12 +37,14 @@ TEST_F(FunctorTest, ReturnValue) {
     EXPECT_EQ(result, 1);
 }
 
+// Return Object
 TEST_F(FunctorTest, ReturnObject) {
     const char * return_value_ptr = functor_obj.as<string>()().c_str();
     int result = strcmp(return_value_ptr, "ok");
     EXPECT_EQ(result, 0);
 }
 
+// No Return
 TEST_F(FunctorTest, NoReturn) {
     functor_void();
     EXPECT_EQ(ref, 1);
