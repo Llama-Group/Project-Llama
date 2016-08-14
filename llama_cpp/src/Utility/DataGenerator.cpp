@@ -122,28 +122,28 @@ int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switche
         case LE: {
             do {
                 temp = uniformIntDistribution(intRandomEngine);
-            } while (temp > *givenData);
+            } while (temp <= *givenData);
             return temp;
         }
 
         case GE: {
             do {
                 temp = uniformIntDistribution(intRandomEngine);
-            } while (temp < *givenData);
+            } while (temp >= *givenData);
             return temp;
         }
 
         case LT: {
             do {
                 temp = uniformIntDistribution(intRandomEngine);
-            } while (temp >= *givenData);
+            } while (temp < *givenData);
             return temp;
         }
 
         case GT: {
             do {
                 temp = uniformIntDistribution(intRandomEngine);
-            } while (temp <= *givenData);
+            } while (temp > *givenData);
             return temp;
         }
 
@@ -177,28 +177,28 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
         case LE: {
             do {
                 temp = uniformDoubleDistribution(doubleRandomEngine);
-            } while (temp > *givenData);
+            } while (temp <= *givenData);
             return temp;
         }
 
         case GE: {
             do {
                 temp = uniformDoubleDistribution(doubleRandomEngine);
-            } while (temp < *givenData);
+            } while (temp >= *givenData);
             return temp;
         }
 
         case LT: {
             do {
                 temp = uniformDoubleDistribution(doubleRandomEngine);
-            } while (temp >= *givenData);
+            } while (temp < *givenData);
             return temp;
         }
 
         case GT: {
             do {
                 temp = uniformDoubleDistribution(doubleRandomEngine);
-            } while (temp <= *givenData);
+            } while (temp > *givenData);
             return temp;
         }
 
@@ -244,7 +244,7 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
                     std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
                     generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
                 }
-            } while (generateRandomString.compare(*givenData) > 0);
+            } while (generateRandomString.compare(*givenData) <= 0);
             return generateRandomString;
         }
 
@@ -256,7 +256,7 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
                     std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
                     generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
                 }
-            } while (generateRandomString.compare(*givenData) < 0);
+            } while (generateRandomString.compare(*givenData) >= 0);
             return generateRandomString;
         }
 
@@ -268,7 +268,7 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
                     std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
                     generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
                 }
-            } while (generateRandomString.compare(*givenData) >= 0);
+            } while (generateRandomString.compare(*givenData) < 0);
             return generateRandomString;
         }
 
@@ -280,7 +280,7 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
                     std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
                     generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
                 }
-            } while (generateRandomString.compare(*givenData) <= 0);
+            } while (generateRandomString.compare(*givenData) > 0);
             return generateRandomString;
         }
 
