@@ -29,19 +29,15 @@ int main(int argc, const char * argv[]) {
     std::vector<double> br, bc;
     std::vector<std::string> cr, cc;
 
-    llama::DataGenerator mRandomData = llama::DataGenerator();
-    llama::DataGenerator mContinuousData = llama::DataGenerator();
-    llama::DataGenerator mSingleDatum = llama::DataGenerator();
-
-    mRandomData.generateRandomData(&ar);
-    mRandomData.generateRandomData(&br);
-    mRandomData.generateRandomData(&cr);
-    mContinuousData.generateContinuousData(&ac);
-    mContinuousData.generateContinuousData(&bc);
-    mContinuousData.generateContinuousData(&cc);
-    mSingleDatum.generateSingleDatum(&as);
-    mSingleDatum.generateSingleDatum(&bs);
-    mSingleDatum.generateSingleDatum(&cs);
+    llama::DataGenerator::generateRandomData(&ar);
+    llama::DataGenerator::generateRandomData(&br);
+    llama::DataGenerator::generateRandomData(&cr);
+    llama::DataGenerator::generateContinuousData(&ac);
+    llama::DataGenerator::generateContinuousData(&bc);
+    llama::DataGenerator::generateContinuousData(&cc);
+    llama::DataGenerator::generateSingleDatum(&as);
+    llama::DataGenerator::generateSingleDatum(&bs);
+    llama::DataGenerator::generateSingleDatum(&cs);
 
     std::cout << "===== Random Int =====" << '\n';
     for (const auto &n : ar) {
@@ -55,6 +51,27 @@ int main(int argc, const char * argv[]) {
 
     std::cout << "===== Random String =====" << '\n';
     for (const auto &n : cr) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "===== Random Int From Set =====" << '\n';
+    ac.clear();
+    llama::DataGenerator::generateRandomDataFromSet(ar.begin(), ar.end(), &ac, 10);
+    for (const auto &n : ac) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "===== Random Double From Set =====" << '\n';
+    bc.clear();
+    llama::DataGenerator::generateRandomDataFromSet(br.begin(), br.end(), &bc, 10);
+    for (const auto &n : bc) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "===== Random String From Set =====" << '\n';
+    cc.clear();
+    llama::DataGenerator::generateRandomDataFromSet(cr.begin(), cr.end(), &cc, 10);
+    for (const auto &n : cc) {
         std::cout << n << '\n';
     }
 
@@ -74,11 +91,11 @@ int main(int argc, const char * argv[]) {
     }
 
     std::cout << "===== Single Int =====" << '\n';
-    std::cout << mSingleDatum.generateSingleDatum(&as) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&as) << '\n';
 
     std::cout << "===== Single Double =====" << '\n';
-    std::cout << mSingleDatum.generateSingleDatum(&bs, LT) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&bs, LT) << '\n';
 
     std::cout << "===== Single String =====" << '\n';
-    std::cout << mSingleDatum.generateSingleDatum(&cs, EQ) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&cs, EQ) << '\n';
 }

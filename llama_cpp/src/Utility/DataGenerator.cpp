@@ -15,11 +15,6 @@
 //  limitations under the License.
 //
 
-#include <vector>
-#include <random>
-#include <string>
-#include <limits>
-
 #include "Utility/DataGenerator.h"
 
 template<>
@@ -51,20 +46,25 @@ void llama::DataGenerator::generateRandomData<double>(std::vector<double> *targe
 
 template<>
 void llama::DataGenerator::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
-    static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                 "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+    llama::DataGenerator::generateRandomDataFromSet(alpha, targetVector, count);
+}
 
+void llama::DataGenerator::generateRandomDataFromSet(const std::string& set,
+                                                     std::vector<std::string> *targetVector,
+                                                     int count) {
     for (int i = 0; i < count; i++) {
         std::string generateRandomString;
         std::random_device stringRandomDevice;
         std::mt19937 stringRandomEngine(stringRandomDevice());
-        std::uniform_int_distribution<int> uniformStringDistribution(1, 20);
+        std::uniform_int_distribution<int> uniformStringDistribution(1, DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH);
 
         for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
             std::random_device stringIndexRandomDevice;
             std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
-            std::uniform_int_distribution<int> uniformIndexStringDistribution(0, sizeof(alpha)-1);
-            generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+            std::uniform_int_distribution<int> uniformIndexStringDistribution(0, static_cast<int>(set.size() - 1));
+            generateRandomString += set[uniformIndexStringDistribution(stringIndexRandomEngine)];
         }
 
         targetVector->push_back(generateRandomString);
@@ -223,7 +223,7 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
     std::string generateRandomString;
     std::random_device stringRandomDevice;
     std::mt19937 stringRandomEngine(stringRandomDevice());
-    std::uniform_int_distribution<int> uniformStringDistribution(1, 20);
+    std::uniform_int_distribution<int> uniformStringDistribution(1, DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH);
 
     switch (switcher) {
         case RD: {

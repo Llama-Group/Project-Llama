@@ -19,9 +19,23 @@
 #define LLAMA_CPP_SRC_UTILITY_DATAGENERATOR_H_
 
 #include <stdio.h>
+#include <iterator>
+#include <limits>
 #include <vector>
 #include <random>
 #include <string>
+
+#ifndef DATA_GENERATOR_DEFAULT_COUNT
+    #define DATA_GENERATOR_DEFAULT_COUNT 10
+#elif(DATA_GENERATOR_DEFAULT_COUNT <= 0)
+    #define DATA_GENERATOR_DEFAULT_COUNT 10
+#endif
+
+#ifndef DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH
+    #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
+#elif(DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH <= 0)
+    #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
+#endif
 
 typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
 
@@ -32,11 +46,36 @@ class DataGenerator {
     DataGenerator() {}
 
     template<typename T>
-    void generateRandomData(std::vector<T> *targetVector, int count = 10);
+    static void generateRandomData(std::vector<T> *targetVector, int count = DATA_GENERATOR_DEFAULT_COUNT);
+
+    static void generateRandomDataFromSet(const std::string& set, std::vector<std::string> *targetVector, int count);
+
+    template <typename _RandomAccessIterator>
+    static void generateRandomDataFromSet(_RandomAccessIterator __first,
+                                          _RandomAccessIterator __last,
+                                          std::vector<
+                                            typename std::iterator_traits<_RandomAccessIterator>::value_type
+                                          > *targetVector,
+                                          int count) {
+        typedef typename std::iterator_traits<_RandomAccessIterator>::difference_type difference_type;
+        difference_type length = std::distance(__first, __last);
+
+        std::random_device intRandomDevice;
+        std::mt19937 intRandomEngine(intRandomDevice());
+        std::uniform_int_distribution<int> uniformIntDistribution(0, static_cast<int>(length - 1));
+
+        for (int i = 0; i < count; i++) {
+            targetVector->push_back(*(__first + uniformIntDistribution(intRandomEngine)));
+        }
+    }
+
     template<typename T>
-    void generateContinuousData(std::vector<T> *targetVector, int count = 10, bool reverse = false);
+    static void generateContinuousData(std::vector<T> *targetVector,
+                                       int count = DATA_GENERATOR_DEFAULT_COUNT,
+                                       bool reverse = false);
+
     template<typename T>
-    T generateSingleDatum(T *givenData = NULL, Cases = RD);
+    static T generateSingleDatum(T *givenData = NULL, Cases = RD);
 };
 
 }  // namespace llama

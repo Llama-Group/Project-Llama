@@ -41,7 +41,7 @@ using llama::Sort;
 
 struct SortObjectTest : public ::testing::Test {
     llama::DataGenerator mDataGenerator = llama::DataGenerator();
-    
+
     SortObject<int> objInt1;
     SortObject<int> objInt2;
 
