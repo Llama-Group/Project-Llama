@@ -24,16 +24,26 @@
 using std::string;
 
 struct FunctorTest : public ::testing::Test {
-    Functor functor_int = Functor([]() -> int { return 1; });
-    Functor functor_obj = Functor([]() -> string { return "ok"; });
+    Functor functor_int  = Functor([]() -> int { return 1; });
+    Functor functor_obj  = Functor([]() -> string { return "ok"; });
+
+    int ref = 0;
+    Functor functor_void = Functor([this]() -> void { this->ref = 1; });
 };
 
 // Return Value
 TEST_F(FunctorTest, ReturnValue) {
     int result = functor_int.as<int>()();
     EXPECT_EQ(result, 1);
+}
 
+TEST_F(FunctorTest, ReturnObject) {
     const char * return_value_ptr = functor_obj.as<string>()().c_str();
-    result = strcmp(return_value_ptr, "ok");
+    int result = strcmp(return_value_ptr, "ok");
     EXPECT_EQ(result, 0);
+}
+
+TEST_F(FunctorTest, NoReturn) {
+    functor_void();
+    EXPECT_EQ(ref, 1);
 }
