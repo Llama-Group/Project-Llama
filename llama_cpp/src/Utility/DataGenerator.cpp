@@ -47,7 +47,7 @@ void llama::DataGenerator::generateRandomData<double>(std::vector<double> *targe
 template<>
 void llama::DataGenerator::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
     static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+                               "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
     llama::DataGenerator::generateRandomDataFromSet(alpha, targetVector, count);
 }
 
@@ -218,7 +218,7 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
 template<>
 std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *givenData, Cases switcher) {
     static const char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+                                "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
 
     std::string generateRandomString;
     std::random_device stringRandomDevice;
