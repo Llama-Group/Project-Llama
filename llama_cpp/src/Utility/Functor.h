@@ -53,7 +53,6 @@ class FunctorWrapper final {
      *  @brief Constructor
      *
      *  @param lambda  The lambda expression we're going to store
-     *  @param exactly Should we check the signature of this function when called
      */
     template <typename Function>
     explicit FunctorWrapper(Function lambda) {
@@ -67,7 +66,9 @@ class FunctorWrapper final {
      *  @brief Deconstructor
      */
     ~FunctorWrapper() {
-        delete static_cast<std::function<void()>*>(_function);
+        if (_function) {
+            delete static_cast<std::function<void()>*>(_function);
+        }
     }
 
     /**
