@@ -57,6 +57,6 @@ int main() {
     LLObject stl_string = LLObject(std::string("Hello"));
     std::cout << stl_string.cast<std::string>() << ' ';
 
-    std::cout << function.as<LLObject>()(std::string("World")).cast<std::string>() << '\n';
+    std::cout << function.as<LLObject>()(std::string("World!")).cast<std::string>() << '\n';
     return 0;
 }
