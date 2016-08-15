@@ -6,8 +6,8 @@
 //  Copyright © 2016 BlueCocoa. All rights reserved.
 //
 
-#ifndef LLAMA_CPP_SRC_UTILITY_LLOBJECT_H_
-#define LLAMA_CPP_SRC_UTILITY_LLOBJECT_H_
+#ifndef LLAMA_CPP_SRC_DATASTRUCTURE_LLOBJECT_H_
+#define LLAMA_CPP_SRC_DATASTRUCTURE_LLOBJECT_H_
 
 #include <Utility/Functor.h>
 #include <utility>
@@ -267,4 +267,4 @@ class LLObjectWrapper {
 using LLObject = LLObjectWrapper<>;
 }  // namespace llama
 
-#endif  // LLAMA_CPP_SRC_UTILITY_LLOBJECT_H_
+#endif  // LLAMA_CPP_SRC_DATASTRUCTURE_LLOBJECT_H_
