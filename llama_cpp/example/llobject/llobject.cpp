@@ -33,7 +33,7 @@ int main() {
     int implicit_cast = integer;
     std::cout << implicit_cast << '\n';
 
-    const LLObject floating_const = LLObject(2.0f);
+    const LLObject floating_const = LLObject(2.33f);
     std::cout << floating_const.cast<double>() << '\n';
 
     LLObject floating = LLObject(floating_const);
