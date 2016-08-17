@@ -143,30 +143,30 @@ template<>
 int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
     switch (switcher) {
         case RD: {
-            llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(),
-                                                                   std::numeric_limits<int>::max());
+            return llama::DataGenerator::generateRandomDataFromRange<int>
+            (std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
         }
 
         case LE: {
-            llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData);
+            return llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData);
         }
 
         case GE: {
-            llama::DataGenerator::generateRandomDataFromRange<int>(*givenData, std::numeric_limits<int>::max());
+            return llama::DataGenerator::generateRandomDataFromRange<int>(*givenData, std::numeric_limits<int>::max());
         }
 
         case LT: {
             if (*givenData == std::numeric_limits<int>::min()) {
-                throw "The given int is the minimum";
+                throw std::invalid_argument("The given int is the minimum");
             }
-            llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData - 1);
+            return llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData - 1);
         }
 
         case GT: {
             if (*givenData == std::numeric_limits<int>::max()) {
-                throw "The given int is the maximum";
+                throw std::invalid_argument("The given int is the maximum");
             }
-            llama::DataGenerator::generateRandomDataFromRange<int>(*givenData + 1, std::numeric_limits<int>::max());
+            return llama::DataGenerator::generateRandomDataFromRange<int>(*givenData + 1, std::numeric_limits<int>::max());
         }
 
         case EQ: {
@@ -181,6 +181,10 @@ int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switche
             } while (temp == *givenData);
             return temp;
         }
+            
+        default: {
+            throw std::invalid_argument("Unrecongnised");
+        }
     }
 }
 
@@ -188,31 +192,33 @@ template<>
 double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Cases switcher) {
     switch (switcher) {
         case RD: {
-            llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
+            return llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
                                                                       std::numeric_limits<double>::max());
         }
 
         case LE: {
-            llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(), *givenData);
+            return llama::DataGenerator::generateRandomDataFromRange<double>
+            (std::numeric_limits<double>::min(), *givenData);
         }
 
         case GE: {
-            llama::DataGenerator::generateRandomDataFromRange<double>(*givenData, std::numeric_limits<double>::max());
+            return llama::DataGenerator::generateRandomDataFromRange<double>
+            (*givenData, std::numeric_limits<double>::max());
         }
 
         case LT: {
             if (*givenData == std::numeric_limits<double>::min()) {
-                throw "The given double is the minimum";
+                throw std::invalid_argument("The given double is the minimum");
             }
-            llama::DataGenerator::generateRandomDataFromRange<double>
+            return llama::DataGenerator::generateRandomDataFromRange<double>
             (std::numeric_limits<double>::min(), *givenData - std::numeric_limits<double>::denorm_min());
         }
 
         case GT: {
             if (*givenData == std::numeric_limits<double>::max()) {
-                throw "The given double is the maximum";
+                throw std::invalid_argument("The given double is the maximum");
             }
-            llama::DataGenerator::generateRandomDataFromRange<double>
+            return llama::DataGenerator::generateRandomDataFromRange<double>
             (*givenData + std::numeric_limits<double>::denorm_min(), std::numeric_limits<double>::max());
         }
 
@@ -228,6 +234,10 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
             } while (temp == *givenData);
             return temp;
         }
+            
+        default: {
+            throw std::invalid_argument("Unrecongnised");
+        }
     }
 }
 
@@ -236,7 +246,7 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
     std::string temp;
     switch (switcher) {
         case RD: {
-            llama::DataGenerator::generateSingleString();
+            return llama::DataGenerator::generateSingleString();
         }
 
         case LE: {
@@ -276,6 +286,10 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
                 temp = llama::DataGenerator::generateSingleString();
             } while (temp.compare(*givenData) == 0);
             return temp;
+        }
+            
+        default: {
+            throw std::invalid_argument("Unrecongnised");
         }
     }
 }

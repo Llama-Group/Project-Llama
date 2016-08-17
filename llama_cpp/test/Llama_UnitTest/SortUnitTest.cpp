@@ -69,9 +69,9 @@ TEST_F(SortObjectTest, EqualInteger) {
 TEST_F(SortObjectTest, GreaterInteger) {
     int refInt = mDataGenerator.generateSingleDatum<int>();
     objInt1 = SortObject<int>(refInt);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, GT));
+    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, LT));
     EXPECT_GT(objInt1, objInt2);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, GE));
+    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, LE));
     EXPECT_GE(objInt1, objInt2);
 }
 
@@ -79,9 +79,9 @@ TEST_F(SortObjectTest, GreaterInteger) {
 TEST_F(SortObjectTest, LessInteger) {
     int refInt = mDataGenerator.generateSingleDatum<int>();
     objInt1 = SortObject<int>(refInt);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, LT));
+    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, GT));
     EXPECT_LT(objInt1, objInt2);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, LE));
+    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, GE));
     EXPECT_LE(objInt1, objInt2);
 }
 
@@ -100,21 +100,21 @@ TEST_F(SortObjectTest, EqualDouble) {
 
 // Double greater than.
 TEST_F(SortObjectTest, GreaterDouble) {
-    int refDouble = /* mDataGenerator.generateSingleDatum<double>() */  0;
+    int refDouble = mDataGenerator.generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
-    objDouble2 = SortObject<double>(/* mDataGenerator.generateSingleDatum(&refDouble, LT) */  refDouble - 1);
+    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, LT));
     EXPECT_GT(objDouble1, objDouble2);
-    objDouble2 = SortObject<double>(/* mDataGenerator.generateSingleDatum(&refDouble, LE) */  refDouble - 1);
+    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, LE));
     EXPECT_GE(objDouble1, objDouble2);
 }
 
 // Double less than.
 TEST_F(SortObjectTest, LessDouble) {
-    int refDouble = /* mDataGenerator.generateSingleDatum<double>() */  0;
+    int refDouble = mDataGenerator.generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
-    objDouble2 = SortObject<double>(/* mDataGenerator.generateSingleDatum(&refDouble, GT) */  refDouble + 1);
+    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, GT));
     EXPECT_LT(objDouble1, objDouble2);
-    objDouble2 = SortObject<double>(/* mDataGenerator.generateSingleDatum(&refDouble, GE) */  refDouble + 1);
+    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, GE));
     EXPECT_LE(objDouble1, objDouble2);
 }
 
@@ -134,20 +134,20 @@ TEST_F(SortObjectTest, EqualString) {
 // std::string greater than.
 TEST_F(SortObjectTest, GreaterString) {
     string refString = mDataGenerator.generateSingleDatum<string>();
-    objString1 = SortObject<std::string>("b");
-    objString2 = SortObject<std::string>(/* mDataGenerator.generateSingleDatum(&refString, GT) */  "a");
+    objString1 = SortObject<std::string>(refString);
+    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, GT));
     EXPECT_GT(objString1, objString2);
-    objString2 = SortObject<std::string>(/* mDataGenerator.generateSingleDatum(&refString, GE) */  "a");
+    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, GE));
     EXPECT_GE(objString1, objString2);
 }
 
 // std::string less than.
 TEST_F(SortObjectTest, LessString) {
     string refString = mDataGenerator.generateSingleDatum<string>();
-    objString1 = SortObject<std::string>("a");
-    objString2 = SortObject<std::string>(/* mDataGenerator.generateSingleDatum(&refString, LT) */  "b");
+    objString1 = SortObject<std::string>(refString);
+    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, LT));
     EXPECT_LT(objString1, objString2);
-    objString2 = SortObject<std::string>(/* mDataGenerator.generateSingleDatum(&refString, LE) */  "b");
+    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, LE));
     EXPECT_LE(objString1, objString2);
 }
 
