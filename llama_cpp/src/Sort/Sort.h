@@ -52,6 +52,7 @@ class SortObject {
     bool operator >= (const SortObject<T>& s) const { return compare(s) >= 0; }
     bool operator <= (const SortObject<T>& s) const { return compare(s) <= 0; }
     bool operator == (const SortObject<T>& s) const { return compare(s) == 0; }
+    bool operator != (const SortObject<T>& s) const { return compare(s) != 0; }
 
  private:
     T obj;
