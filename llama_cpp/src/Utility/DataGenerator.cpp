@@ -17,8 +17,12 @@
 
 #include "Utility/DataGenerator.h"
 
+#include <stdexcept>
+
+using llama::DataGenerator;
+
 template<>
-void llama::DataGenerator::generateRandomData<int>(std::vector<int> *targetVector, int count) {
+void DataGenerator::generateRandomData<int>(std::vector<int> *targetVector, int count) {
     int intMin = std::numeric_limits<int>::min();
     int intMax = std::numeric_limits<int>::max();
 
@@ -32,7 +36,7 @@ void llama::DataGenerator::generateRandomData<int>(std::vector<int> *targetVecto
 }
 
 template<>
-void llama::DataGenerator::generateRandomData<double>(std::vector<double> *targetVector, int count) {
+void DataGenerator::generateRandomData<double>(std::vector<double> *targetVector, int count) {
     double doubleMin = std::numeric_limits<double>::min();
     double doubleMax = std::numeric_limits<double>::max();
     std::random_device doubleRandomDevice;
@@ -45,13 +49,13 @@ void llama::DataGenerator::generateRandomData<double>(std::vector<double> *targe
 }
 
 template<>
-void llama::DataGenerator::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
+void DataGenerator::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
     static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
-    llama::DataGenerator::generateRandomDataFromSet(alpha, targetVector, count);
+    DataGenerator::generateRandomDataFromSet(alpha, targetVector, count);
 }
 
-void llama::DataGenerator::generateRandomDataFromSet(const std::string& set,
+void DataGenerator::generateRandomDataFromSet(const std::string& set,
                                                      std::vector<std::string> *targetVector,
                                                      int count) {
     for (int i = 0; i < count; i++) {
@@ -72,21 +76,21 @@ void llama::DataGenerator::generateRandomDataFromSet(const std::string& set,
 }
 
 template<>
-void llama::DataGenerator::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse) {
+void DataGenerator::generateContinuousData<int>(std::vector<int> *targetVector, int count, bool reverse) {
     for (int i = 0; i < count; i++) {
         targetVector->push_back(reverse ? (count - i - 1) : i);
     }
 }
 
 template<>
-void llama::DataGenerator::generateContinuousData<double>(std::vector<double> *targetVector, int count, bool reverse) {
+void DataGenerator::generateContinuousData<double>(std::vector<double> *targetVector, int count, bool reverse) {
     for (int i = 0; i < count; i++) {
         targetVector->push_back(reverse ? (count - i - 1)/10.0 : i/10.0);
     }
 }
 
 template<>
-void llama::DataGenerator::generateContinuousData<std::string>
+void DataGenerator::generateContinuousData<std::string>
 (std::vector<std::string> *targetVector, int count, bool reverse) {
     std::string generateConinuousString;
     std::vector<std::string>::iterator it;
@@ -106,7 +110,7 @@ void llama::DataGenerator::generateContinuousData<std::string>
 }
 
 template<>
-int llama::DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
+int DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
     std::random_device intRandomDevice;
     std::mt19937 intRandomEngine(intRandomDevice());
     std::uniform_int_distribution<int> uniformIntDistribution(min, max);
@@ -114,14 +118,14 @@ int llama::DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
 }
 
 template<>
-double llama::DataGenerator::generateRandomDataFromRange<double>(double min, double max) {
+double DataGenerator::generateRandomDataFromRange<double>(double min, double max) {
     std::random_device doubleRandomDevice;
     std::mt19937 doubleRandomEngine(doubleRandomDevice());
     std::uniform_real_distribution<double> uniformDoubleDistribution(min, max);
     return uniformDoubleDistribution(doubleRandomEngine);
 }
 
-std::string llama::DataGenerator::generateSingleString() {
+std::string DataGenerator::generateSingleString() {
     static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
 
@@ -140,33 +144,35 @@ std::string llama::DataGenerator::generateSingleString() {
 }
 
 template<>
-int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
+int DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
     switch (switcher) {
         case RD: {
-            return llama::DataGenerator::generateRandomDataFromRange<int>
+            return DataGenerator::generateRandomDataFromRange<int>
             (std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
         }
 
         case LE: {
-            return llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData);
+            return DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData);
         }
 
         case GE: {
-            return llama::DataGenerator::generateRandomDataFromRange<int>(*givenData, std::numeric_limits<int>::max());
+            return DataGenerator::generateRandomDataFromRange<int>(*givenData, std::numeric_limits<int>::max());
         }
 
         case LT: {
             if (*givenData == std::numeric_limits<int>::min()) {
                 throw std::invalid_argument("The given int is the minimum");
             }
-            return llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData - 1);
+            return DataGenerator::generateRandomDataFromRange<int>
+                (std::numeric_limits<int>::min(), *givenData - 1);
         }
 
         case GT: {
             if (*givenData == std::numeric_limits<int>::max()) {
                 throw std::invalid_argument("The given int is the maximum");
             }
-            return llama::DataGenerator::generateRandomDataFromRange<int>(*givenData + 1, std::numeric_limits<int>::max());
+            return DataGenerator::generateRandomDataFromRange<int>
+                (*givenData + 1, std::numeric_limits<int>::max());
         }
 
         case EQ: {
@@ -176,12 +182,12 @@ int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switche
         case NE: {
             int temp;
             do {
-                temp = llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(),
+                temp = DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(),
                                                                               std::numeric_limits<int>::max());
             } while (temp == *givenData);
             return temp;
         }
-            
+
         default: {
             throw std::invalid_argument("Unrecongnised");
         }
@@ -189,21 +195,21 @@ int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switche
 }
 
 template<>
-double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Cases switcher) {
+double DataGenerator::generateSingleDatum<double>(double *givenData, Cases switcher) {
     switch (switcher) {
         case RD: {
-            double x = llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
+            double x = DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
                                                                       std::numeric_limits<double>::max());
             return x;
         }
 
         case LE: {
-            return llama::DataGenerator::generateRandomDataFromRange<double>
+            return DataGenerator::generateRandomDataFromRange<double>
             (std::numeric_limits<double>::min(), *givenData);
         }
 
         case GE: {
-            return llama::DataGenerator::generateRandomDataFromRange<double>
+            return DataGenerator::generateRandomDataFromRange<double>
             (*givenData, std::numeric_limits<double>::max());
         }
 
@@ -211,7 +217,7 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
             if (*givenData == std::numeric_limits<double>::min()) {
                 throw std::invalid_argument("The given double is the minimum");
             }
-            return llama::DataGenerator::generateRandomDataFromRange<double>
+            return DataGenerator::generateRandomDataFromRange<double>
             (std::numeric_limits<double>::min(), *givenData - std::numeric_limits<double>::denorm_min());
         }
 
@@ -219,7 +225,7 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
             if (*givenData == std::numeric_limits<double>::max()) {
                 throw std::invalid_argument("The given double is the maximum");
             }
-            return llama::DataGenerator::generateRandomDataFromRange<double>
+            return DataGenerator::generateRandomDataFromRange<double>
             (*givenData + std::numeric_limits<double>::denorm_min(), std::numeric_limits<double>::max());
         }
 
@@ -230,12 +236,12 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
         case NE: {
             double temp;
             do {
-                temp = llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
+                temp = DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
                                                                                  std::numeric_limits<double>::max());;
             } while (temp == *givenData);
             return temp;
         }
-            
+
         default: {
             throw std::invalid_argument("Unrecongnised");
         }
@@ -243,37 +249,37 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
 }
 
 template<>
-std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *givenData, Cases switcher) {
+std::string DataGenerator::generateSingleDatum<std::string>(std::string *givenData, Cases switcher) {
     std::string temp;
     switch (switcher) {
         case RD: {
-            return llama::DataGenerator::generateSingleString();
+            return DataGenerator::generateSingleString();
         }
 
         case LE: {
             do {
-                temp = llama::DataGenerator::generateSingleString();
+                temp = DataGenerator::generateSingleString();
             } while (temp.compare(*givenData) <= 0);
             return temp;
         }
 
         case GE: {
             do {
-                temp = llama::DataGenerator::generateSingleString();
+                temp = DataGenerator::generateSingleString();
             } while (temp.compare(*givenData) >= 0);
             return temp;
         }
 
         case LT: {
             do {
-                temp = llama::DataGenerator::generateSingleString();
+                temp = DataGenerator::generateSingleString();
             } while (temp.compare(*givenData) < 0);
             return temp;
         }
 
         case GT: {
             do {
-                temp = llama::DataGenerator::generateSingleString();
+                temp = DataGenerator::generateSingleString();
             } while (temp.compare(*givenData) > 0);
             return temp;
         }
@@ -284,11 +290,11 @@ std::string llama::DataGenerator::generateSingleDatum<std::string>(std::string *
 
         case NE: {
             do {
-                temp = llama::DataGenerator::generateSingleString();
+                temp = DataGenerator::generateSingleString();
             } while (temp.compare(*givenData) == 0);
             return temp;
         }
-            
+
         default: {
             throw std::invalid_argument("Unrecongnised");
         }
