@@ -24,7 +24,7 @@ CMAKEFLAGS=""
 
 if [ "$1" == "" ]; then
     # Build library
-    cmake ../Project-Llama/llama_cpp
+    echo "Will build Llama Library and Llama Library Unit Test only."
 else
     # Build examples
     if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
@@ -92,19 +92,15 @@ else
 fi
 
 # Run CMake here
-if [ "$CMAKEFLAGS" != "" ]; then
-    echo "Building with: $CMAKEFLAGS"
-    if [[ $CMAKEFLAGS == *"-G Xcode"* ]]; then
-        rm -rf ../xcode_llama
-        mkdir -p ../xcode_llama
-        pushd ../xcode_llama >> /dev/null
-        cmake $CMAKEFLAGS ../Project-Llama/llama_cpp/
-        popd >> /dev/null
-    else
-        cmake $CMAKEFLAGS ../Project-Llama/llama_cpp/
-    fi
+echo "Building with: $CMAKEFLAGS"
+if [[ $CMAKEFLAGS == *"-G Xcode"* ]]; then
+    rm -rf ../xcode_llama
+    mkdir -p ../xcode_llama
+    pushd ../xcode_llama >> /dev/null
+    cmake $CMAKEFLAGS ../Project-Llama/llama_cpp/
+    popd >> /dev/null
 else
-    echo "Invalid CMake command!"
+    cmake $CMAKEFLAGS ../Project-Llama/llama_cpp/
 fi
 
 if [[ ! $CMAKEFLAGS == *"-G Xcode"* ]]; then
