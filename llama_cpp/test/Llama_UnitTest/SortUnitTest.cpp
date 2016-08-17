@@ -100,7 +100,7 @@ TEST_F(SortObjectTest, EqualDouble) {
 
 // Double greater than.
 TEST_F(SortObjectTest, GreaterDouble) {
-    int refDouble = mDataGenerator.generateSingleDatum<double>();
+    double refDouble = mDataGenerator.generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
     objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, LT));
     EXPECT_GT(objDouble1, objDouble2);
@@ -110,7 +110,7 @@ TEST_F(SortObjectTest, GreaterDouble) {
 
 // Double less than.
 TEST_F(SortObjectTest, LessDouble) {
-    int refDouble = mDataGenerator.generateSingleDatum<double>();
+    double refDouble = mDataGenerator.generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
     objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, GT));
     EXPECT_LT(objDouble1, objDouble2);

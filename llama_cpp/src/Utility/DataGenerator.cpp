@@ -192,8 +192,9 @@ template<>
 double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Cases switcher) {
     switch (switcher) {
         case RD: {
-            return llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
+            double x = llama::DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
                                                                       std::numeric_limits<double>::max());
+            return x;
         }
 
         case LE: {
