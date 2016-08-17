@@ -76,6 +76,11 @@ class DataGenerator {
 
     template<typename T>
     static T generateSingleDatum(T *givenData = NULL, Cases = RD);
+
+    template<typename T>
+    static T generateRandomDataFromRange(T min, T max);
+
+    static std::string generateSingleString();
 };
 
 }  // namespace llama

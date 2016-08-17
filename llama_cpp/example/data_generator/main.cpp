@@ -35,9 +35,6 @@ int main(int argc, const char * argv[]) {
     llama::DataGenerator::generateContinuousData(&ac);
     llama::DataGenerator::generateContinuousData(&bc);
     llama::DataGenerator::generateContinuousData(&cc);
-    llama::DataGenerator::generateSingleDatum(&as);
-    llama::DataGenerator::generateSingleDatum(&bs);
-    llama::DataGenerator::generateSingleDatum(&cs);
 
     std::cout << "===== Random Int =====" << '\n';
     for (const auto &n : ar) {
@@ -91,11 +88,11 @@ int main(int argc, const char * argv[]) {
     }
 
     std::cout << "===== Single Int =====" << '\n';
-    std::cout << llama::DataGenerator::generateSingleDatum(&as) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&as, LE) << '\n';
 
     std::cout << "===== Single Double =====" << '\n';
     std::cout << llama::DataGenerator::generateSingleDatum(&bs, LT) << '\n';
 
     std::cout << "===== Single String =====" << '\n';
-    std::cout << llama::DataGenerator::generateSingleDatum(&cs, EQ) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&cs, NE) << '\n';
 }
