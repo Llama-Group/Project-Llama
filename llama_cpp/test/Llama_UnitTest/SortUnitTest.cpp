@@ -35,13 +35,13 @@ using std::sort;
 using llama::SortObject;
 using llama::Sort;
 
+using llama::DataGenerator;
+
 //
 // SortObject Test.
 //
 
 struct SortObjectTest : public ::testing::Test {
-    llama::DataGenerator mDataGenerator = llama::DataGenerator();
-
     SortObject<int> objInt1;
     SortObject<int> objInt2;
 
@@ -54,9 +54,9 @@ struct SortObjectTest : public ::testing::Test {
 
 // Integer equal.
 TEST_F(SortObjectTest, EqualInteger) {
-    int refInt = mDataGenerator.generateSingleDatum<int>();
+    int refInt = DataGenerator::generateSingleDatum<int>();
     objInt1 = SortObject<int>(refInt);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, EQ));
+    objInt2 = SortObject<int>(DataGenerator::generateSingleDatum(&refInt, EQ));
     EXPECT_EQ(objInt1, objInt2);
     EXPECT_GE(objInt1, objInt2);
     EXPECT_LE(objInt1, objInt2);
@@ -65,31 +65,39 @@ TEST_F(SortObjectTest, EqualInteger) {
     EXPECT_LE(objInt1, objInt1);
 }
 
+// Integer not equal.
+TEST_F(SortObjectTest, NotEqualInteger) {
+    int refInt = DataGenerator::generateSingleDatum<int>();
+    objInt1 = SortObject<int>(refInt);
+    objInt2 = SortObject<int>(DataGenerator::generateSingleDatum(&refInt, NE));
+    EXPECT_NE(objInt1, objInt2);
+}
+
 // Integer greater than.
 TEST_F(SortObjectTest, GreaterInteger) {
-    int refInt = mDataGenerator.generateSingleDatum<int>();
+    int refInt = DataGenerator::generateSingleDatum<int>();
     objInt1 = SortObject<int>(refInt);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, LT));
+    objInt2 = SortObject<int>(DataGenerator::generateSingleDatum(&refInt, LT));
     EXPECT_GT(objInt1, objInt2);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, LE));
+    objInt2 = SortObject<int>(DataGenerator::generateSingleDatum(&refInt, LE));
     EXPECT_GE(objInt1, objInt2);
 }
 
 // Integer less than.
 TEST_F(SortObjectTest, LessInteger) {
-    int refInt = mDataGenerator.generateSingleDatum<int>();
+    int refInt = DataGenerator::generateSingleDatum<int>();
     objInt1 = SortObject<int>(refInt);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, GT));
+    objInt2 = SortObject<int>(DataGenerator::generateSingleDatum(&refInt, GT));
     EXPECT_LT(objInt1, objInt2);
-    objInt2 = SortObject<int>(mDataGenerator.generateSingleDatum(&refInt, GE));
+    objInt2 = SortObject<int>(DataGenerator::generateSingleDatum(&refInt, GE));
     EXPECT_LE(objInt1, objInt2);
 }
 
 // Double equal.
 TEST_F(SortObjectTest, EqualDouble) {
-    double refDouble = mDataGenerator.generateSingleDatum<double>();
+    double refDouble = DataGenerator::generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
-    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, EQ));
+    objDouble2 = SortObject<double>(DataGenerator::generateSingleDatum(&refDouble, EQ));
     EXPECT_EQ(objDouble1, objDouble2);
     EXPECT_GE(objDouble1, objDouble2);
     EXPECT_LE(objDouble1, objDouble2);
@@ -98,31 +106,39 @@ TEST_F(SortObjectTest, EqualDouble) {
     EXPECT_LE(objDouble1, objDouble1);
 }
 
+// Double not equal.
+TEST_F(SortObjectTest, NotEqualDouble) {
+    double refDouble = DataGenerator::generateSingleDatum<double>();
+    objDouble1 = SortObject<double>(refDouble);
+    objDouble2 = SortObject<double>(DataGenerator::generateSingleDatum(&refDouble, NE));
+    EXPECT_NE(objDouble1, objDouble2);
+}
+
 // Double greater than.
 TEST_F(SortObjectTest, GreaterDouble) {
-    double refDouble = mDataGenerator.generateSingleDatum<double>();
+    double refDouble = DataGenerator::generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
-    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, LT));
+    objDouble2 = SortObject<double>(DataGenerator::generateSingleDatum(&refDouble, LT));
     EXPECT_GT(objDouble1, objDouble2);
-    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, LE));
+    objDouble2 = SortObject<double>(DataGenerator::generateSingleDatum(&refDouble, LE));
     EXPECT_GE(objDouble1, objDouble2);
 }
 
 // Double less than.
 TEST_F(SortObjectTest, LessDouble) {
-    double refDouble = mDataGenerator.generateSingleDatum<double>();
+    double refDouble = DataGenerator::generateSingleDatum<double>();
     objDouble1 = SortObject<double>(refDouble);
-    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, GT));
+    objDouble2 = SortObject<double>(DataGenerator::generateSingleDatum(&refDouble, GT));
     EXPECT_LT(objDouble1, objDouble2);
-    objDouble2 = SortObject<double>(mDataGenerator.generateSingleDatum(&refDouble, GE));
+    objDouble2 = SortObject<double>(DataGenerator::generateSingleDatum(&refDouble, GE));
     EXPECT_LE(objDouble1, objDouble2);
 }
 
 // std::string equal.
 TEST_F(SortObjectTest, EqualString) {
-    string refString = mDataGenerator.generateSingleDatum<string>();
+    string refString = DataGenerator::generateSingleDatum<string>();
     objString1 = SortObject<std::string>(refString);
-    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, EQ));
+    objString2 = SortObject<std::string>(DataGenerator::generateSingleDatum(&refString, EQ));
     EXPECT_EQ(objString1, objString2);
     EXPECT_GE(objString1, objString2);
     EXPECT_LE(objString1, objString2);
@@ -131,23 +147,31 @@ TEST_F(SortObjectTest, EqualString) {
     EXPECT_LE(objString1, objString1);
 }
 
+// String not equal.
+TEST_F(SortObjectTest, NotEqualString) {
+    string refString = DataGenerator::generateSingleDatum<string>();
+    objString1 = SortObject<string>(refString);
+    objString2 = SortObject<string>(DataGenerator::generateSingleDatum(&refString, NE));
+    EXPECT_NE(objString1, objString2);
+}
+
 // std::string greater than.
 TEST_F(SortObjectTest, GreaterString) {
-    string refString = mDataGenerator.generateSingleDatum<string>();
+    string refString = DataGenerator::generateSingleDatum<string>();
     objString1 = SortObject<std::string>(refString);
-    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, GT));
+    objString2 = SortObject<std::string>(DataGenerator::generateSingleDatum(&refString, GT));
     EXPECT_GT(objString1, objString2);
-    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, GE));
+    objString2 = SortObject<std::string>(DataGenerator::generateSingleDatum(&refString, GE));
     EXPECT_GE(objString1, objString2);
 }
 
 // std::string less than.
 TEST_F(SortObjectTest, LessString) {
-    string refString = mDataGenerator.generateSingleDatum<string>();
+    string refString = DataGenerator::generateSingleDatum<string>();
     objString1 = SortObject<std::string>(refString);
-    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, LT));
+    objString2 = SortObject<std::string>(DataGenerator::generateSingleDatum(&refString, LT));
     EXPECT_LT(objString1, objString2);
-    objString2 = SortObject<std::string>(mDataGenerator.generateSingleDatum(&refString, LE));
+    objString2 = SortObject<std::string>(DataGenerator::generateSingleDatum(&refString, LE));
     EXPECT_LE(objString1, objString2);
 }
 
@@ -205,15 +229,15 @@ struct SortCorrectnessTest : public ::testing::Test {
     llama::SelectionSort<string> stringSe;
 
     void SetUp() override {
-        mDataGenerator.generateRandomData(&randomInts, 10);
-        mDataGenerator.generateRandomData(&randomDoubles, 10);
-        mDataGenerator.generateRandomData(&randomStrings, 10);
-        mDataGenerator.generateContinuousData(&continuousInts, 10, false);
-        mDataGenerator.generateContinuousData(&continuousDoubles, 10, false);
-        mDataGenerator.generateContinuousData(&continuousStrings, 10, false);
-        mDataGenerator.generateContinuousData(&continuousIntsReversed, 10, true);
-        mDataGenerator.generateContinuousData(&continuousDoublesReversed, 10, true);
-        mDataGenerator.generateContinuousData(&continuousStringsReversed, 10, true);
+        DataGenerator::generateRandomData(&randomInts, 10);
+        DataGenerator::generateRandomData(&randomDoubles, 10);
+        DataGenerator::generateRandomData(&randomStrings, 10);
+        DataGenerator::generateContinuousData(&continuousInts, 10, false);
+        DataGenerator::generateContinuousData(&continuousDoubles, 10, false);
+        DataGenerator::generateContinuousData(&continuousStrings, 10, false);
+        DataGenerator::generateContinuousData(&continuousIntsReversed, 10, true);
+        DataGenerator::generateContinuousData(&continuousDoublesReversed, 10, true);
+        DataGenerator::generateContinuousData(&continuousStringsReversed, 10, true);
 
         randomIntsCorrect = randomInts;
         randomDoublesCorrect = randomDoubles;
@@ -322,7 +346,7 @@ struct SortMassiveTest : public ::testing::Test {
     void setupVector(vector<int> **m, vector<int> **mCorrect, int count) {
         *m = new vector<int>();
 
-        mDataGenerator.generateRandomData(*m, count);
+        DataGenerator::generateRandomData(*m, count);
 
         *mCorrect = new vector<int>(**m);
 
@@ -347,7 +371,11 @@ struct SortMassiveTest : public ::testing::Test {
 
 TEST_F(SortMassiveTest, SortAbstractClassMassive) {
     vector<int> *originalVector = new vector<int>(*randomIntsMassive);
+    
+    testing::internal::CaptureStderr();
     intSort.performSort(randomIntsMassive);
+    testing::internal::GetCapturedStderr();
+    
     ASSERT_EQ(*originalVector, *randomIntsMassive);
     delete originalVector;
 }

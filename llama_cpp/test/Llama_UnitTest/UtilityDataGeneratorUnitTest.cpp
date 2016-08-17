@@ -18,3 +18,6 @@
 #include <gtest/gtest.h>
 
 #include <Utility/DataGenerator.h>
+
+using llama::DataGenerator;
+
