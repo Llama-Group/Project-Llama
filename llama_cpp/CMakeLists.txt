@@ -169,6 +169,7 @@ BuildExample("${KMEANS}")
 BuildExample("${ALPACA_SORT_TEST}")
 BuildExample("${FUNCTOR_TEST}")
 BuildExample("${DATA_GENERATOR}")
+BuildExample("${LLOBJECT}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 
