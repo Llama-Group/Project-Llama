@@ -161,7 +161,7 @@ int DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
 
         case LT: {
             if (*givenData == std::numeric_limits<int>::min()) {
-                throw std::invalid_argument("The given int is the minimum");
+                throw std::invalid_argument("The given int is the minimum.");
             }
             return DataGenerator::generateRandomDataFromRange<int>
                 (std::numeric_limits<int>::min(), *givenData - 1);
@@ -169,7 +169,7 @@ int DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
 
         case GT: {
             if (*givenData == std::numeric_limits<int>::max()) {
-                throw std::invalid_argument("The given int is the maximum");
+                throw std::invalid_argument("The given int is the maximum.");
             }
             return DataGenerator::generateRandomDataFromRange<int>
                 (*givenData + 1, std::numeric_limits<int>::max());
@@ -189,7 +189,7 @@ int DataGenerator::generateSingleDatum<int>(int *givenData, Cases switcher) {
         }
 
         default: {
-            throw std::invalid_argument("Unrecongnised");
+            throw std::invalid_argument("Unrecognised arguement.");
         }
     }
 }
@@ -215,7 +215,7 @@ double DataGenerator::generateSingleDatum<double>(double *givenData, Cases switc
 
         case LT: {
             if (*givenData == std::numeric_limits<double>::min()) {
-                throw std::invalid_argument("The given double is the minimum");
+                throw std::invalid_argument("The given double is the minimum.");
             }
             return DataGenerator::generateRandomDataFromRange<double>
             (std::numeric_limits<double>::min(), *givenData - std::numeric_limits<double>::denorm_min());
@@ -223,7 +223,7 @@ double DataGenerator::generateSingleDatum<double>(double *givenData, Cases switc
 
         case GT: {
             if (*givenData == std::numeric_limits<double>::max()) {
-                throw std::invalid_argument("The given double is the maximum");
+                throw std::invalid_argument("The given double is the maximum.");
             }
             return DataGenerator::generateRandomDataFromRange<double>
             (*givenData + std::numeric_limits<double>::denorm_min(), std::numeric_limits<double>::max());
@@ -243,7 +243,7 @@ double DataGenerator::generateSingleDatum<double>(double *givenData, Cases switc
         }
 
         default: {
-            throw std::invalid_argument("Unrecongnised");
+            throw std::invalid_argument("Unrecognised arguement.");
         }
     }
 }
@@ -296,7 +296,7 @@ std::string DataGenerator::generateSingleDatum<std::string>(std::string *givenDa
         }
 
         default: {
-            throw std::invalid_argument("Unrecongnised");
+            throw std::invalid_argument("Unrecognised arguement.");
         }
     }
 }
