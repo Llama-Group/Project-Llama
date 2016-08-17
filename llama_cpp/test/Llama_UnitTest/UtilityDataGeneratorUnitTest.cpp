@@ -16,9 +16,11 @@
 //
 
 #include <gtest/gtest.h>
-#include <stdexcept>
-
 #include <Utility/DataGenerator.h>
+
+#include <limits>
+#include <stdexcept>
+#include <string>
 
 using std::string;
 
@@ -26,7 +28,7 @@ using llama::DataGenerator;
 
 TEST(DataGenerator, GenerateSingleDatumMinimumInteger) {
     int minimumInt = std::numeric_limits<int>::min();
-    
+
     EXPECT_THROW(DataGenerator::generateSingleDatum(&minimumInt, LT), std::invalid_argument);
     try {
         DataGenerator::generateSingleDatum(&minimumInt, LT);
@@ -35,7 +37,7 @@ TEST(DataGenerator, GenerateSingleDatumMinimumInteger) {
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
-    
+
     DataGenerator::generateSingleDatum(&minimumInt, EQ);
     DataGenerator::generateSingleDatum(&minimumInt, NE);
     DataGenerator::generateSingleDatum(&minimumInt, LE);
@@ -46,7 +48,7 @@ TEST(DataGenerator, GenerateSingleDatumMinimumInteger) {
 
 TEST(DataGenerator, GenerateSingleDatumMaximumInteger) {
     int maximumInt = std::numeric_limits<int>::max();
-    
+
     EXPECT_THROW(DataGenerator::generateSingleDatum(&maximumInt, GT), std::invalid_argument);
     try {
         DataGenerator::generateSingleDatum(&maximumInt, GT);
@@ -55,7 +57,7 @@ TEST(DataGenerator, GenerateSingleDatumMaximumInteger) {
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
-    
+
     DataGenerator::generateSingleDatum(&maximumInt, EQ);
     DataGenerator::generateSingleDatum(&maximumInt, NE);
     DataGenerator::generateSingleDatum(&maximumInt, LE);
@@ -66,7 +68,7 @@ TEST(DataGenerator, GenerateSingleDatumMaximumInteger) {
 
 TEST(DataGenerator, GenerateSingleDatumMinimumDouble) {
     double minimumDouble = std::numeric_limits<double>::min();
-    
+
     EXPECT_THROW(DataGenerator::generateSingleDatum(&minimumDouble, LT), std::invalid_argument);
     try {
         DataGenerator::generateSingleDatum(&minimumDouble, LT);
@@ -75,7 +77,7 @@ TEST(DataGenerator, GenerateSingleDatumMinimumDouble) {
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
-    
+
     DataGenerator::generateSingleDatum(&minimumDouble, EQ);
     DataGenerator::generateSingleDatum(&minimumDouble, NE);
     DataGenerator::generateSingleDatum(&minimumDouble, LE);
@@ -95,7 +97,7 @@ TEST(DataGenerator, GenerateSingleDatumMaximumDouble) {
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
-    
+
     DataGenerator::generateSingleDatum(&maximumDouble, EQ);
     DataGenerator::generateSingleDatum(&maximumDouble, NE);
     DataGenerator::generateSingleDatum(&maximumDouble, LE);
@@ -133,6 +135,6 @@ TEST(DataGenerator, GenerateSingleDatumUnrecognisedCase) {
     }
 }
 
-TEST(DataGenerator, GenerateSingleDatumNullPointer) {
-    
-}
+// TEST(DataGenerator, GenerateSingleDatumNullPointer) {
+//
+// }

@@ -365,7 +365,7 @@ struct SortMassiveTest : public ::testing::Test {
     void TearDown() override {
         delete randomIntsMinorMassive;
         delete randomIntsMinorMassiveCorrect;
-        
+
         delete randomIntsMassive;
         delete randomIntsMassiveCorrect;
 
@@ -376,11 +376,11 @@ struct SortMassiveTest : public ::testing::Test {
 
 TEST_F(SortMassiveTest, SortAbstractClassMassive) {
     vector<int> *originalVector = new vector<int>(*randomIntsSuperMassive);
-    
+
     testing::internal::CaptureStderr();
     intSort.performSort(randomIntsSuperMassive);
     testing::internal::GetCapturedStderr();
-    
+
     ASSERT_EQ(*originalVector, *randomIntsSuperMassive);
     delete originalVector;
 }
