@@ -331,6 +331,7 @@ TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
 //
 
 struct SortMassiveTest : public ::testing::Test {
+    vector<int> *randomIntsMinorMassive, *randomIntsMinorMassiveCorrect;
     vector<int> *randomIntsMassive, *randomIntsMassiveCorrect;
     vector<int> *randomIntsSuperMassive, *randomIntsSuperMassiveCorrect;
 
@@ -356,11 +357,15 @@ struct SortMassiveTest : public ::testing::Test {
     }
 
     void SetUp() override {
+        setupVector(&randomIntsMinorMassive, &randomIntsMinorMassiveCorrect, 2000);
         setupVector(&randomIntsMassive, &randomIntsMassiveCorrect, 10000);
         setupVector(&randomIntsSuperMassive, &randomIntsSuperMassiveCorrect, 100000);
     }
 
     void TearDown() override {
+        delete randomIntsMinorMassive;
+        delete randomIntsMinorMassiveCorrect;
+        
         delete randomIntsMassive;
         delete randomIntsMassiveCorrect;
 
@@ -370,19 +375,19 @@ struct SortMassiveTest : public ::testing::Test {
 };
 
 TEST_F(SortMassiveTest, SortAbstractClassMassive) {
-    vector<int> *originalVector = new vector<int>(*randomIntsMassive);
+    vector<int> *originalVector = new vector<int>(*randomIntsSuperMassive);
     
     testing::internal::CaptureStderr();
-    intSort.performSort(randomIntsMassive);
+    intSort.performSort(randomIntsSuperMassive);
     testing::internal::GetCapturedStderr();
     
-    ASSERT_EQ(*originalVector, *randomIntsMassive);
+    ASSERT_EQ(*originalVector, *randomIntsSuperMassive);
     delete originalVector;
 }
 
 TEST_F(SortMassiveTest, BruteForceMassive) {
-    intBF.performSort(randomIntsMassive);
-    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
+    intBF.performSort(randomIntsMinorMassive);
+    EXPECT_EQ(*randomIntsMinorMassiveCorrect, *randomIntsMinorMassive);
 }
 
 TEST_F(SortMassiveTest, InsertionMassive) {
@@ -391,11 +396,11 @@ TEST_F(SortMassiveTest, InsertionMassive) {
 }
 
 TEST_F(SortMassiveTest, BubbleMassive) {
-    intBu.performSort(randomIntsMassive);
-    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
+    intBu.performSort(randomIntsMinorMassive);
+    EXPECT_EQ(*randomIntsMinorMassiveCorrect, *randomIntsMinorMassive);
 }
 
 TEST_F(SortMassiveTest, SelectionMassive) {
-    intSe.performSort(randomIntsMassive);
-    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
+    intSe.performSort(randomIntsMinorMassive);
+    EXPECT_EQ(*randomIntsMinorMassiveCorrect, *randomIntsMinorMassive);
 }
