@@ -156,10 +156,16 @@ int llama::DataGenerator::generateSingleDatum<int>(int *givenData, Cases switche
         }
 
         case LT: {
+            if (*givenData == std::numeric_limits<int>::min()) {
+                throw "The given int is the minimum";
+            }
             llama::DataGenerator::generateRandomDataFromRange<int>(std::numeric_limits<int>::min(), *givenData - 1);
         }
 
         case GT: {
+            if (*givenData == std::numeric_limits<int>::max()) {
+                throw "The given int is the maximum";
+            }
             llama::DataGenerator::generateRandomDataFromRange<int>(*givenData + 1, std::numeric_limits<int>::max());
         }
 
@@ -195,11 +201,17 @@ double llama::DataGenerator::generateSingleDatum<double>(double *givenData, Case
         }
 
         case LT: {
+            if (*givenData == std::numeric_limits<double>::min()) {
+                throw "The given double is the minimum";
+            }
             llama::DataGenerator::generateRandomDataFromRange<double>
             (std::numeric_limits<double>::min(), *givenData - std::numeric_limits<double>::denorm_min());
         }
 
         case GT: {
+            if (*givenData == std::numeric_limits<double>::max()) {
+                throw "The given double is the maximum";
+            }
             llama::DataGenerator::generateRandomDataFromRange<double>
             (*givenData + std::numeric_limits<double>::denorm_min(), std::numeric_limits<double>::max());
         }
