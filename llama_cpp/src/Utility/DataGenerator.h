@@ -23,6 +23,7 @@
 #include <limits>
 #include <vector>
 #include <random>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 
