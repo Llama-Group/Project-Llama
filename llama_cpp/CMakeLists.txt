@@ -43,6 +43,8 @@ include_directories("${PROJECT_ROOT_DIRECTORY}/llama_cpp/test/google_test/google
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_SOURCE_DIR}/*.cpp)
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_SOURCE_DIR}/*.h)
 
+source_group("Headers" FILES ${HEADER_FILES})
+
 set(PROJECT_EXAMPLE_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/example")
 set(PROJECT_BENCHMARK_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/benchmark")
 set(PROJECT_TEST_DIRECTORY "${PROJECT_ROOT_DIRECTORY}/llama_cpp/test")
@@ -93,7 +95,7 @@ if( CMAKE_BUILD_TYPE STREQUAL "Coverage" )
     set(CMAKE_EXE_LINKER_FLAGS ${COVERAGE_FLAGS})
 
     message("[+L] Will build llama library for coverage")
-    add_library(llama ${SOURCE_FILES})
+    add_library(llama ${SOURCE_FILES} ${HEADER_FILES})
     target_link_libraries(llama ${SOURCE_LIBRARIES})
     add_custom_command(
         TARGET llama
@@ -106,7 +108,7 @@ if( CMAKE_BUILD_TYPE STREQUAL "Coverage" )
     set(CMAKE_EXE_LINKER_FLAGS ${TEMP_CMAKE_EXE_LINKER_FLAGS})
 else()
     message("[+L] Will build llama library")
-    add_library(llama ${SOURCE_FILES})
+    add_library(llama ${SOURCE_FILES} ${HEADER_FILES})
     target_link_libraries(llama ${SOURCE_LIBRARIES})
     add_custom_command(
         TARGET llama
