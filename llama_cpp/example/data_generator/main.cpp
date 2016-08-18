@@ -22,57 +22,77 @@
 #include "Utility/DataGenerator.h"
 
 int main(int argc, const char * argv[]) {
+    int as = 100;
+    double bs = 7.11836e+307;
+    std::string cs = "asd";
     std::vector<int> ar, ac;
     std::vector<double> br, bc;
     std::vector<std::string> cr, cc;
-    llama::RandomData mRandomData = llama::RandomData();
-    llama::ContinuousData mContinuousData = llama::ContinuousData();
-    int counter = 10;
-    bool reverse = true;
 
-    mRandomData.generateRandomData(&ar, counter);
+    llama::DataGenerator::generateRandomData(&ar);
+    llama::DataGenerator::generateRandomData(&br);
+    llama::DataGenerator::generateRandomData(&cr);
+    llama::DataGenerator::generateContinuousData(&ac);
+    llama::DataGenerator::generateContinuousData(&bc);
+    llama::DataGenerator::generateContinuousData(&cc);
 
+    std::cout << "===== Random Int =====" << '\n';
     for (const auto &n : ar) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mRandomData.generateRandomData(&br, counter);
-
+    std::cout << "===== Random Double =====" << '\n';
     for (const auto &n : br) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mRandomData.generateRandomData(&cr, counter);
-
+    std::cout << "===== Random String =====" << '\n';
     for (const auto &n : cr) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mContinuousData.generateContinuousData(&ac, counter, reverse);
-
+    std::cout << "===== Random Int From Set =====" << '\n';
+    ac.clear();
+    llama::DataGenerator::generateRandomDataFromSet(ar.begin(), ar.end(), &ac, 10);
     for (const auto &n : ac) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mContinuousData.generateContinuousData(&bc, counter, reverse);
-
+    std::cout << "===== Random Double From Set =====" << '\n';
+    bc.clear();
+    llama::DataGenerator::generateRandomDataFromSet(br.begin(), br.end(), &bc, 10);
     for (const auto &n : bc) {
         std::cout << n << '\n';
     }
 
-    std::cout << "==========" << '\n';
-
-    mContinuousData.generateContinuousData(&cc, counter, reverse);
-
+    std::cout << "===== Random String From Set =====" << '\n';
+    cc.clear();
+    llama::DataGenerator::generateRandomDataFromSet(cr.begin(), cr.end(), &cc, 10);
     for (const auto &n : cc) {
         std::cout << n << '\n';
     }
+
+    std::cout << "===== Continuous Int =====" << '\n';
+    for (const auto &n : ac) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "===== Continuous Double =====" << '\n';
+    for (const auto &n : bc) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "===== Continuous String =====" << '\n';
+    for (const auto &n : cc) {
+        std::cout << n << '\n';
+    }
+
+    std::cout << "===== Single Int =====" << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&as, LE) << '\n';
+
+    std::cout << "===== Single Double =====" << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&bs, LT) << '\n';
+
+    std::cout << "===== Single String =====" << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&cs, NE) << '\n';
 }
