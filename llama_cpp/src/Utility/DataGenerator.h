@@ -63,6 +63,15 @@ class DataGenerator {
     }
 
     /**
+     *  @brief Generate random bool
+     */
+    static void generateRandomData(std::vector<bool> *targetVector, int count = DATA_GENERATOR_DEFAULT_COUNT) {
+        for (int i = 0; i < count; i++) {
+            targetVector->push_back(static_cast<bool>(generateRandomDataFromRange<int>(0, 1)));
+        }
+    }
+
+    /**
      *  @brief Generate random std::string data
      */
     static void generateRandomData(std::vector<std::string> *targetVector, int count = DATA_GENERATOR_DEFAULT_COUNT);
