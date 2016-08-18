@@ -88,11 +88,11 @@ int main(int argc, const char * argv[]) {
     }
 
     std::cout << "===== Single Int =====" << '\n';
-    std::cout << llama::DataGenerator::generateSingleDatum(&as, LE) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(as, LE) << '\n';
 
     std::cout << "===== Single Double =====" << '\n';
-    std::cout << llama::DataGenerator::generateSingleDatum(&bs, LT) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(bs, LT) << '\n';
 
     std::cout << "===== Single String =====" << '\n';
-    std::cout << llama::DataGenerator::generateSingleDatum(&cs, NE) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(cs, NE) << '\n';
 }
