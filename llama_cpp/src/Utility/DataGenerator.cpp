@@ -22,16 +22,28 @@
 using llama::DataGenerator;
 
 template<>
+int DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
+    std::random_device intRandomDevice;
+    std::mt19937 intRandomEngine(intRandomDevice());
+    std::uniform_int_distribution<int> uniformIntDistribution(min, max);
+    return uniformIntDistribution(intRandomEngine);
+}
+
+template<>
+double DataGenerator::generateRandomDataFromRange<double>(double min, double max) {
+    std::random_device doubleRandomDevice;
+    std::mt19937 doubleRandomEngine(doubleRandomDevice());
+    std::uniform_real_distribution<double> uniformDoubleDistribution(min, max);
+    return uniformDoubleDistribution(doubleRandomEngine);
+}
+
+template<>
 void DataGenerator::generateRandomData<int>(std::vector<int> *targetVector, int count) {
     int intMin = std::numeric_limits<int>::min();
     int intMax = std::numeric_limits<int>::max();
 
-    std::random_device intRandomDevice;
-    std::mt19937 intRandomEngine(intRandomDevice());
-    std::uniform_int_distribution<int> uniformIntDistribution(intMin, intMax);
-
     for (int i = 0; i < count; i++) {
-        targetVector->push_back(uniformIntDistribution(intRandomEngine));
+        targetVector->push_back(generateRandomDataFromRange(intMin, intMax));
     }
 }
 
@@ -39,12 +51,16 @@ template<>
 void DataGenerator::generateRandomData<double>(std::vector<double> *targetVector, int count) {
     double doubleMin = std::numeric_limits<double>::min();
     double doubleMax = std::numeric_limits<double>::max();
-    std::random_device doubleRandomDevice;
-    std::mt19937 doubleRandomEngine(doubleRandomDevice());
-    std::uniform_real_distribution<double> uniformDoubleDistribution(doubleMin, doubleMax);
 
     for (int i = 0; i < count; i++) {
-        targetVector->push_back(uniformDoubleDistribution(doubleRandomEngine));
+        targetVector->push_back(generateRandomDataFromRange(doubleMin, doubleMax));
+    }
+}
+
+template<>
+void DataGenerator::generateRandomData<bool>(std::vector<bool> *targetVector, int count) {
+    for (int i = 0; i < count; i++) {
+        targetVector->push_back(static_cast<bool>(generateRandomDataFromRange(0, 1)));
     }
 }
 
@@ -107,22 +123,6 @@ void DataGenerator::generateContinuousData<std::string>
             targetVector->push_back(generateConinuousString);
         }
     }
-}
-
-template<>
-int DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
-    std::random_device intRandomDevice;
-    std::mt19937 intRandomEngine(intRandomDevice());
-    std::uniform_int_distribution<int> uniformIntDistribution(min, max);
-    return uniformIntDistribution(intRandomEngine);
-}
-
-template<>
-double DataGenerator::generateRandomDataFromRange<double>(double min, double max) {
-    std::random_device doubleRandomDevice;
-    std::mt19937 doubleRandomEngine(doubleRandomDevice());
-    std::uniform_real_distribution<double> uniformDoubleDistribution(min, max);
-    return uniformDoubleDistribution(doubleRandomEngine);
 }
 
 std::string DataGenerator::generateSingleString() {
@@ -198,9 +198,8 @@ template<>
 double DataGenerator::generateSingleDatum<double>(double *givenData, Cases switcher) {
     switch (switcher) {
         case RD: {
-            double x = DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
+            return DataGenerator::generateRandomDataFromRange<double>(std::numeric_limits<double>::min(),
                                                                       std::numeric_limits<double>::max());
-            return x;
         }
 
         case LE: {
