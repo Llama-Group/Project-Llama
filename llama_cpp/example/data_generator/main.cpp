@@ -29,9 +29,9 @@ int main(int argc, const char * argv[]) {
     std::vector<double> br, bc;
     std::vector<std::string> cr, cc;
 
-    llama::DataGenerator::generateRandomData(&ar);
-    llama::DataGenerator::generateRandomData(&br);
-    llama::DataGenerator::generateRandomData(&cr);
+    llama::DataGenerator::generateRandomData(&ar, 1, 10);
+    llama::DataGenerator::generateRandomData(&br, 1.0, 10.0);
+    llama::DataGenerator::generateRandomData(&cr, 40, 58);
     llama::DataGenerator::generateContinuousData(&ac);
     llama::DataGenerator::generateContinuousData(&bc);
     llama::DataGenerator::generateContinuousData(&cc);
@@ -88,7 +88,7 @@ int main(int argc, const char * argv[]) {
     }
 
     std::cout << "===== Single Int =====" << '\n';
-    std::cout << llama::DataGenerator::generateSingleDatum(&as, LE) << '\n';
+    std::cout << llama::DataGenerator::generateSingleDatum(&as) << '\n';
 
     std::cout << "===== Single Double =====" << '\n';
     std::cout << llama::DataGenerator::generateSingleDatum(&bs, LT) << '\n';

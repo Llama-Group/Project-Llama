@@ -22,42 +22,66 @@
 using llama::DataGenerator;
 
 template<>
-void DataGenerator::generateRandomData<int>(std::vector<int> *targetVector, int count) {
-    int intMin = std::numeric_limits<int>::min();
-    int intMax = std::numeric_limits<int>::max();
-
+int DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
     std::random_device intRandomDevice;
     std::mt19937 intRandomEngine(intRandomDevice());
-    std::uniform_int_distribution<int> uniformIntDistribution(intMin, intMax);
-
-    for (int i = 0; i < count; i++) {
-        targetVector->push_back(uniformIntDistribution(intRandomEngine));
-    }
+    std::uniform_int_distribution<int> uniformIntDistribution(min, max);
+    return uniformIntDistribution(intRandomEngine);
 }
 
 template<>
-void DataGenerator::generateRandomData<double>(std::vector<double> *targetVector, int count) {
-    double doubleMin = std::numeric_limits<double>::min();
-    double doubleMax = std::numeric_limits<double>::max();
+double DataGenerator::generateRandomDataFromRange<double>(double min, double max) {
     std::random_device doubleRandomDevice;
     std::mt19937 doubleRandomEngine(doubleRandomDevice());
-    std::uniform_real_distribution<double> uniformDoubleDistribution(doubleMin, doubleMax);
+    std::uniform_real_distribution<double> uniformDoubleDistribution(min, max);
+    return uniformDoubleDistribution(doubleRandomEngine);
+}
+
+std::string DataGenerator::generateSingleString() {
+    static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
+    
+    std::string generateRandomString;
+    std::random_device stringRandomDevice;
+    std::mt19937 stringRandomEngine(stringRandomDevice());
+    std::uniform_int_distribution<int> uniformStringDistribution(1, DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH);
+    
+    for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
+        std::random_device stringIndexRandomDevice;
+        std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
+        std::uniform_int_distribution<int> uniformIndexStringDistribution(0, static_cast<int>(alpha.size() - 1));
+        generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
+    }
+    return generateRandomString;
+}
+
+template<>
+void DataGenerator::generateRandomData<int, int>(std::vector<int> *targetVector, int min, int max, int count) {
 
     for (int i = 0; i < count; i++) {
-        targetVector->push_back(uniformDoubleDistribution(doubleRandomEngine));
+        targetVector->push_back(generateRandomDataFromRange(min, max));
     }
 }
 
 template<>
-void DataGenerator::generateRandomData<std::string>(std::vector<std::string> *targetVector, int count) {
-    static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                               "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
-    DataGenerator::generateRandomDataFromSet(alpha, targetVector, count);
+void DataGenerator::generateRandomData<double, double>(std::vector<double> *targetVector, double min, double max, int count) {
+
+    for (int i = 0; i < count; i++) {
+        targetVector->push_back(generateRandomDataFromRange(min, max));
+    }
 }
 
-void DataGenerator::generateRandomDataFromSet(const std::string& set,
-                                                     std::vector<std::string> *targetVector,
-                                                     int count) {
+template<>
+void DataGenerator::generateRandomData<std::string, int>(std::vector<std::string> *targetVector,
+                                        int min, int max, int count) {
+    generateRandomDataFromSet(targetVector, count, min, max);
+    
+}
+
+void DataGenerator::generateRandomDataFromSet(std::vector<std::string> *targetVector,
+                                              int count,
+                                              int min,
+                                              int max) {
     for (int i = 0; i < count; i++) {
         std::string generateRandomString;
         std::random_device stringRandomDevice;
@@ -67,8 +91,8 @@ void DataGenerator::generateRandomDataFromSet(const std::string& set,
         for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
             std::random_device stringIndexRandomDevice;
             std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
-            std::uniform_int_distribution<int> uniformIndexStringDistribution(0, static_cast<int>(set.size() - 1));
-            generateRandomString += set[uniformIndexStringDistribution(stringIndexRandomEngine)];
+            std::uniform_int_distribution<int> uniformIndexStringDistribution(min, max);
+            generateRandomString += static_cast<char>(uniformIndexStringDistribution(stringIndexRandomEngine));
         }
 
         targetVector->push_back(generateRandomString);
@@ -107,40 +131,6 @@ void DataGenerator::generateContinuousData<std::string>
             targetVector->push_back(generateConinuousString);
         }
     }
-}
-
-template<>
-int DataGenerator::generateRandomDataFromRange<int>(int min, int max) {
-    std::random_device intRandomDevice;
-    std::mt19937 intRandomEngine(intRandomDevice());
-    std::uniform_int_distribution<int> uniformIntDistribution(min, max);
-    return uniformIntDistribution(intRandomEngine);
-}
-
-template<>
-double DataGenerator::generateRandomDataFromRange<double>(double min, double max) {
-    std::random_device doubleRandomDevice;
-    std::mt19937 doubleRandomEngine(doubleRandomDevice());
-    std::uniform_real_distribution<double> uniformDoubleDistribution(min, max);
-    return uniformDoubleDistribution(doubleRandomEngine);
-}
-
-std::string DataGenerator::generateSingleString() {
-    static std::string alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "§1234567890-=[]';\\,./`±!@£$^&*()_+{}:\"|<>?~";
-
-    std::string generateRandomString;
-    std::random_device stringRandomDevice;
-    std::mt19937 stringRandomEngine(stringRandomDevice());
-    std::uniform_int_distribution<int> uniformStringDistribution(1, DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH);
-
-    for (int i = 0; i < uniformStringDistribution(stringRandomEngine); i++) {
-        std::random_device stringIndexRandomDevice;
-        std::mt19937 stringIndexRandomEngine(stringIndexRandomDevice());
-        std::uniform_int_distribution<int> uniformIndexStringDistribution(0, static_cast<int>(alpha.size() - 1));
-        generateRandomString += alpha[uniformIndexStringDistribution(stringIndexRandomEngine)];
-    }
-    return generateRandomString;
 }
 
 template<>

@@ -37,6 +37,19 @@
     #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
 #endif
 
+#ifndef DATA_GENERATOR_DEFAULT_CHAR_INDEX_MIN
+    #define DATA_GENERATOR_DEFAULT_CHAR_INDEX_MIN 33
+#elif(DATA_GENERATOR_DEFAULT_CHAR_INDEX_MIN < 33)
+    #define DATA_GENERATOR_DEFAULT_CHAR_INDEX_MIN 33
+#endif
+
+#ifndef DATA_GENERATOR_DEFAULT_CHAR_INDEX_MAX
+    #define DATA_GENERATOR_DEFAULT_CHAR_INDEX_MAX 126
+#elif(DATA_GENERATOR_DEFAULT_CHAR_INDEX_MAX < 126)
+    #define DATA_GENERATOR_DEFAULT_CHAR_INDEX_MAX 126
+#endif
+
+
 typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
 
 namespace llama {
@@ -45,10 +58,16 @@ class DataGenerator {
  public:
     DataGenerator() {}
 
-    template<typename T>
-    static void generateRandomData(std::vector<T> *targetVector, int count = DATA_GENERATOR_DEFAULT_COUNT);
+    template<typename T, typename Y>
+    static void generateRandomData(std::vector<T> *targetVector,
+                                   Y min = std::numeric_limits<Y>::min(),
+                                   Y max = std::numeric_limits<Y>::max(),
+                                   int count = DATA_GENERATOR_DEFAULT_COUNT);
 
-    static void generateRandomDataFromSet(const std::string& set, std::vector<std::string> *targetVector, int count);
+    static void generateRandomDataFromSet(std::vector<std::string> *targetVector,
+                                          int count,
+                                          int min = DATA_GENERATOR_DEFAULT_CHAR_INDEX_MIN,
+                                          int max = DATA_GENERATOR_DEFAULT_CHAR_INDEX_MAX);
 
     template <typename _RandomAccessIterator>
     static void generateRandomDataFromSet(_RandomAccessIterator __first,
