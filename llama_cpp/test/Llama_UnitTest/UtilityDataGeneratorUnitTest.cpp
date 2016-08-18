@@ -21,12 +21,32 @@
 #include <limits>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 using llama::DataGenerator;
 
-TEST(DataGenerator, GenerateSingleDatumMinimumInteger) {
+TEST(DataGeneratorCorrectnessTest, GenerateRandomDataBool) {
+    vector<bool> randomBool;
+
+    DataGenerator::generateRandomData(&randomBool, 100000);
+
+    int trueCount = 0;
+    for (const bool &b : randomBool) {
+        trueCount += static_cast<int>(b);
+    }
+    double trueRatio = trueCount * 0.00001;
+
+    EXPECT_NEAR(0.5, trueRatio, 0.001) << "Boolean not distributed equally.";
+}
+
+//
+// DataGenerator Exception Tests.
+//
+
+TEST(DataGeneratorExceptionTest, GenerateSingleDatumMinimumInteger) {
     int minimumInt = std::numeric_limits<int>::min();
 
     EXPECT_THROW(DataGenerator::generateSingleDatum(&minimumInt, LT), std::invalid_argument);
@@ -46,7 +66,7 @@ TEST(DataGenerator, GenerateSingleDatumMinimumInteger) {
     DataGenerator::generateSingleDatum(&minimumInt, RD);
 }
 
-TEST(DataGenerator, GenerateSingleDatumMaximumInteger) {
+TEST(DataGeneratorExceptionTest, GenerateSingleDatumMaximumInteger) {
     int maximumInt = std::numeric_limits<int>::max();
 
     EXPECT_THROW(DataGenerator::generateSingleDatum(&maximumInt, GT), std::invalid_argument);
@@ -66,7 +86,7 @@ TEST(DataGenerator, GenerateSingleDatumMaximumInteger) {
     DataGenerator::generateSingleDatum(&maximumInt, RD);
 }
 
-TEST(DataGenerator, GenerateSingleDatumMinimumDouble) {
+TEST(DataGeneratorExceptionTest, GenerateSingleDatumMinimumDouble) {
     double minimumDouble = std::numeric_limits<double>::min();
 
     EXPECT_THROW(DataGenerator::generateSingleDatum(&minimumDouble, LT), std::invalid_argument);
@@ -86,7 +106,7 @@ TEST(DataGenerator, GenerateSingleDatumMinimumDouble) {
     DataGenerator::generateSingleDatum(&minimumDouble, RD);
 }
 
-TEST(DataGenerator, GenerateSingleDatumMaximumDouble) {
+TEST(DataGeneratorExceptionTest, GenerateSingleDatumMaximumDouble) {
     double maximumDouble = std::numeric_limits<double>::max();
 
     EXPECT_THROW(DataGenerator::generateSingleDatum(&maximumDouble, GT), std::invalid_argument);
@@ -106,7 +126,7 @@ TEST(DataGenerator, GenerateSingleDatumMaximumDouble) {
     DataGenerator::generateSingleDatum(&maximumDouble, RD);
 }
 
-TEST(DataGenerator, GenerateSingleDatumUnrecognisedCase) {
+TEST(DataGeneratorExceptionTest, GenerateSingleDatumUnrecognisedCase) {
     // Never do this cast in actual code.
     Cases unrecognisedMode = static_cast<Cases>(19950207);
     EXPECT_THROW(DataGenerator::generateSingleDatum<int>(nullptr, unrecognisedMode), std::invalid_argument);
@@ -135,6 +155,6 @@ TEST(DataGenerator, GenerateSingleDatumUnrecognisedCase) {
     }
 }
 
-// TEST(DataGenerator, GenerateSingleDatumNullPointer) {
+// TEST(DataGeneratorException, GenerateSingleDatumNullPointer) {
 //
 // }
