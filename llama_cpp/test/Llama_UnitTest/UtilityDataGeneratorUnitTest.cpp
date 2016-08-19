@@ -49,105 +49,105 @@ TEST(DataGeneratorCorrectnessTest, GenerateRandomDataBool) {
 TEST(DataGeneratorExceptionTest, GenerateSingleDatumMinimumInteger) {
     int minimumInt = std::numeric_limits<int>::min();
 
-    EXPECT_THROW(DataGenerator::generateSingleDatum(&minimumInt, LT), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum(minimumInt, LT), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum(&minimumInt, LT);
+        DataGenerator::generateSingleDatum(minimumInt, LT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given int is the minimum."));
+        EXPECT_EQ(err.what(), std::string("The given value is the minimum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
 
-    DataGenerator::generateSingleDatum(&minimumInt, EQ);
-    DataGenerator::generateSingleDatum(&minimumInt, NE);
-    DataGenerator::generateSingleDatum(&minimumInt, LE);
-    DataGenerator::generateSingleDatum(&minimumInt, GE);
-    DataGenerator::generateSingleDatum(&minimumInt, GT);
-    DataGenerator::generateSingleDatum(&minimumInt, RD);
+    DataGenerator::generateSingleDatum(minimumInt, EQ);
+    DataGenerator::generateSingleDatum(minimumInt, NE);
+    DataGenerator::generateSingleDatum(minimumInt, LE);
+    DataGenerator::generateSingleDatum(minimumInt, GE);
+    DataGenerator::generateSingleDatum(minimumInt, GT);
+    DataGenerator::generateSingleDatum(minimumInt, RD);
 }
 
 TEST(DataGeneratorExceptionTest, GenerateSingleDatumMaximumInteger) {
     int maximumInt = std::numeric_limits<int>::max();
 
-    EXPECT_THROW(DataGenerator::generateSingleDatum(&maximumInt, GT), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum(maximumInt, GT), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum(&maximumInt, GT);
+        DataGenerator::generateSingleDatum(maximumInt, GT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given int is the maximum."));
+        EXPECT_EQ(err.what(), std::string("The given value is the maximum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
 
-    DataGenerator::generateSingleDatum(&maximumInt, EQ);
-    DataGenerator::generateSingleDatum(&maximumInt, NE);
-    DataGenerator::generateSingleDatum(&maximumInt, LE);
-    DataGenerator::generateSingleDatum(&maximumInt, LT);
-    DataGenerator::generateSingleDatum(&maximumInt, GE);
-    DataGenerator::generateSingleDatum(&maximumInt, RD);
+    DataGenerator::generateSingleDatum(maximumInt, EQ);
+    DataGenerator::generateSingleDatum(maximumInt, NE);
+    DataGenerator::generateSingleDatum(maximumInt, LE);
+    DataGenerator::generateSingleDatum(maximumInt, LT);
+    DataGenerator::generateSingleDatum(maximumInt, GE);
+    DataGenerator::generateSingleDatum(maximumInt, RD);
 }
 
 TEST(DataGeneratorExceptionTest, GenerateSingleDatumMinimumDouble) {
     double minimumDouble = std::numeric_limits<double>::min();
 
-    EXPECT_THROW(DataGenerator::generateSingleDatum(&minimumDouble, LT), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum(minimumDouble, LT), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum(&minimumDouble, LT);
+        DataGenerator::generateSingleDatum(minimumDouble, LT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given double is the minimum."));
+        EXPECT_EQ(err.what(), std::string("The given value is the minimum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
 
-    DataGenerator::generateSingleDatum(&minimumDouble, EQ);
-    DataGenerator::generateSingleDatum(&minimumDouble, NE);
-    DataGenerator::generateSingleDatum(&minimumDouble, LE);
-    DataGenerator::generateSingleDatum(&minimumDouble, GE);
-    DataGenerator::generateSingleDatum(&minimumDouble, GT);
-    DataGenerator::generateSingleDatum(&minimumDouble, RD);
+    DataGenerator::generateSingleDatum(minimumDouble, EQ);
+    DataGenerator::generateSingleDatum(minimumDouble, NE);
+    DataGenerator::generateSingleDatum(minimumDouble, LE);
+    DataGenerator::generateSingleDatum(minimumDouble, GE);
+    DataGenerator::generateSingleDatum(minimumDouble, GT);
+    DataGenerator::generateSingleDatum(minimumDouble, RD);
 }
 
 TEST(DataGeneratorExceptionTest, GenerateSingleDatumMaximumDouble) {
     double maximumDouble = std::numeric_limits<double>::max();
 
-    EXPECT_THROW(DataGenerator::generateSingleDatum(&maximumDouble, GT), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum(maximumDouble, GT), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum(&maximumDouble, GT);
+        DataGenerator::generateSingleDatum(maximumDouble, GT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given double is the maximum."));
+        EXPECT_EQ(err.what(), std::string("The given value is the maximum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
 
-    DataGenerator::generateSingleDatum(&maximumDouble, EQ);
-    DataGenerator::generateSingleDatum(&maximumDouble, NE);
-    DataGenerator::generateSingleDatum(&maximumDouble, LE);
-    DataGenerator::generateSingleDatum(&maximumDouble, LT);
-    DataGenerator::generateSingleDatum(&maximumDouble, GE);
-    DataGenerator::generateSingleDatum(&maximumDouble, RD);
+    DataGenerator::generateSingleDatum(maximumDouble, EQ);
+    DataGenerator::generateSingleDatum(maximumDouble, NE);
+    DataGenerator::generateSingleDatum(maximumDouble, LE);
+    DataGenerator::generateSingleDatum(maximumDouble, LT);
+    DataGenerator::generateSingleDatum(maximumDouble, GE);
+    DataGenerator::generateSingleDatum(maximumDouble, RD);
 }
 
 TEST(DataGeneratorExceptionTest, GenerateSingleDatumUnrecognisedCase) {
     // Never do this cast in actual code.
     Cases unrecognisedMode = static_cast<Cases>(19950207);
-    EXPECT_THROW(DataGenerator::generateSingleDatum<int>(nullptr, unrecognisedMode), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum<int>(int(), unrecognisedMode), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum<int>(nullptr, unrecognisedMode);
+        DataGenerator::generateSingleDatum<int>(int(), unrecognisedMode);
     } catch(std::invalid_argument const & err) {
         EXPECT_EQ(err.what(), std::string("Unrecognised arguement."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
-    EXPECT_THROW(DataGenerator::generateSingleDatum<double>(nullptr, unrecognisedMode), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum<double>(double(), unrecognisedMode), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum<double>(nullptr, unrecognisedMode);
+        DataGenerator::generateSingleDatum<double>(double(), unrecognisedMode);
     } catch(std::invalid_argument const & err) {
         EXPECT_EQ(err.what(), std::string("Unrecognised arguement."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
-    EXPECT_THROW(DataGenerator::generateSingleDatum<string>(nullptr, unrecognisedMode), std::invalid_argument);
+    EXPECT_THROW(DataGenerator::generateSingleDatum("", unrecognisedMode), std::invalid_argument);
     try {
-        DataGenerator::generateSingleDatum<string>(nullptr, unrecognisedMode);
+        DataGenerator::generateSingleDatum("", unrecognisedMode);
     } catch(std::invalid_argument const & err) {
         EXPECT_EQ(err.what(), std::string("Unrecognised arguement."));
     } catch(...) {
