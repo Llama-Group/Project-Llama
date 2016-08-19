@@ -39,6 +39,9 @@
     #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
 #endif
 
+#define TYPE_INTEGRAL typename std::enable_if<std::is_integral<T>::value, T>::type
+#define TYPE_FLOATING_POINT typename std::enable_if<std::is_floating_point<T>::value, T>::type
+
 typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
 
 namespace llama {
@@ -49,8 +52,22 @@ class DataGenerator {
     /**
      *  @brief Generate random data (arithmetic, aka, integer number and floating point number)
      */
-    template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-    static void generateRandomData(std::vector<T> *targetVector, int count = DATA_GENERATOR_DEFAULT_COUNT) {
+    template<typename T, typename = typename std::enable_if<std::is_integral<T>::value, T>::type>
+    static void generateRandomData(std::vector<TYPE_INTEGRAL> *targetVector,
+                                   int count = DATA_GENERATOR_DEFAULT_COUNT) {
+        T typeMin = std::numeric_limits<T>::min();
+        T typeMax = std::numeric_limits<T>::max();
+        std::random_device arithmeticRandomDevice;
+        std::mt19937 arithmeticRandomEngine(arithmeticRandomDevice());
+        std::uniform_int_distribution<T> uniformArithmeticDistribution(typeMin, typeMax);
+
+        for (int i = 0; i < count; i++) {
+            targetVector->push_back(uniformArithmeticDistribution(arithmeticRandomEngine));
+        }
+    }
+    template<typename T, typename = typename std::enable_if<std::is_floating_point<T>::value, T>::type>
+    static void generateRandomData(std::vector<TYPE_FLOATING_POINT> *targetVector,
+                                   int count = DATA_GENERATOR_DEFAULT_COUNT) {
         T typeMin = std::numeric_limits<T>::min();
         T typeMax = std::numeric_limits<T>::max();
         std::random_device arithmeticRandomDevice;
@@ -208,10 +225,22 @@ class DataGenerator {
     /**
      *  @brief Generate single datum from a given range (arithmetic, aka, integer number and floating point number)
      */
-    template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-    static T generateRandomDataFromRange(T min, T max) {
+    template<typename T>
+    static T generateRandomDataFromRange(TYPE_INTEGRAL min,
+                                         TYPE_INTEGRAL max) {
         std::random_device randomDevice;
         std::mt19937 randomEngine(randomDevice());
+
+        std::uniform_int_distribution<T> uniformDistribution(min, max);
+        return uniformDistribution(randomEngine);
+    }
+
+    template<typename T>
+    static T generateRandomDataFromRange(TYPE_FLOATING_POINT min,
+                                         TYPE_FLOATING_POINT max) {
+        std::random_device randomDevice;
+        std::mt19937 randomEngine(randomDevice());
+
         std::uniform_real_distribution<T> uniformDistribution(min, max);
         return uniformDistribution(randomEngine);
     }
