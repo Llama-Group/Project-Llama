@@ -53,7 +53,7 @@ TEST(DataGeneratorExceptionTest, GenerateSingleDatumMinimumInteger) {
     try {
         DataGenerator::generateSingleDatum(minimumInt, LT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given value is the minimum of the spcific type."));
+        EXPECT_EQ(err.what(), std::string("The given value is the minimum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
@@ -73,7 +73,7 @@ TEST(DataGeneratorExceptionTest, GenerateSingleDatumMaximumInteger) {
     try {
         DataGenerator::generateSingleDatum(maximumInt, GT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given value is the maximum of the spcific type."));
+        EXPECT_EQ(err.what(), std::string("The given value is the maximum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
@@ -93,7 +93,7 @@ TEST(DataGeneratorExceptionTest, GenerateSingleDatumMinimumDouble) {
     try {
         DataGenerator::generateSingleDatum(minimumDouble, LT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given value is the minimum of the spcific type."));
+        EXPECT_EQ(err.what(), std::string("The given value is the minimum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }
@@ -113,7 +113,7 @@ TEST(DataGeneratorExceptionTest, GenerateSingleDatumMaximumDouble) {
     try {
         DataGenerator::generateSingleDatum(maximumDouble, GT);
     } catch(std::invalid_argument const & err) {
-        EXPECT_EQ(err.what(), std::string("The given value is the maximum of the spcific type."));
+        EXPECT_EQ(err.what(), std::string("The given value is the maximum of the specified type."));
     } catch(...) {
         FAIL() << "Expected std::invalid_argument";
     }

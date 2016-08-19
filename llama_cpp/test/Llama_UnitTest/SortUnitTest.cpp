@@ -229,14 +229,14 @@ struct SortCorrectnessTest : public ::testing::Test {
     llama::SelectionSort<string> stringSe;
 
     void SetUp() override {
-        DataGenerator::generateRandomData(&randomInts, 10);
-        DataGenerator::generateRandomData(&randomDoubles, 10);
-        DataGenerator::generateRandomData(&randomStrings, 10);
+        DataGenerator::generateRandomData(&randomInts);
+        DataGenerator::generateRandomData(&randomDoubles);
+        DataGenerator::generateRandomData(&randomStrings);
         DataGenerator::generateContinuousData(&continuousInts);
         DataGenerator::generateContinuousData(&continuousDoubles);
-        DataGenerator::generateContinuousData(&continuousStrings, 10, false);
-        DataGenerator::generateContinuousData(&continuousIntsReversed);
-        DataGenerator::generateContinuousData(&continuousDoublesReversed);
+        DataGenerator::generateContinuousData(&continuousStrings);
+        DataGenerator::generateContinuousData(&continuousIntsReversed, 0, 1, 10, true);
+        DataGenerator::generateContinuousData(&continuousDoublesReversed, 0.0, 0.1, 10, true);
         DataGenerator::generateContinuousData(&continuousStringsReversed, 10, true);
 
         randomIntsCorrect = randomInts;

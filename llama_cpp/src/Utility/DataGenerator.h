@@ -186,25 +186,25 @@ class DataGenerator {
             }
             case LE: {
                 return DataGenerator::generateRandomDataFromRange<T>
-                (std::numeric_limits<T>::min(), givenData);
+                   (std::numeric_limits<T>::min(), givenData);
             }
             case GE: {
                 return DataGenerator::generateRandomDataFromRange<T>
-                (givenData, std::numeric_limits<T>::max());
+                   (givenData, std::numeric_limits<T>::max());
             }
             case LT: {
                 if (givenData == std::numeric_limits<T>::min()) {
-                    throw std::invalid_argument("The given value is the minimum of the spcific type.");
+                    throw std::invalid_argument("The given value is the minimum of the specified type.");
                 }
                 return DataGenerator::generateRandomDataFromRange<T>
-                (std::numeric_limits<T>::min(), givenData - std::numeric_limits<T>::denorm_min());
+                   (std::numeric_limits<T>::min(), givenData - std::numeric_limits<T>::denorm_min());
             }
             case GT: {
                 if (givenData == std::numeric_limits<T>::max()) {
-                    throw std::invalid_argument("The given value is the maximum of the spcific type.");
+                    throw std::invalid_argument("The given value is the maximum of the specified type.");
                 }
                 return DataGenerator::generateRandomDataFromRange<T>
-                (givenData + std::numeric_limits<T>::denorm_min(), std::numeric_limits<T>::max());
+                   (givenData + std::numeric_limits<T>::denorm_min(), std::numeric_limits<T>::max());
             }
             case EQ: {
                 return givenData;
