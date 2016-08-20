@@ -39,12 +39,14 @@
     #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
 #endif
 
-#define TYPE_INTEGRAL typename std::enable_if<std::is_integral<T>::value, T>::type
-#define TYPE_FLOATING_POINT typename std::enable_if<std::is_floating_point<T>::value, T>::type
-
 typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
 
 namespace llama {
+template <class T1>
+using TYPE_INTEGRAL = typename std::enable_if<std::is_integral<T1>::value, T1>::type;
+template <class T1>
+using TYPE_FLOATING_POINT = typename std::enable_if<std::is_floating_point<T1>::value, T1>::type;
+
 class DataGenerator {
  public:
     DataGenerator() {}
@@ -55,7 +57,7 @@ class DataGenerator {
     template<typename T>
     static void generateRandomData(std::vector<T> *targetVector,
                                    int count = DATA_GENERATOR_DEFAULT_COUNT,
-                                   TYPE_INTEGRAL* = 0) {
+                                   __unused TYPE_INTEGRAL<T> * = 0) {
         T typeMin = std::numeric_limits<T>::min();
         T typeMax = std::numeric_limits<T>::max();
         std::random_device arithmeticRandomDevice;
@@ -73,7 +75,7 @@ class DataGenerator {
     template<typename T>
     static void generateRandomData(std::vector<T> *targetVector,
                                    int count = DATA_GENERATOR_DEFAULT_COUNT,
-                                   TYPE_FLOATING_POINT* = 0) {
+                                   __unused TYPE_FLOATING_POINT<T> * = 0) {
         T typeMin = std::numeric_limits<T>::min();
         T typeMax = std::numeric_limits<T>::max();
         std::random_device arithmeticRandomDevice;
@@ -233,7 +235,7 @@ class DataGenerator {
      */
     template<typename T>
     static T generateRandomDataFromRange(T min, T max,
-                                         TYPE_INTEGRAL* = 0) {
+                                         __unused TYPE_INTEGRAL<T> * = 0) {
         std::random_device randomDevice;
         std::mt19937 randomEngine(randomDevice());
 
@@ -243,7 +245,7 @@ class DataGenerator {
 
     template<typename T>
     static T generateRandomDataFromRange(T min, T max,
-                                         TYPE_FLOATING_POINT* = 0) {
+                                         __unused TYPE_FLOATING_POINT<T> * = 0) {
         std::random_device randomDevice;
         std::mt19937 randomEngine(randomDevice());
 
