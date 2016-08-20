@@ -39,6 +39,10 @@
     #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
 #endif
 
+#ifndef __unused
+    #define __unused
+#endif
+
 typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
 
 namespace llama {
