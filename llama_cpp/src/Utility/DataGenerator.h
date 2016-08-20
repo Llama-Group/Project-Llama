@@ -39,18 +39,47 @@
     #define DATA_GENERATOR_DEFAULT_STRING_MAX_LENGTH 20
 #endif
 
+#ifndef __unused
+    #define __unused
+#endif
+
 typedef enum cases {LE, GE, LT, GT, EQ, NE, RD} Cases;
 
 namespace llama {
+template <class T1>
+using TYPE_INTEGRAL = typename std::enable_if<std::is_integral<T1>::value, T1>::type;
+template <class T1>
+using TYPE_FLOATING_POINT = typename std::enable_if<std::is_floating_point<T1>::value, T1>::type;
+
 class DataGenerator {
  public:
     DataGenerator() {}
 
     /**
-     *  @brief Generate random data (arithmetic, aka, integer number and floating point number)
+     *  @brief Generate random integral numbers
      */
-    template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-    static void generateRandomData(std::vector<T> *targetVector, int count = DATA_GENERATOR_DEFAULT_COUNT) {
+    template<typename T>
+    static void generateRandomData(std::vector<T> *targetVector,
+                                   int count = DATA_GENERATOR_DEFAULT_COUNT,
+                                   __unused TYPE_INTEGRAL<T> * = 0) {
+        T typeMin = std::numeric_limits<T>::min();
+        T typeMax = std::numeric_limits<T>::max();
+        std::random_device arithmeticRandomDevice;
+        std::mt19937 arithmeticRandomEngine(arithmeticRandomDevice());
+        std::uniform_int_distribution<T> uniformArithmeticDistribution(typeMin, typeMax);
+
+        for (int i = 0; i < count; i++) {
+            targetVector->push_back(uniformArithmeticDistribution(arithmeticRandomEngine));
+        }
+    }
+
+    /**
+     *  @brief Generate random floating point numbers
+     */
+    template<typename T>
+    static void generateRandomData(std::vector<T> *targetVector,
+                                   int count = DATA_GENERATOR_DEFAULT_COUNT,
+                                   __unused TYPE_FLOATING_POINT<T> * = 0) {
         T typeMin = std::numeric_limits<T>::min();
         T typeMax = std::numeric_limits<T>::max();
         std::random_device arithmeticRandomDevice;
@@ -163,25 +192,25 @@ class DataGenerator {
             }
             case LE: {
                 return DataGenerator::generateRandomDataFromRange<T>
-                (std::numeric_limits<T>::min(), givenData);
+                   (std::numeric_limits<T>::min(), givenData);
             }
             case GE: {
                 return DataGenerator::generateRandomDataFromRange<T>
-                (givenData, std::numeric_limits<T>::max());
+                   (givenData, std::numeric_limits<T>::max());
             }
             case LT: {
                 if (givenData == std::numeric_limits<T>::min()) {
-                    throw std::invalid_argument("The given value is the minimum of the spcific type.");
+                    throw std::invalid_argument("The given value is the minimum of the specified type.");
                 }
                 return DataGenerator::generateRandomDataFromRange<T>
-                (std::numeric_limits<T>::min(), givenData - std::numeric_limits<T>::denorm_min());
+                   (std::numeric_limits<T>::min(), givenData - std::numeric_limits<T>::denorm_min());
             }
             case GT: {
                 if (givenData == std::numeric_limits<T>::max()) {
-                    throw std::invalid_argument("The given value is the maximum of the spcific type.");
+                    throw std::invalid_argument("The given value is the maximum of the specified type.");
                 }
                 return DataGenerator::generateRandomDataFromRange<T>
-                (givenData + std::numeric_limits<T>::denorm_min(), std::numeric_limits<T>::max());
+                   (givenData + std::numeric_limits<T>::denorm_min(), std::numeric_limits<T>::max());
             }
             case EQ: {
                 return givenData;
@@ -208,10 +237,22 @@ class DataGenerator {
     /**
      *  @brief Generate single datum from a given range (arithmetic, aka, integer number and floating point number)
      */
-    template<typename T, typename = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
-    static T generateRandomDataFromRange(T min, T max) {
+    template<typename T>
+    static T generateRandomDataFromRange(T min, T max,
+                                         __unused TYPE_INTEGRAL<T> * = 0) {
         std::random_device randomDevice;
         std::mt19937 randomEngine(randomDevice());
+
+        std::uniform_int_distribution<T> uniformDistribution(min, max);
+        return uniformDistribution(randomEngine);
+    }
+
+    template<typename T>
+    static T generateRandomDataFromRange(T min, T max,
+                                         __unused TYPE_FLOATING_POINT<T> * = 0) {
+        std::random_device randomDevice;
+        std::mt19937 randomEngine(randomDevice());
+
         std::uniform_real_distribution<T> uniformDistribution(min, max);
         return uniformDistribution(randomEngine);
     }
