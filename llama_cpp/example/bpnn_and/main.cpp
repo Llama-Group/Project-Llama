@@ -27,11 +27,11 @@ using llama::NeuralNetwork;
 
 int main(int argc, const char * argv[])
 {
-	vector<int> layers = {2,3,1};
-	
-	NeuralNetwork nn = NeuralNetwork(layers);
-	
-	cout << nn.calculateWithFeeding({1,1})[0] << '\n';
-	
-	return 0;
+    vector<int> layers = {2,3,1};
+
+    NeuralNetwork nn = NeuralNetwork(layers);
+
+    cout << nn.calculateWithFeeding({1,1})[0] << '\n';
+
+    return 0;
 }

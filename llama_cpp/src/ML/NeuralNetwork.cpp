@@ -33,49 +33,49 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
     if (ID != 0) {
         throw std::invalid_argument("feedAndCalculate can only be called from input layer.");
     }
-	
-	values = input;
-	
-	Layer *processingLayer = this;
-	while (processingLayer->ID != -1) {
-		processingLayer->next->updateAndCalculateValues(processingLayer->values);
-		processingLayer = processingLayer->next;
-	}
-	
-	return processingLayer->values;
+
+    values = input;
+
+    Layer *processingLayer = this;
+    while (processingLayer->ID != -1) {
+        processingLayer->next->updateAndCalculateValues(processingLayer->values);
+        processingLayer = processingLayer->next;
+    }
+
+    return processingLayer->values;
 }
 
 // Layer Private Methods.
 void Layer::updateAndCalculateValues(vector<double> previousValues) {
-	for (auto const &c : backWeightsVectors) {
-		double value = 0;
-		for (int i = 0; i < previousValues.size(); ++i) {
-			value += previousValues[i]*c[i];
-		}
-		values.push_back(sigmoidFunction(value));
-	}
+    for (auto const &c : backWeightsVectors) {
+        double value = 0;
+        for (int i = 0; i < previousValues.size(); ++i) {
+            value += previousValues[i]*c[i];
+        }
+        values.push_back(sigmoidFunction(value));
+    }
 }
 
 double Layer::sigmoidFunction(double input) {
-	return 1.0/(1.0+exp(input*-1));
+    return 1.0/(1.0+exp(input*-1));
 }
 
 // NeuralNetwork Constructor.
 NeuralNetwork::NeuralNetwork(std::vector<int>numLayerVector)
 {
     int currNum=0, prevNum=0;
-    
+
     int numLayers = (int)numLayerVector.size()-1;
-    
+
     // Setup Output Layer.
     currNum = numLayerVector.back();
     numLayerVector.pop_back();
     prevNum = numLayerVector.back();
     numLayerVector.pop_back();
-    
+
     Layer *outputLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum), -1, nullptr);
     Layers.insert(Layers.begin(), outputLayer);
-    
+
     // Setup Hidden Layers.
     int count = 1;
     while (count <= numLayers-1)
@@ -83,17 +83,17 @@ NeuralNetwork::NeuralNetwork(std::vector<int>numLayerVector)
         currNum = prevNum;
         prevNum = numLayerVector.back();
         numLayerVector.pop_back();
-        
+
         Layer *hiddenLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum), numLayers-count, Layers.front());
         Layers.insert(Layers.begin(), hiddenLayer);
-        
+
         count ++;
     }
-    
+
     // Setup Input Layer.
     Layer *inputLayer = new Layer({}, 0, Layers.front());
     Layers.insert(Layers.begin(), inputLayer);
-    
+
     // Set prev pointers.
     inputLayer->setPrev(nullptr);
     Layer *temp = inputLayer;
@@ -107,25 +107,25 @@ NeuralNetwork::NeuralNetwork(std::vector<int>numLayerVector)
 
 // NeurualNetwork Private Methods.
 vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons) {
-	// Gaussian random engine
-	std::default_random_engine generator;
-	std::normal_distribution<double> distribution(1.0,0.1);
-	
-	std::random_device randDevice;
-	std::uniform_int_distribution<int> distTrueRandom(0,10);
-	for (int i = 0; i < distTrueRandom(randDevice); ++i) {
-		distribution(generator);
+    // Gaussian random engine
+    std::default_random_engine generator;
+    std::normal_distribution<double> distribution(1.0,0.1);
+
+    std::random_device randDevice;
+    std::uniform_int_distribution<int> distTrueRandom(0,10);
+    for (int i = 0; i < distTrueRandom(randDevice); ++i) {
+        distribution(generator);
     }
-	
-	vector<vector<double>> retVec;
-	
-	for (int i = 0; i < numNeurons; ++i) {
-		vector<double> tempVec = {};
-		for (int j = 0; j < numPreviousNeurons; ++j) {
-			tempVec.push_back(distribution(generator));
-		}
-		retVec.push_back(tempVec);
-	}
-	
-	return retVec;
+
+    vector<vector<double>> retVec;
+
+    for (int i = 0; i < numNeurons; ++i) {
+        vector<double> tempVec = {};
+        for (int j = 0; j < numPreviousNeurons; ++j) {
+            tempVec.push_back(distribution(generator));
+        }
+        retVec.push_back(tempVec);
+    }
+
+    return retVec;
 }
