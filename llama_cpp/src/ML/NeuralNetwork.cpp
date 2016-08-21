@@ -35,11 +35,12 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
         throw std::invalid_argument("This function can only be called from input layer.");
     }
 
+    rawValues = input;
     values = input;
 
     Layer *processingLayer = this;
     while (processingLayer->ID != LAYER_ID_OUTPUT) {
-        processingLayer->next->updateAndCalculateValues(processingLayer->values);
+        processingLayer->next->updateAndCalculateValues(&processingLayer->values);
         processingLayer = processingLayer->next;
     }
 
@@ -50,30 +51,30 @@ void Layer::updateValueWithDelta(std::vector<double> output) {
     if (ID != LAYER_ID_OUTPUT) {
         throw std::invalid_argument("This function can only be called from output layer.");
     }
-    //Calculate deltas for output layer.
+    // Calculate deltas for output layer.
     std::transform(output.begin(), output.end(), values.begin(), deltas.begin(), errorFunction);
-    
+
     Layer *processingLayer = this;
     // Process until first layer (next to input layer).
     while (processingLayer->prev->ID != LAYER_ID_INPUT) {
-        processingLayer->calculateDeltas(processingLayer->deltas, processingLayer->prev->deltas);
+        processingLayer->calculateDeltas(&processingLayer->prev->deltas);
         processingLayer = processingLayer->prev;
     }
-    
+
     // Start from input layer + 1
     while (processingLayer != nullptr) {
-        processingLayer->updateWeights(processingLayer->deltas, processingLayer->prev->values);
+        processingLayer->updateWeights(&processingLayer->prev->values);
         processingLayer = processingLayer->next;
     }
 }
 
 // Layer Private Methods.
-void Layer::updateAndCalculateValues(vector<double> previousValues) {
+void Layer::updateAndCalculateValues(vector<double> *previousValues) {
     int index = 0;
     for (auto const &c : backWeightsVectors) {
         double value = 0;
-        for (int i = 0; i < previousValues.size(); ++i) {
-            value += previousValues[i]*c[i];
+        for (int i = 0; i < previousValues->size(); ++i) {
+            value += previousValues->at(i)*c[i];
         }
         rawValues[index] = value;
         values[index] = sigmoidFunction(value);
@@ -81,27 +82,29 @@ void Layer::updateAndCalculateValues(vector<double> previousValues) {
     }
 }
 
-void Layer::calculateDeltas(vector<double> thisDeltas, vector<double> previousDeltas) {
-    std::fill(previousDeltas.begin(), previousDeltas.end(), 0);
+void Layer::calculateDeltas(vector<double> *previousDeltas) {
+    std::fill(previousDeltas->begin(), previousDeltas->end(), 0);
+    int indexD = 0;
     for (auto const &c : backWeightsVectors) {
-        int index = 0;
+        int indexPD = 0;
         for (auto const &w : c) {
-            previousDeltas[index] += w * thisDeltas[index];
-            index++;
+            previousDeltas->at(indexPD) += w * deltas[indexD];
+            indexPD++;
         }
+        indexD++;
     }
 }
 
-void Layer::updateWeights(std::vector<double> thisDeltas, std::vector<double> previousValues) {
+void Layer::updateWeights(std::vector<double> *previousValues) {
     int indexD = 0;
     for (auto const &c : backWeightsVectors) {
         int indexW = 0;
         for (auto const &w : c) {
-            backWeightsVectors[indexD][indexW] = w +
-                learningRate *
-                deltas[indexW] *
+            double var = learningRate * deltas.at(indexD) *
                 dSigmoidFunction(rawValues[indexD]) *
-                previousValues[indexW];
+                previousValues->at(indexW);
+            std::cout << "[w-" << indexD << '-' << indexW << "] " << deltas[indexD] << '\n';
+            backWeightsVectors[indexD][indexW] = w + var;
             indexW++;
         }
         indexD++;
@@ -170,7 +173,7 @@ std::vector<double> NeuralNetwork::feed(std::vector<double> input) {
     if (input.size() != Layers[0]->size()) {
         throw std::invalid_argument("Input size mismatch.");
     }
-    
+
     return Layers.front()->feedAndCalculate(input);
 }
 
@@ -184,7 +187,7 @@ void NeuralNetwork::train(std::vector<double> input, std::vector<double> output)
     }
     // Must feed before train.
     feed(input);
-    
+
     Layers.back()->updateValueWithDelta(output);
 }
 
@@ -205,7 +208,7 @@ vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeu
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
         for (int j = 0; j < numPreviousNeurons; ++j) {
-            //tempVec.push_back(distribution(generator));
+            // tempVec.push_back(distribution(generator));
             tempVec.push_back(1);
         }
         retVec.push_back(tempVec);

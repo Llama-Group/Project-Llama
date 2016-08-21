@@ -35,13 +35,13 @@ int main(int argc, const char * argv[]) {
     cout << nn.feed({1, 0})[0] << '\n';
     cout << nn.feed({0, 1})[0] << '\n';
     cout << nn.feed({0, 0})[0] << '\n';
-    
-    for (int i = 0; i < 10000; i++) {
+
+    // for (int i = 0; i < 10000; i++) {
         nn.train({1, 1}, {1});
         nn.train({1, 0}, {0});
         nn.train({0, 1}, {0});
         nn.train({0, 0}, {0});
-    }
+    // }
 
     cout << "After train:\n";
     cout << nn.feed({1, 1})[0] << '\n';

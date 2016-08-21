@@ -46,7 +46,7 @@ class Layer {
         rawValues = std::vector<double>(neuronCount);
         values = std::vector<double>(neuronCount);
         deltas = std::vector<double>(neuronCount);
-        
+
         // Set learning rate(Eta).
         learningRate = 0.5;
     }
@@ -81,17 +81,17 @@ class Layer {
     std::vector<double> rawValues;
     std::vector<double> values;
     std::vector<double> deltas;
-    
+
     double learningRate;
-    
-    void updateAndCalculateValues(std::vector<double> previousValues);
-    void calculateDeltas(std::vector<double> thisDeltas, std::vector<double> previousDeltas);
-    void updateWeights(std::vector<double> thisDeltas, std::vector<double> previousValues);
+
+    void updateAndCalculateValues(std::vector<double> *previousValues);
+    void calculateDeltas(std::vector<double> *previousDeltas);
+    void updateWeights(std::vector<double> *previousValues);
 
     // Sigmoid function.
     double sigmoidFunction(double input);
     double dSigmoidFunction(double input);
-    
+
     // Error function.
     std::function<double(double, double)> errorFunction =
         [](const double &a, const double &b) { return a - b; };
@@ -119,7 +119,7 @@ class NeuralNetwork {
 
  private:
     std::vector<Layer *> Layers;
-    
+
     std::vector<std::vector<double>> generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons);
 };
 }  // namespace llama
