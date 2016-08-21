@@ -15,23 +15,30 @@
 //  limitations under the License.
 //
 
+#include <ML/NeuralNetwork.h>
+
 #include <iostream>
 #include <vector>
-
-#include "NeuralNetwork.h"
 
 using std::cout;
 using std::vector;
 
 using llama::NeuralNetwork;
 
-int main(int argc, const char * argv[])
-{
-    vector<int> layers = {2,3,1};
+int main(int argc, const char * argv[]) {
+    vector<int> layers = {2, 1};
 
     NeuralNetwork nn = NeuralNetwork(layers);
 
-    cout << nn.calculateWithFeeding({1,1})[0] << '\n';
+    nn.train({1, 1}, {1});
+    nn.train({1, 0}, {0});
+    nn.train({0, 1}, {0});
+    nn.train({0, 0}, {0});
+    
+    cout << nn.feed({1, 1})[0] << '\n';
+    cout << nn.feed({1, 0})[0] << '\n';
+    cout << nn.feed({0, 1})[0] << '\n';
+    cout << nn.feed({0, 0})[0] << '\n';
 
     return 0;
 }

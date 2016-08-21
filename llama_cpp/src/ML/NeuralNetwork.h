@@ -15,22 +15,27 @@
 //  limitations under the License.
 //
 
-#ifndef NeuralNetwork_hpp
-#define NeuralNetwork_hpp
+#ifndef LLAMA_CPP_SRC_ML_NEURALNETWORK_H_
+#define LLAMA_CPP_SRC_ML_NEURALNETWORK_H_
 
 #include <iostream>
 #include <random>
 #include <vector>
 
-namespace llama {
-class Layer
-{
-    friend class NeuralNetwork;
-public:
-    Layer(){}
+#define LAYER_ID_INPUT 0
+#define LAYER_ID_OUTPUT -1
 
-    Layer(std::vector<std::vector<double>>backWeightsVectors, int ID, Layer *next)
-    {
+#define LAYER_VALUE_TYPE_DEFAULT 0x0
+#define LAYER_VALUE_TYPE_VALUE 0x10
+#define LAYER_VALUE_TYPE_SIGMA 0x20
+
+namespace llama {
+class Layer {
+    friend class NeuralNetwork;
+ public:
+    Layer() {}
+
+    Layer(std::vector<std::vector<double>> backWeightsVectors, int ID, Layer *next) {
         this->ID = ID;
 
         this->next = next;
@@ -38,11 +43,11 @@ public:
         this->backWeightsVectors = backWeightsVectors;
 
         neuronCount = (uint32_t)backWeightsVectors.size();
+        values = std::vector<double>(neuronCount);
     }
 
     // Setter
-    void setPrev(Layer *prev)
-    {
+    void setPrev(Layer *prev) {
         this->prev = prev;
     }
 
@@ -51,8 +56,9 @@ public:
     Layer *getPrev() { return prev; }
     Layer *getNext() { return next; }
     std::vector<double> getValues() { return values; }
+    int size() { return neuronCount; }
 
-private:
+ private:
     int ID;
 
     Layer *prev;
@@ -60,9 +66,14 @@ private:
 
     std::vector<std::vector<double>> backWeightsVectors;
     uint32_t neuronCount;
+    
+    uint8_t layerValueType = LAYER_VALUE_TYPE_DEFAULT;
 
-    // Will only be called in input layer.
+    // Can only be called in input layer.
     std::vector<double> feedAndCalculate(std::vector<double> input);
+    
+    // Can only be called in output layer.
+    void updateValueWithSigma(std::vector<double> output);
 
     std::vector<double> values;
     void updateAndCalculateValues(std::vector<double> previousValues);
@@ -71,31 +82,31 @@ private:
     double sigmoidFunction(double input);
 };
 
-class NeuralNetwork
-{
-public:
-    NeuralNetwork(){}
+class NeuralNetwork {
+ public:
+    NeuralNetwork() {}
 
-    ~NeuralNetwork()
-    {
-        for (auto const &c : this->Layers)
-        {
+    ~NeuralNetwork() {
+        for (auto const &c : this->Layers) {
             delete c;
         }
     }
 
-    NeuralNetwork(std::vector<int>numLayerVector);
+    explicit NeuralNetwork(std::vector<int>numLayerVector);
 
     // Forward Propagation
-    std::vector<double> calculateWithFeeding(std::vector<double> input) {
-        return Layers.front()->feedAndCalculate(input);
-    }
+    std::vector<double> feed(std::vector<double> input);
+    
+    // Back Propagation
+    void train(std::vector<double> input, std::vector<double> output);
 
-private:
+    int size() { return Layers.size(); }
+    
+ private:
     std::vector<Layer *> Layers;
 
     std::vector<std::vector<double>> generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons);
 };
 }  // namespace llama
 
-#endif // NeuralNetwork_hpp
+#endif  // LLAMA_CPP_SRC_ML_NEURALNETWORK_H_

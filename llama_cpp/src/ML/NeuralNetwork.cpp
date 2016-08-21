@@ -28,16 +28,17 @@ using std::vector;
 using llama::Layer;
 using llama::NeuralNetwork;
 
-// Layer Public Methods.
+// Layer Training and Calculating Methods.
 vector<double> Layer::feedAndCalculate(vector<double> input) {
-    if (ID != 0) {
-        throw std::invalid_argument("feedAndCalculate can only be called from input layer.");
+    if (ID != LAYER_ID_INPUT) {
+        throw std::invalid_argument("This function can only be called from input layer.");
     }
-
+    layerValueType = LAYER_VALUE_TYPE_VALUE;
+    
     values = input;
 
     Layer *processingLayer = this;
-    while (processingLayer->ID != -1) {
+    while (processingLayer->ID != LAYER_ID_OUTPUT) {
         processingLayer->next->updateAndCalculateValues(processingLayer->values);
         processingLayer = processingLayer->next;
     }
@@ -45,14 +46,26 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
     return processingLayer->values;
 }
 
+void Layer::updateValueWithSigma(std::vector<double> output) {
+    if (ID != LAYER_ID_OUTPUT) {
+        throw std::invalid_argument("This function can only be called from output layer.");
+    }
+    if (layerValueType != LAYER_VALUE_TYPE_VALUE) {
+        throw std::invalid_argument("Must feed forward before back propagating.");
+    }
+    layerValueType = LAYER_VALUE_TYPE_SIGMA;
+}
+
 // Layer Private Methods.
 void Layer::updateAndCalculateValues(vector<double> previousValues) {
+    int index = 0;
     for (auto const &c : backWeightsVectors) {
         double value = 0;
         for (int i = 0; i < previousValues.size(); ++i) {
             value += previousValues[i]*c[i];
         }
-        values.push_back(sigmoidFunction(value));
+        values[index] = sigmoidFunction(value);
+        index++;
     }
 }
 
@@ -61,11 +74,10 @@ double Layer::sigmoidFunction(double input) {
 }
 
 // NeuralNetwork Constructor.
-NeuralNetwork::NeuralNetwork(std::vector<int>numLayerVector)
-{
-    int currNum=0, prevNum=0;
+NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector) {
+    int currNum = 0, prevNum = 0;
 
-    int numLayers = (int)numLayerVector.size()-1;
+    int numLayers = static_cast<int>(numLayerVector.size())-1;
 
     // Setup Output Layer.
     currNum = numLayerVector.back();
@@ -73,46 +85,69 @@ NeuralNetwork::NeuralNetwork(std::vector<int>numLayerVector)
     prevNum = numLayerVector.back();
     numLayerVector.pop_back();
 
-    Layer *outputLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum), -1, nullptr);
+    Layer *outputLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum), LAYER_ID_OUTPUT, nullptr);
     Layers.insert(Layers.begin(), outputLayer);
 
     // Setup Hidden Layers.
     int count = 1;
-    while (count <= numLayers-1)
-    {
+    while (count <= numLayers-1) {
         currNum = prevNum;
         prevNum = numLayerVector.back();
         numLayerVector.pop_back();
 
-        Layer *hiddenLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum), numLayers-count, Layers.front());
+        Layer *hiddenLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum),
+                                       numLayers - count, Layers.front());
         Layers.insert(Layers.begin(), hiddenLayer);
 
-        count ++;
+        count++;
     }
 
     // Setup Input Layer.
-    Layer *inputLayer = new Layer({}, 0, Layers.front());
+    vector<vector<double>> inputLayerWeight;
+    for (int i = 0; i < numLayerVector[0]; i++) {
+        inputLayerWeight.push_back({});
+    }
+    Layer *inputLayer = new Layer(inputLayerWeight, LAYER_ID_INPUT, Layers.front());
     Layers.insert(Layers.begin(), inputLayer);
 
     // Set prev pointers.
     inputLayer->setPrev(nullptr);
     Layer *temp = inputLayer;
     for (auto const &c : this->Layers) {
-        if (c->getID()!=0) {
+        if (c->getID() != 0) {
             c->setPrev(temp);
             temp = c;
         }
     }
 }
 
+// Forward Propagation.
+std::vector<double> NeuralNetwork::feed(std::vector<double> input) {
+    if (input.size() != Layers[0]->size()) {
+        throw std::invalid_argument("Input size mismatch.");
+    }
+    return Layers.front()->feedAndCalculate(input);
+}
+
+// Back Propagation.
+void NeuralNetwork::train(std::vector<double> input, std::vector<double> output) {
+    if (input.size() != Layers[0]->size()) {
+        throw std::invalid_argument("Input size mismatch.");
+    }
+    if (output.size() != Layers.back()->size()) {
+        throw std::invalid_argument("Output size mismatch.");
+    }
+    Layers.back()->updateAndCalculateValues(output);
+}
+
 // NeurualNetwork Private Methods.
 vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons) {
     // Gaussian random engine
     std::default_random_engine generator;
-    std::normal_distribution<double> distribution(1.0,0.1);
+    std::normal_distribution<double> distribution(1.0, 0.1);
 
     std::random_device randDevice;
-    std::uniform_int_distribution<int> distTrueRandom(0,10);
+    std::uniform_int_distribution<int> distTrueRandom(0, 10);
     for (int i = 0; i < distTrueRandom(randDevice); ++i) {
         distribution(generator);
     }
