@@ -43,7 +43,12 @@ class Layer {
         this->backWeightsVectors = backWeightsVectors;
 
         neuronCount = (uint32_t)backWeightsVectors.size();
+        rawValues = std::vector<double>(neuronCount);
         values = std::vector<double>(neuronCount);
+        deltas = std::vector<double>(neuronCount);
+        
+        // Set learning rate(Eta).
+        learningRate = 0.5;
     }
 
     // Setter
@@ -66,20 +71,30 @@ class Layer {
 
     std::vector<std::vector<double>> backWeightsVectors;
     uint32_t neuronCount;
-    
-    uint8_t layerValueType = LAYER_VALUE_TYPE_DEFAULT;
 
     // Can only be called in input layer.
     std::vector<double> feedAndCalculate(std::vector<double> input);
-    
-    // Can only be called in output layer.
-    void updateValueWithSigma(std::vector<double> output);
 
+    // Can only be called in output layer.
+    void updateValueWithDelta(std::vector<double> output);
+
+    std::vector<double> rawValues;
     std::vector<double> values;
+    std::vector<double> deltas;
+    
+    double learningRate;
+    
     void updateAndCalculateValues(std::vector<double> previousValues);
+    void calculateDeltas(std::vector<double> thisDeltas, std::vector<double> previousDeltas);
+    void updateWeights(std::vector<double> thisDeltas, std::vector<double> previousValues);
 
     // Sigmoid function.
     double sigmoidFunction(double input);
+    double dSigmoidFunction(double input);
+    
+    // Error function.
+    std::function<double(double, double)> errorFunction =
+        [](const double &a, const double &b) { return a - b; };
 };
 
 class NeuralNetwork {
@@ -96,15 +111,15 @@ class NeuralNetwork {
 
     // Forward Propagation
     std::vector<double> feed(std::vector<double> input);
-    
+
     // Back Propagation
     void train(std::vector<double> input, std::vector<double> output);
 
     int size() { return Layers.size(); }
-    
+
  private:
     std::vector<Layer *> Layers;
-
+    
     std::vector<std::vector<double>> generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons);
 };
 }  // namespace llama

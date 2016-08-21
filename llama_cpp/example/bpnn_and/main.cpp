@@ -26,15 +26,24 @@ using std::vector;
 using llama::NeuralNetwork;
 
 int main(int argc, const char * argv[]) {
-    vector<int> layers = {2, 1};
+    vector<int> layers = {2, 3, 1};
 
     NeuralNetwork nn = NeuralNetwork(layers);
 
-    nn.train({1, 1}, {1});
-    nn.train({1, 0}, {0});
-    nn.train({0, 1}, {0});
-    nn.train({0, 0}, {0});
+    cout << "Before train:\n";
+    cout << nn.feed({1, 1})[0] << '\n';
+    cout << nn.feed({1, 0})[0] << '\n';
+    cout << nn.feed({0, 1})[0] << '\n';
+    cout << nn.feed({0, 0})[0] << '\n';
     
+    for (int i = 0; i < 10000; i++) {
+        nn.train({1, 1}, {1});
+        nn.train({1, 0}, {0});
+        nn.train({0, 1}, {0});
+        nn.train({0, 0}, {0});
+    }
+
+    cout << "After train:\n";
     cout << nn.feed({1, 1})[0] << '\n';
     cout << nn.feed({1, 0})[0] << '\n';
     cout << nn.feed({0, 1})[0] << '\n';

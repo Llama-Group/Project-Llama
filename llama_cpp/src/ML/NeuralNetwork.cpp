@@ -19,6 +19,7 @@
 
 #include <math.h>
 
+#include <algorithm>
 #include <iostream>
 #include <stdexcept>
 
@@ -33,8 +34,7 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
     if (ID != LAYER_ID_INPUT) {
         throw std::invalid_argument("This function can only be called from input layer.");
     }
-    layerValueType = LAYER_VALUE_TYPE_VALUE;
-    
+
     values = input;
 
     Layer *processingLayer = this;
@@ -46,14 +46,25 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
     return processingLayer->values;
 }
 
-void Layer::updateValueWithSigma(std::vector<double> output) {
+void Layer::updateValueWithDelta(std::vector<double> output) {
     if (ID != LAYER_ID_OUTPUT) {
         throw std::invalid_argument("This function can only be called from output layer.");
     }
-    if (layerValueType != LAYER_VALUE_TYPE_VALUE) {
-        throw std::invalid_argument("Must feed forward before back propagating.");
+    //Calculate deltas for output layer.
+    std::transform(output.begin(), output.end(), values.begin(), deltas.begin(), errorFunction);
+    
+    Layer *processingLayer = this;
+    // Process until first layer (next to input layer).
+    while (processingLayer->prev->ID != LAYER_ID_INPUT) {
+        processingLayer->calculateDeltas(processingLayer->deltas, processingLayer->prev->deltas);
+        processingLayer = processingLayer->prev;
     }
-    layerValueType = LAYER_VALUE_TYPE_SIGMA;
+    
+    // Start from input layer + 1
+    while (processingLayer != nullptr) {
+        processingLayer->updateWeights(processingLayer->deltas, processingLayer->prev->values);
+        processingLayer = processingLayer->next;
+    }
 }
 
 // Layer Private Methods.
@@ -64,13 +75,46 @@ void Layer::updateAndCalculateValues(vector<double> previousValues) {
         for (int i = 0; i < previousValues.size(); ++i) {
             value += previousValues[i]*c[i];
         }
+        rawValues[index] = value;
         values[index] = sigmoidFunction(value);
         index++;
     }
 }
 
+void Layer::calculateDeltas(vector<double> thisDeltas, vector<double> previousDeltas) {
+    std::fill(previousDeltas.begin(), previousDeltas.end(), 0);
+    for (auto const &c : backWeightsVectors) {
+        int index = 0;
+        for (auto const &w : c) {
+            previousDeltas[index] += w * thisDeltas[index];
+            index++;
+        }
+    }
+}
+
+void Layer::updateWeights(std::vector<double> thisDeltas, std::vector<double> previousValues) {
+    int indexD = 0;
+    for (auto const &c : backWeightsVectors) {
+        int indexW = 0;
+        for (auto const &w : c) {
+            backWeightsVectors[indexD][indexW] = w +
+                learningRate *
+                deltas[indexW] *
+                dSigmoidFunction(rawValues[indexD]) *
+                previousValues[indexW];
+            indexW++;
+        }
+        indexD++;
+    }
+}
+
 double Layer::sigmoidFunction(double input) {
     return 1.0/(1.0+exp(input*-1));
+}
+
+double Layer::dSigmoidFunction(double input) {
+    double s = sigmoidFunction(input);
+    return s * (1 - s);
 }
 
 // NeuralNetwork Constructor.
@@ -126,18 +170,22 @@ std::vector<double> NeuralNetwork::feed(std::vector<double> input) {
     if (input.size() != Layers[0]->size()) {
         throw std::invalid_argument("Input size mismatch.");
     }
+    
     return Layers.front()->feedAndCalculate(input);
 }
 
 // Back Propagation.
 void NeuralNetwork::train(std::vector<double> input, std::vector<double> output) {
-    if (input.size() != Layers[0]->size()) {
+    if (input.size() != Layers.front()->size()) {
         throw std::invalid_argument("Input size mismatch.");
     }
     if (output.size() != Layers.back()->size()) {
         throw std::invalid_argument("Output size mismatch.");
     }
-    Layers.back()->updateAndCalculateValues(output);
+    // Must feed before train.
+    feed(input);
+    
+    Layers.back()->updateValueWithDelta(output);
 }
 
 // NeurualNetwork Private Methods.
@@ -157,7 +205,8 @@ vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeu
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
         for (int j = 0; j < numPreviousNeurons; ++j) {
-            tempVec.push_back(distribution(generator));
+            //tempVec.push_back(distribution(generator));
+            tempVec.push_back(1);
         }
         retVec.push_back(tempVec);
     }
