@@ -103,10 +103,16 @@ void Layer::updateWeights(std::vector<double> *previousValues) {
             double var = learningRate * deltas.at(indexD) *
                 dSigmoidFunction(rawValues[indexD]) *
                 previousValues->at(indexW);
-            std::cout << "[w-" << indexD << '-' << indexW << "] " << deltas[indexD] << '\n';
+            // std::cout << "[w-" << indexD << '-' << indexW << "] " << var << '\n';
             backWeightsVectors[indexD][indexW] = w + var;
             indexW++;
         }
+        double value = 0;
+        for (int i = 0; i < previousValues->size(); ++i) {
+            value += previousValues->at(i)*c[i];
+        }
+        rawValues[indexD] = value;
+        values[indexD] = sigmoidFunction(value);
         indexD++;
     }
 }
