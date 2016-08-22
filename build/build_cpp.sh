@@ -17,7 +17,7 @@ rm -rf ../build_llama_cpp
 mkdir -p ../build_llama_cpp
 cd ../build_llama_cpp
 
-CMAKEFLAGS=""
+CMAKEFLAGS="-DCMAKE_CXX_COMPILER=clang++"
 
 # Build Google Test
 ../Project-Llama/llama_cpp/test/install_test.sh

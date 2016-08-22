@@ -19,6 +19,7 @@
 #define LLAMA_CPP_SRC_ML_NEURALNETWORK_H_
 
 #include <iostream>
+#include <functional>
 #include <random>
 #include <vector>
 
