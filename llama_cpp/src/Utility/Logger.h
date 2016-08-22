@@ -12,6 +12,7 @@
 #include <Utility/module_check.h>
 #include <stdlib.h>
 #include <fstream>
+#include <mutex>
 #include <ostream>
 #include <string>
 #include <thread>
