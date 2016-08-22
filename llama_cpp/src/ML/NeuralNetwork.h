@@ -31,12 +31,16 @@
 #define LAYER_VALUE_TYPE_SIGMA 0x20
 
 namespace llama {
+class NeuralNetwork;
+
 class Layer {
     friend class NeuralNetwork;
  public:
     Layer() {}
 
-    Layer(std::vector<std::vector<double>> backWeightsVectors, int ID, Layer *next) {
+    Layer(NeuralNetwork *nn, std::vector<std::vector<double>> backWeightsVectors, int ID, Layer *next) {
+        pNN = nn;
+
         this->ID = ID;
 
         this->next = next;
@@ -49,7 +53,7 @@ class Layer {
         deltas = std::vector<double>(neuronCount);
 
         // Set learning rate(Eta).
-        learningRate = 0.5;
+        learningRate = 50.5;
     }
 
     // Setter
@@ -70,6 +74,8 @@ class Layer {
     Layer *prev;
     Layer *next;
 
+    NeuralNetwork *pNN;
+
     std::vector<std::vector<double>> backWeightsVectors;
     uint32_t neuronCount;
 
@@ -79,15 +85,12 @@ class Layer {
     // Can only be called in output layer.
     void updateValueWithDelta(std::vector<double> output);
 
-    std::vector<double> rawValues;
     std::vector<double> values;
-    std::vector<double> deltas;
 
     double learningRate;
 
     void updateAndCalculateValues(std::vector<double> *previousValues);
-    void calculateDeltas(std::vector<double> *previousDeltas);
-    void updateWeights(std::vector<double> *previousValues);
+    void updateBackWeights(std::vector<double> *previousValues);
 
     // Sigmoid function.
     double sigmoidFunction(double input);
@@ -108,7 +111,7 @@ class NeuralNetwork {
         }
     }
 
-    explicit NeuralNetwork(std::vector<int>numLayerVector);
+    NeuralNetwork(std::vector<int>numLayerVector, bool bias = true);
 
     // Forward Propagation
     std::vector<double> feed(std::vector<double> input);
@@ -118,8 +121,15 @@ class NeuralNetwork {
 
     int size() { return Layers.size(); }
 
+    void printNeuralNetwork();
+
+    double getTotalError();
+
  private:
     std::vector<Layer *> Layers;
+    bool bias = true;
+
+    double totalError = 0.0;
 
     std::vector<std::vector<double>> generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons);
 };

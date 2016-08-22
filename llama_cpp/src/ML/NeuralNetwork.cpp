@@ -20,6 +20,7 @@
 #include <math.h>
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <stdexcept>
 
@@ -76,44 +77,31 @@ void Layer::updateAndCalculateValues(vector<double> *previousValues) {
         for (int i = 0; i < previousValues->size(); ++i) {
             value += previousValues->at(i)*c[i];
         }
-        rawValues[index] = value;
         values[index] = sigmoidFunction(value);
         index++;
     }
 }
 
-void Layer::calculateDeltas(vector<double> *previousDeltas) {
-    std::fill(previousDeltas->begin(), previousDeltas->end(), 0);
-    int indexD = 0;
-    for (auto const &c : backWeightsVectors) {
-        int indexPD = 0;
-        for (auto const &w : c) {
-            previousDeltas->at(indexPD) += w * deltas[indexD];
-            indexPD++;
-        }
-        indexD++;
-    }
-}
-
-void Layer::updateWeights(std::vector<double> *previousValues) {
+void Layer::updateBackWeights(std::vector<double> *previousValues) {
+    //std::cout << "Updating Weights on " << this->ID << '\n';
     int indexD = 0;
     for (auto const &c : backWeightsVectors) {
         int indexW = 0;
         for (auto const &w : c) {
             double var = learningRate * deltas.at(indexD) *
-                dSigmoidFunction(rawValues[indexD]) *
+                previousValues->at(indexW) * (1 - previousValues->at(indexW)) *
                 previousValues->at(indexW);
-            // std::cout << "[w-" << indexD << '-' << indexW << "] " << var << '\n';
+            //std::cout << "[w-" << indexD << '-' << indexW << "] " << var << '\n';
             backWeightsVectors[indexD][indexW] = w + var;
             indexW++;
         }
-        double value = 0;
-        for (int i = 0; i < previousValues->size(); ++i) {
-            value += previousValues->at(i)*c[i];
-        }
-        rawValues[indexD] = value;
-        values[indexD] = sigmoidFunction(value);
-        indexD++;
+        //double value = 0;
+        //for (int i = 0; i < previousValues->size(); ++i) {
+        //    value += previousValues->at(i)*c[i];
+        //}
+        //rawValues[indexD] = value;
+        //values[indexD] = sigmoidFunction(value);
+        //indexD++;
     }
 }
 
@@ -127,7 +115,9 @@ double Layer::dSigmoidFunction(double input) {
 }
 
 // NeuralNetwork Constructor.
-NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector) {
+NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
+    bias = bias;
+
     int currNum = 0, prevNum = 0;
 
     int numLayers = static_cast<int>(numLayerVector.size())-1;
@@ -138,7 +128,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector) {
     prevNum = numLayerVector.back();
     numLayerVector.pop_back();
 
-    Layer *outputLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum), LAYER_ID_OUTPUT, nullptr);
+    Layer *outputLayer = new Layer(this, generateRandomBackWeightVectors(currNum, prevNum), LAYER_ID_OUTPUT, nullptr);
     Layers.insert(Layers.begin(), outputLayer);
 
     // Setup Hidden Layers.
@@ -148,7 +138,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector) {
         prevNum = numLayerVector.back();
         numLayerVector.pop_back();
 
-        Layer *hiddenLayer = new Layer(generateRandomBackWeightVectors(currNum, prevNum),
+        Layer *hiddenLayer = new Layer(this, generateRandomBackWeightVectors(currNum, prevNum),
                                        numLayers - count, Layers.front());
         Layers.insert(Layers.begin(), hiddenLayer);
 
@@ -160,7 +150,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector) {
     for (int i = 0; i < numLayerVector[0]; i++) {
         inputLayerWeight.push_back({});
     }
-    Layer *inputLayer = new Layer(inputLayerWeight, LAYER_ID_INPUT, Layers.front());
+    Layer *inputLayer = new Layer(this, inputLayerWeight, LAYER_ID_INPUT, Layers.front());
     Layers.insert(Layers.begin(), inputLayer);
 
     // Set prev pointers.
@@ -194,7 +184,46 @@ void NeuralNetwork::train(std::vector<double> input, std::vector<double> output)
     // Must feed before train.
     feed(input);
 
+    // Calculate total error.
+    totalError = 0.0;
+    for (auto it = Layers.back()->values.begin(); it <= Layers.back()->values.end(); ++it) {
+        totalError += pow(*it - output[std::distance(it, Layers.back()->values.begin())], 2) * 0.5;
+    }
+
+    // Train
     Layers.back()->updateValueWithDelta(output);
+}
+
+void NeuralNetwork::printNeuralNetwork() {
+    // Print input layer first.
+    std::cout << "Layer ID." << Layers.front()->ID << ":\t";
+    std::for_each(Layers.front()->values.begin(),
+                  Layers.front()->values.end(),
+                  [](double i){ std::cout << i << "    "; });
+    std::cout << '\n';
+
+    Layer *printingLayer = Layers.front()->next;
+
+    while (printingLayer != nullptr) {
+        for (auto const &c : printingLayer->backWeightsVectors) {
+            std::cout << "Node " << ":\t\t";
+            std::for_each(c.begin(),
+                          c.end(),
+                          [](double i){ std::cout << i << "    "; });
+            std::cout << '\n';
+        }
+        std::cout << "Layer ID." << printingLayer->ID << ":\t";
+        std::for_each(printingLayer->values.begin(),
+                      printingLayer->values.end(),
+                      [](double i){ std::cout << i << "    "; });
+        std::cout << '\n';
+        printingLayer = printingLayer->next;
+    }
+}
+
+// Get the total error before latest train.
+double NeuralNetwork::getTotalError() {
+    return totalError;
 }
 
 // NeurualNetwork Private Methods.
