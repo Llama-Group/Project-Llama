@@ -58,7 +58,7 @@ find . \( -path "./benchmark/google_benchmark" -or -path "./test/google_test" \)
 
 # Run lint.
 rm -f /tmp/llama_fail
-find . \( -path "./benchmark" -or -path "./test/google_test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c '../lint/google_lint/cpplint/cpplint.py --linelength=120 "$0";if [ $? != 0 ]; then echo > /tmp/llama_fail; fi' {} \;
+find . \( -path "./benchmark" -or -path "./test/google_test" \) -prune -o \( -name "*.h" -or -name "*.cpp" \) ! -type d -exec bash -c '../lint/google_lint/cpplint/cpplint.py --linelength=120 --filter=-build/c++11 "$0";if [ $? != 0 ]; then echo > /tmp/llama_fail; fi' {} \;
 
 echo $retVal
 if [ -f /tmp/llama_fail ]; then

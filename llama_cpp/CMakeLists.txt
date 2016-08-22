@@ -77,7 +77,7 @@ find_package(Threads)
 # Build targets
 #
 
-list(APPEND SOURCE_LIBRARIES "${CRYPTO_LIBRARIES}")
+list(APPEND SOURCE_LIBRARIES "${CRYPTO_LIBRARIES}" "${CMAKE_THREAD_LIBS_INIT}")
 list(APPEND TEST_LIBRARIES "-lz ${PROJECT_ROOT_DIRECTORY}/../google_test/googlemock/gtest/libgtest.a" ${CMAKE_THREAD_LIBS_INIT})
 list(APPEND BIN_LIBRARIES "-lz ${PROJECT_ROOT_DIRECTORY}/../build_llama_cpp/libllama.a")
 list(APPEND BENCHMARK_LIBRARIES "${GOOGLE_BENCHMARK}" ${CMAKE_THREAD_LIBS_INIT})
@@ -172,6 +172,7 @@ BuildExample("${ALPACA_SORT_TEST}")
 BuildExample("${FUNCTOR_TEST}")
 BuildExample("${DATA_GENERATOR}")
 BuildExample("${LLOBJECT}")
+BuildExample("${LOGGER}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 
