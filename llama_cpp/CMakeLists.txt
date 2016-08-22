@@ -172,6 +172,7 @@ BuildExample("${ALPACA_SORT_TEST}")
 BuildExample("${FUNCTOR_TEST}")
 BuildExample("${DATA_GENERATOR}")
 BuildExample("${LLOBJECT}")
+BuildExample("${LOGGER}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 
