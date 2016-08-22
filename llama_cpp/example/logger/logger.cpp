@@ -17,6 +17,7 @@
 
 #include <Utility/Logger.h>
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <thread>
