@@ -290,17 +290,6 @@ class LoggerWrapper {
         _to.flush();
         exit(EXIT_FAILURE);
     }
-
-    /**
-     *  @brief Overload operator <<
-     *
-     *  @param t Object to ostream
-     */
-    template <typename T>
-    LoggerWrapper& operator << (T&& t) {
-        _to << std::forward<T>(t);
-        return *this;
-    }
 };
 using Logger = LoggerWrapper<>;
 }  // namespace llama
