@@ -157,7 +157,6 @@ class LoggerWrapper {
             _to << "[ERROR] ";
         }
         error_x(std::forward<Arg>(args)...);
-        _to.flush();
 #endif
     }
 
@@ -288,18 +287,8 @@ class LoggerWrapper {
 #if (LLAMA_LOG_LEVEL <= LLAMA_LOG_LEVEL_ERROR_X)
         error(std::forward<Arg>(args)...);
 #endif
+        _to.flush();
         exit(EXIT_FAILURE);
-    }
-
-    /**
-     *  @brief Overload operator <<
-     *
-     *  @param t Object to ostream
-     */
-    template <typename T>
-    LoggerWrapper& operator << (T&& t) {
-        _to << std::forward<T>(t);
-        return *this;
     }
 };
 using Logger = LoggerWrapper<>;
