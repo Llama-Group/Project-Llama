@@ -68,11 +68,18 @@ void Layer::backpropagation(std::vector<double> output) {
 
 // Layer Private Methods.
 void Layer::updateAndCalculateValues(vector<double> *previousValues) {
+    if (pNN->getBias()) {
+        previousValues->back() = 1;
+    }
     int index = 0;
     for (auto const &c : backWeightsVectors) {
         double value = 0;
-        for (int i = 0; i < previousValues->size(); ++i) {
+        for (int i = 0; i < previousValues->size() - static_cast<int>(pNN->getBias()); ++i) {
             value += previousValues->at(i)*c[i];
+        }
+        // Add bias if enabled.
+        if (pNN->getBias()) {
+            value += c.back();
         }
         values[index] = sigmoidFunction(value);
         index++;
@@ -104,7 +111,8 @@ void Layer::updateBackWeights(std::vector<double> *targetValues,
     }
     // Add this layer's sum of deltas to each of prev layer's deltas,
     // and multiplies dSigmoid of each of prev layer's values.
-    std::transform(prev->deltas.begin(), prev->deltas.end(), prev->values.begin(),
+    std::transform(prev->deltas.begin(), prev->deltas.end() - static_cast<int>(pNN->getBias()),
+                   prev->values.begin(),
                    prev->deltas.begin(),
                   [&](double a, double b) { return (a + sumThisDeltas) * b * (1 - b); });
     }
@@ -117,7 +125,7 @@ void Layer::updateBackWeights(std::vector<double> *targetValues,
         for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
             double prevDelta = deltas[indexThisValue] *
                                prev->values[indexPreviousValue];
-            *weightIt += learningRate * prevDelta;
+            *weightIt -= learningRate * prevDelta;
             indexPreviousValue++;
         }
         indexThisValue++;
@@ -146,7 +154,9 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
     prevNum = numLayerVector.back();
     numLayerVector.pop_back();
 
-    Layer *outputLayer = new Layer(this, generateRandomBackWeightVectors(currNum, prevNum), LAYER_ID_OUTPUT, nullptr);
+    Layer *outputLayer = new Layer(this, false,
+                                   generateRandomBackWeightVectors(currNum, prevNum),
+                                   LAYER_ID_OUTPUT, nullptr);
     Layers.insert(Layers.begin(), outputLayer);
 
     // Setup Hidden Layers.
@@ -156,7 +166,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
         prevNum = numLayerVector.back();
         numLayerVector.pop_back();
 
-        Layer *hiddenLayer = new Layer(this, generateRandomBackWeightVectors(currNum, prevNum),
+        Layer *hiddenLayer = new Layer(this, bias, generateRandomBackWeightVectors(currNum, prevNum),
                                        numLayers - count, Layers.front());
         Layers.insert(Layers.begin(), hiddenLayer);
 
@@ -168,7 +178,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
     for (int i = 0; i < numLayerVector[0]; i++) {
         inputLayerWeight.push_back({});
     }
-    Layer *inputLayer = new Layer(this, inputLayerWeight, LAYER_ID_INPUT, Layers.front());
+    Layer *inputLayer = new Layer(this, bias, inputLayerWeight, LAYER_ID_INPUT, Layers.front());
     Layers.insert(Layers.begin(), inputLayer);
 
     // Set prev pointers.
@@ -184,6 +194,9 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
 
 // Forward Propagation.
 std::vector<double> NeuralNetwork::feed(std::vector<double> input) {
+    if (bias) {
+        input.push_back(1);
+    }
     if (input.size() != Layers[0]->size()) {
         throw std::invalid_argument("Input size mismatch.");
     }
@@ -192,24 +205,24 @@ std::vector<double> NeuralNetwork::feed(std::vector<double> input) {
 }
 
 // Back Propagation.
-void NeuralNetwork::train(std::vector<double> input, std::vector<double> output) {
-    if (input.size() != Layers.front()->size()) {
+void NeuralNetwork::train(std::vector<double> inputs, std::vector<double> targets) {
+    if (inputs.size() + static_cast<int>(bias) != Layers.front()->size()) {
         throw std::invalid_argument("Input size mismatch.");
     }
-    if (output.size() != Layers.back()->size()) {
+    if (targets.size() != Layers.back()->size()) {
         throw std::invalid_argument("Output size mismatch.");
     }
     // Must feed before train.
-    feed(input);
+    feed(inputs);
 
     // Calculate total error.
     totalError = 0.0;
     for (auto it = Layers.back()->values.begin(); it < Layers.back()->values.end(); ++it) {
-        totalError += pow(*it - output[std::distance(it, Layers.back()->values.begin())], 2) * 0.5;
+        totalError += pow(*it - targets[std::distance(it, Layers.back()->values.begin())], 2) * 0.5;
     }
 
     // Train
-    Layers.back()->backpropagation(output);
+    Layers.back()->backpropagation(targets);
 }
 
 void NeuralNetwork::printNeuralNetwork() {
@@ -247,8 +260,8 @@ double NeuralNetwork::getTotalError() {
 }
 
 // Get the most updated total error.
-double NeuralNetwork::getTotalError(vector<double> input, vector<double> targets) {
-    vector<double> outputs = feed(input);
+double NeuralNetwork::getTotalError(vector<double> inputs, vector<double> targets) {
+    vector<double> outputs = feed(inputs);
     totalError = 0.0;
     for (auto it = outputs.begin(); it < outputs.end(); ++it) {
         totalError += pow(*it - targets[std::distance(it, outputs.begin())], 2) * 0.5;
@@ -272,7 +285,7 @@ vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeu
 
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
-        for (int j = 0; j < numPreviousNeurons /*+ static_cast<int>(bias)*/; ++j) {
+        for (int j = 0; j < numPreviousNeurons + static_cast<int>(bias); ++j) {
             // tempVec.push_back(distribution(generator));
             tempVec.push_back(1);
         }

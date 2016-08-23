@@ -38,7 +38,7 @@ class Layer {
  public:
     Layer() {}
 
-    Layer(NeuralNetwork *nn, std::vector<std::vector<double>> backWeightsVectors, int ID, Layer *next) {
+    Layer(NeuralNetwork *nn, bool bias, std::vector<std::vector<double>> backWeightsVectors, int ID, Layer *next) {
         pNN = nn;
 
         this->ID = ID;
@@ -47,7 +47,7 @@ class Layer {
 
         this->backWeightsVectors = backWeightsVectors;
 
-        neuronCount = (uint32_t)backWeightsVectors.size();
+        neuronCount = (uint32_t)backWeightsVectors.size() + static_cast<int>(bias);
         values = std::vector<double>(neuronCount);
         deltas = std::vector<double>(neuronCount);
 
@@ -119,14 +119,16 @@ class NeuralNetwork {
     std::vector<double> feed(std::vector<double> input);
 
     // Back Propagation
-    void train(std::vector<double> input, std::vector<double> output);
+    void train(std::vector<double> inputs, std::vector<double> targets);
 
     int size() { return Layers.size(); }
 
     void printNeuralNetwork();
 
     double getTotalError();
-    double getTotalError(std::vector<double> input, std::vector<double> targets);
+    double getTotalError(std::vector<double> inputs, std::vector<double> targets);
+
+    bool getBias() { return bias; }
 
  private:
     std::vector<Layer *> Layers;
