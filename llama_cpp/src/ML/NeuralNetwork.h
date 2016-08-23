@@ -113,7 +113,7 @@ class NeuralNetwork {
         }
     }
 
-    NeuralNetwork(std::vector<int>numLayerVector, bool bias = true);
+    explicit NeuralNetwork(std::vector<int>numLayerVector, bool bias = true);
 
     // Forward Propagation
     std::vector<double> feed(std::vector<double> input);

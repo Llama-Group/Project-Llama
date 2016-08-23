@@ -52,13 +52,13 @@ void Layer::backpropagation(std::vector<double> output) {
     if (ID != LAYER_ID_OUTPUT) {
         throw std::invalid_argument("This function can only be called from output layer.");
     }
-    
+
     // Calculate delta output.
     std::transform(values.begin(), values.end(), output.begin(), deltas.begin(),
-                   [](double v, double o) { return (o - v) * v * (1 - v); });
+                   [](double o, double t) { return (o - t) * o * (1 - o); });
     std::vector<double> *outputDeltas = &(this->deltas);
     double sumDeltaOutput = std::accumulate(deltas.begin(), deltas.end(), 0);
-    
+
     Layer *processingLayer = this;
     while (processingLayer->ID != LAYER_ID_INPUT) {
         processingLayer->updateBackWeights(&output, outputDeltas, sumDeltaOutput);
@@ -108,7 +108,7 @@ void Layer::updateBackWeights(std::vector<double> *targetValues,
                    prev->deltas.begin(),
                   [&](double a, double b) { return (a + sumThisDeltas) * b * (1 - b); });
     }
-    
+
     int indexThisValue = 0;
     for (auto vecIt = backWeightsVectors.begin();
          vecIt < backWeightsVectors.end();
@@ -117,7 +117,7 @@ void Layer::updateBackWeights(std::vector<double> *targetValues,
         for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
             double prevDelta = deltas[indexThisValue] *
                                prev->values[indexPreviousValue];
-            *weightIt -= learningRate * prevDelta;
+            *weightIt += learningRate * prevDelta;
             indexPreviousValue++;
         }
         indexThisValue++;
