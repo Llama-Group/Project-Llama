@@ -35,6 +35,7 @@ int main(int argc, const char * argv[]) {
     cout << nn.feed({1, 0})[0] << '\n';
     cout << nn.feed({0, 1})[0] << '\n';
     cout << nn.feed({0, 0})[0] << '\n';
+    std::cout << "Total error: " << nn.getTotalError({1, 1}, {1.0}) << '\n';
 
     for (int i = 0; i < 10000; i++) {
         nn.train({1, 1}, {1});
@@ -58,6 +59,6 @@ int main(int argc, const char * argv[]) {
     cout << nn.feed({1, 0})[0] << '\n';
     cout << nn.feed({0, 1})[0] << '\n';
     cout << nn.feed({0, 0})[0] << '\n';
-    std::cout << "Total error: " << nn.getTotalError() << '\n';
+    std::cout << "Total error: " << nn.getTotalError({1, 1}, {1.0}) << '\n';
     return 0;
 }

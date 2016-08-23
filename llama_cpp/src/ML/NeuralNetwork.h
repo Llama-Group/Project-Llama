@@ -126,6 +126,7 @@ class NeuralNetwork {
     void printNeuralNetwork();
 
     double getTotalError();
+    double getTotalError(std::vector<double> input, std::vector<double> targets);
 
  private:
     std::vector<Layer *> Layers;

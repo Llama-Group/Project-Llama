@@ -117,7 +117,7 @@ void Layer::updateBackWeights(std::vector<double> *targetValues,
         for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
             double prevDelta = deltas[indexThisValue] *
                                prev->values[indexPreviousValue];
-            *weightIt += learningRate * prevDelta;
+            *weightIt -= learningRate * prevDelta;
             indexPreviousValue++;
         }
         indexThisValue++;
@@ -243,6 +243,16 @@ void NeuralNetwork::printNeuralNetwork() {
 
 // Get the total error before latest train.
 double NeuralNetwork::getTotalError() {
+    return totalError;
+}
+
+// Get the most updated total error.
+double NeuralNetwork::getTotalError(vector<double> input, vector<double> targets) {
+    vector<double> outputs = feed(input);
+    totalError = 0.0;
+    for (auto it = outputs.begin(); it < outputs.end(); ++it) {
+        totalError += pow(*it - targets[std::distance(it, outputs.begin())], 2) * 0.5;
+    }
     return totalError;
 }
 
