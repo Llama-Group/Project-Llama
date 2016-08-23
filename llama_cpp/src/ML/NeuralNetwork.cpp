@@ -21,6 +21,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numeric>
 #include <iostream>
 #include <stdexcept>
 
@@ -36,7 +37,6 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
         throw std::invalid_argument("This function can only be called from input layer.");
     }
 
-    rawValues = input;
     values = input;
 
     Layer *processingLayer = this;
@@ -48,24 +48,21 @@ vector<double> Layer::feedAndCalculate(vector<double> input) {
     return processingLayer->values;
 }
 
-void Layer::updateValueWithDelta(std::vector<double> output) {
+void Layer::backpropagation(std::vector<double> output) {
     if (ID != LAYER_ID_OUTPUT) {
         throw std::invalid_argument("This function can only be called from output layer.");
     }
-    // Calculate deltas for output layer.
-    std::transform(output.begin(), output.end(), values.begin(), deltas.begin(), errorFunction);
-
+    
+    // Calculate delta output.
+    std::transform(values.begin(), values.end(), output.begin(), deltas.begin(),
+                   [](double v, double o) { return (o - v) * v * (1 - v); });
+    std::vector<double> *outputDeltas = &(this->deltas);
+    double sumDeltaOutput = std::accumulate(deltas.begin(), deltas.end(), 0);
+    
     Layer *processingLayer = this;
-    // Process until first layer (next to input layer).
-    while (processingLayer->prev->ID != LAYER_ID_INPUT) {
-        processingLayer->calculateDeltas(&processingLayer->prev->deltas);
+    while (processingLayer->ID != LAYER_ID_INPUT) {
+        processingLayer->updateBackWeights(&output, outputDeltas, sumDeltaOutput);
         processingLayer = processingLayer->prev;
-    }
-
-    // Start from input layer + 1
-    while (processingLayer != nullptr) {
-        processingLayer->updateWeights(&processingLayer->prev->values);
-        processingLayer = processingLayer->next;
     }
 }
 
@@ -82,26 +79,48 @@ void Layer::updateAndCalculateValues(vector<double> *previousValues) {
     }
 }
 
-void Layer::updateBackWeights(std::vector<double> *previousValues) {
-    //std::cout << "Updating Weights on " << this->ID << '\n';
-    int indexD = 0;
-    for (auto const &c : backWeightsVectors) {
-        int indexW = 0;
-        for (auto const &w : c) {
-            double var = learningRate * deltas.at(indexD) *
-                previousValues->at(indexW) * (1 - previousValues->at(indexW)) *
-                previousValues->at(indexW);
-            //std::cout << "[w-" << indexD << '-' << indexW << "] " << var << '\n';
-            backWeightsVectors[indexD][indexW] = w + var;
-            indexW++;
+void Layer::updateBackWeights(std::vector<double> *targetValues,
+                              std::vector<double> *outputDeltas,
+                              double sumDeltaOutput) {
+    if (prev != LAYER_ID_INPUT) {
+    // Set previous layer's deltas.
+    double sumThisDeltas = 0.0;
+    if (ID != LAYER_ID_OUTPUT) {
+        sumThisDeltas = std::accumulate(deltas.begin(), deltas.end(), 0.0);
+    }
+    int indexThisDelta = 0;
+    for (auto vectorIt = backWeightsVectors.begin();
+         vectorIt < backWeightsVectors.end();
+         ++vectorIt) {
+        int indexPrevDelta = 0;
+        for (auto weighIt = vectorIt->begin(); weighIt < vectorIt->end(); ++weighIt) {
+            prev->deltas[indexPrevDelta] += (ID == LAYER_ID_OUTPUT ?
+                                             deltas[indexThisDelta] :
+                                             sumDeltaOutput) *
+                                            *weighIt;
+            indexPrevDelta++;
         }
-        //double value = 0;
-        //for (int i = 0; i < previousValues->size(); ++i) {
-        //    value += previousValues->at(i)*c[i];
-        //}
-        //rawValues[indexD] = value;
-        //values[indexD] = sigmoidFunction(value);
-        //indexD++;
+        indexThisDelta++;
+    }
+    // Add this layer's sum of deltas to each of prev layer's deltas,
+    // and multiplies dSigmoid of each of prev layer's values.
+    std::transform(prev->deltas.begin(), prev->deltas.end(), prev->values.begin(),
+                   prev->deltas.begin(),
+                  [&](double a, double b) { return (a + sumThisDeltas) * b * (1 - b); });
+    }
+    
+    int indexThisValue = 0;
+    for (auto vecIt = backWeightsVectors.begin();
+         vecIt < backWeightsVectors.end();
+         ++vecIt) {
+        int indexPreviousValue = 0;
+        for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
+            double prevDelta = deltas[indexThisValue] *
+                               prev->values[indexPreviousValue];
+            *weightIt += learningRate * prevDelta;
+            indexPreviousValue++;
+        }
+        indexThisValue++;
     }
 }
 
@@ -109,14 +128,13 @@ double Layer::sigmoidFunction(double input) {
     return 1.0/(1.0+exp(input*-1));
 }
 
-double Layer::dSigmoidFunction(double input) {
-    double s = sigmoidFunction(input);
+double Layer::dSigmoidFunction(double s) {
     return s * (1 - s);
 }
 
 // NeuralNetwork Constructor.
 NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
-    bias = bias;
+    this->bias = bias;
 
     int currNum = 0, prevNum = 0;
 
@@ -186,17 +204,17 @@ void NeuralNetwork::train(std::vector<double> input, std::vector<double> output)
 
     // Calculate total error.
     totalError = 0.0;
-    for (auto it = Layers.back()->values.begin(); it <= Layers.back()->values.end(); ++it) {
+    for (auto it = Layers.back()->values.begin(); it < Layers.back()->values.end(); ++it) {
         totalError += pow(*it - output[std::distance(it, Layers.back()->values.begin())], 2) * 0.5;
     }
 
     // Train
-    Layers.back()->updateValueWithDelta(output);
+    Layers.back()->backpropagation(output);
 }
 
 void NeuralNetwork::printNeuralNetwork() {
     // Print input layer first.
-    std::cout << "Layer ID." << Layers.front()->ID << ":\t";
+    std::cout << "Input:\t\t";
     std::for_each(Layers.front()->values.begin(),
                   Layers.front()->values.end(),
                   [](double i){ std::cout << i << "    "; });
@@ -205,12 +223,14 @@ void NeuralNetwork::printNeuralNetwork() {
     Layer *printingLayer = Layers.front()->next;
 
     while (printingLayer != nullptr) {
+        int node = 0;
         for (auto const &c : printingLayer->backWeightsVectors) {
-            std::cout << "Node " << ":\t\t";
+            std::cout << "Node " << node << ":\t\t";
             std::for_each(c.begin(),
                           c.end(),
                           [](double i){ std::cout << i << "    "; });
             std::cout << '\n';
+            node++;
         }
         std::cout << "Layer ID." << printingLayer->ID << ":\t";
         std::for_each(printingLayer->values.begin(),
@@ -242,7 +262,7 @@ vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeu
 
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
-        for (int j = 0; j < numPreviousNeurons; ++j) {
+        for (int j = 0; j < numPreviousNeurons /*+ static_cast<int>(bias)*/; ++j) {
             // tempVec.push_back(distribution(generator));
             tempVec.push_back(1);
         }

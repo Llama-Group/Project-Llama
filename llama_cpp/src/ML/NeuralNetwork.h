@@ -48,12 +48,11 @@ class Layer {
         this->backWeightsVectors = backWeightsVectors;
 
         neuronCount = (uint32_t)backWeightsVectors.size();
-        rawValues = std::vector<double>(neuronCount);
         values = std::vector<double>(neuronCount);
         deltas = std::vector<double>(neuronCount);
 
         // Set learning rate(Eta).
-        learningRate = 50.5;
+        learningRate = 0.5;
     }
 
     // Setter
@@ -83,14 +82,17 @@ class Layer {
     std::vector<double> feedAndCalculate(std::vector<double> input);
 
     // Can only be called in output layer.
-    void updateValueWithDelta(std::vector<double> output);
+    void backpropagation(std::vector<double> output);
 
     std::vector<double> values;
+    std::vector<double> deltas;
 
     double learningRate;
 
     void updateAndCalculateValues(std::vector<double> *previousValues);
-    void updateBackWeights(std::vector<double> *previousValues);
+    void updateBackWeights(std::vector<double> *targetValues,
+                           std::vector<double> *outputDeltas,
+                           double sumDeltas);
 
     // Sigmoid function.
     double sigmoidFunction(double input);
