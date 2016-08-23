@@ -148,7 +148,7 @@ class LoggerWrapper {
      *  @brief Error and exit message wrapper
      */
     template <typename ... Arg>
-    void error_xWrapper(Arg&& ... args) {
+    void __attribute__((noreturn)) error_xWrapper(Arg&& ... args) {
 #if (LLAMA_LOG_LEVEL <= LLAMA_LOG_LEVEL_DEBUG)
         std::lock_guard<std::mutex> locker(_stream_mtx);
         if (_color) {
@@ -283,7 +283,7 @@ class LoggerWrapper {
      *  @note  This function will call exit(EXIT_FAILURE)
      */
     template <typename ... Arg>
-    void error_x(Arg&& ... args) __attribute__((noreturn))  {
+    void __attribute__((noreturn)) error_x(Arg&& ... args) {
 #if (LLAMA_LOG_LEVEL <= LLAMA_LOG_LEVEL_ERROR_X)
         error(std::forward<Arg>(args)...);
 #endif
