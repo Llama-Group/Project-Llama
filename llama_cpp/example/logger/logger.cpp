@@ -52,9 +52,9 @@ int main(int argc, const char * argv[]) {
     LLAMA_LOG_DEBUG(myLogger, "This is a debug message, and this line goes through MyStream\n");
     LLAMA_LOG_DEBUG(fileLogger, "This is a debug message, and this line goes into a file\n");
 
-    LLAMA_LOG_INFO(clogLogger, "This is a info message\n");
-    LLAMA_LOG_INFO(myLogger, "This is a info message, and this line goes through MyStream\n");
-    LLAMA_LOG_INFO(fileLogger, "This is a info message, and this line goes into a file\n");
+    LLAMA_LOG_INFO(clogLogger, "This is an info message\n");
+    LLAMA_LOG_INFO(myLogger, "This is an info message, and this line goes through MyStream\n");
+    LLAMA_LOG_INFO(fileLogger, "This is an info message, and this line goes into a file\n");
 
     LLAMA_LOG_WARNING(clogLogger, "This is a warning message\n");
     LLAMA_LOG_WARNING(myLogger, "This is a warning message, and this line goes through MyStream\n");
