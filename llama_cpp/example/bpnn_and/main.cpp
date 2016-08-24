@@ -33,12 +33,12 @@ double calcAvgTotalError(NeuralNetwork *nn, double a, double b, double c, double
 }
 
 int main(int argc, const char * argv[]) {
-    vector<int> layers = {2, 1};
+    vector<int> layers = {2, 5, 1};
 
     NeuralNetwork nn = NeuralNetwork(layers);
 
     double a = 0;
-    double b = 0;
+    double b = 1;
     double c = 0;
     double d = 1;
 
@@ -55,8 +55,8 @@ int main(int argc, const char * argv[]) {
         nn.train({1, 0}, {c});
         nn.train({1, 1}, {d});
 
-        std::cout << "Total error: " << calcAvgTotalError(&nn, a, b, c, d) << '\n';
-        system("clear");
+        //std::cout << "Total error: " << calcAvgTotalError(&nn, a, b, c, d) << '\n';
+        //system("clear");
     }
 
     cout << "After train:\n";

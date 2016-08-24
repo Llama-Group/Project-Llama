@@ -103,7 +103,7 @@ void Layer::updateBackWeights(std::vector<double> *targetValues,
         for (auto weighIt = vectorIt->begin(); weighIt < vectorIt->end(); ++weighIt) {
             prev->deltas[indexPrevDelta] += (ID == LAYER_ID_OUTPUT ?
                                              deltas[indexThisDelta] :
-                                             sumDeltaOutput) *
+                                             1) *
                                             *weighIt;
             indexPrevDelta++;
         }
@@ -286,8 +286,8 @@ vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeu
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
         for (int j = 0; j < numPreviousNeurons + static_cast<int>(bias); ++j) {
-            // tempVec.push_back(distribution(generator));
-            tempVec.push_back(1);
+             tempVec.push_back(distribution(generator));
+            //tempVec.push_back(1);
         }
         retVec.push_back(tempVec);
     }
