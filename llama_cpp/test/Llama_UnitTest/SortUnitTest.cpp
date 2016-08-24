@@ -266,7 +266,7 @@ struct SortCorrectnessTest : public ::testing::Test {
     }
 };
 
-/* Testing for Brute Force Sort. */
+// Testing for Brute Force Sort. 
 TEST_F(SortCorrectnessTest, BruteForceRandomIntsCorrectness) {
     intBF.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -282,7 +282,7 @@ TEST_F(SortCorrectnessTest, BruteForceRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-/* Testing for Insertion Sort. */
+// Testing for Insertion Sort. 
 TEST_F(SortCorrectnessTest, InsertionRandomIntsCorrectness) {
     intIn.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -298,7 +298,7 @@ TEST_F(SortCorrectnessTest, InsertionRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-/* Testing for Bubble Sort. */
+// Testing for Bubble Sort. 
 TEST_F(SortCorrectnessTest, BubbleRandomIntsCorrectness) {
     intBu.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -314,7 +314,7 @@ TEST_F(SortCorrectnessTest, BubbleRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-/* Testing for Selection Sort. */
+// Testing for Selection Sort. 
 TEST_F(SortCorrectnessTest, SelectionRandomIntsCorrectness) {
     intSe.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -330,7 +330,7 @@ TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-/* Testing for Merge Sort. */
+// Testing for Merge Sort. 
 TEST_F(SortCorrectnessTest, MergeRandomIntsCorrectness) {
     intMe.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);

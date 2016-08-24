@@ -26,7 +26,7 @@
 
 namespace llama {
 template <class T> class MergeSort : public Sort<T> {
-public:
+ public:
   MergeSort() {}
   explicit MergeSort(std::vector<T> *inputArray) {
     this->performSort(inputArray);
@@ -64,9 +64,9 @@ public:
     int mid;
     if (low < high) {
       mid = (low + high) / 2;
-      // left hand
+      // Left hand side。
       mergesort(arr, low, mid);
-      // right hand
+      // Right hand side.
       mergesort(arr, mid + 1, high);
       Merge(arr, low, mid, high);
     }
