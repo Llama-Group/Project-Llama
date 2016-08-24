@@ -225,11 +225,11 @@ static void SeSortClass(benchmark::State& state) {
 }
 
 static void MeSortClass(benchmark::State& state) {
-    llama::MergeSort<CustomisedClass> MeSort = llama::MergeSort<CustomisedClass>();
+    llama::MergeSort<CustomisedClass> meSort = llama::MergeSort<CustomisedClass>();
     std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
                           CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
     while (state.KeepRunning()) {
-        MeSort.performSort(&a);
+        meSort.performSort(&a);
     }
 }
 

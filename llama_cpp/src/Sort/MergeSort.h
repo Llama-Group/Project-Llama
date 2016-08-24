@@ -27,16 +27,15 @@
 namespace llama {
 template <class T> class MergeSort : public Sort<T> {
  public:
-  MergeSort() {}
-  explicit MergeSort(std::vector<T> *inputArray) {
+    MergeSort() {}
+    explicit MergeSort(std::vector<T> *inputArray) {
     this->performSort(inputArray);
-  }
+    }
 
-  void Merge(std::vector<SortObject<T>> *arr, int low, int mid, int high) {
-    int i, j, k;
-    i = low;
-    j = mid + 1;
-    k = 0;
+    void Merge(std::vector<SortObject<T>> *arr, int low, int mid, int high) {
+      int i = low;
+      int j = mid + 1;
+      int k = 0;
 
     std::vector<SortObject<T>> tmp(high - low + 1);
 
@@ -60,21 +59,21 @@ template <class T> class MergeSort : public Sort<T> {
     std::vector<SortObject<T>>().swap(tmp);
   }
 
-  void mergesort(std::vector<SortObject<T>> *arr, int low, int high) {
-    int mid;
-    if (low < high) {
+    void mergesort(std::vector<SortObject<T>> *arr, int low, int high) {
+      int mid;
+      if (low < high) {
       mid = (low + high) / 2;
       // Left hand side。
       mergesort(arr, low, mid);
       // Right hand side.
       mergesort(arr, mid + 1, high);
       Merge(arr, low, mid, high);
+      }
     }
-  }
 
-  void doSort(std::vector<SortObject<T>> *reformedArray) override {
+    void doSort(std::vector<SortObject<T>> *reformedArray) override {
     mergesort(reformedArray, 0, reformedArray->size() - 1);
-  }
+    }
 };
 }   // namespace llama
 #endif   // LLAMA_CPP_SRC_SORT_MERGESORT_H_
