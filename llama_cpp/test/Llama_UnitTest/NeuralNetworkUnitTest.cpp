@@ -30,6 +30,6 @@ struct NeuralNetworkTest : public ::testing::Test {
     NeuralNetwork nn = NeuralNetwork(layers);
 };
 
-TEST_F(NeuralNetworkTest, TotalErrorCorrectness) {
-    nn.getTotalError();
-}
+// TEST_F(NeuralNetworkTest, TotalErrorCorrectness) {
+//     nn.getTotalError();
+// }

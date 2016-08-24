@@ -90,9 +90,7 @@ class Layer {
     double learningRate;
 
     void updateAndCalculateValues(std::vector<double> *previousValues);
-    void updateBackWeights(std::vector<double> *targetValues,
-                           std::vector<double> *outputDeltas,
-                           double sumDeltas);
+    void updateBackWeights();
 
     // Sigmoid function.
     double sigmoidFunction(double input);
