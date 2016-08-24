@@ -22,6 +22,7 @@
 #include <Sort/InsertionSort.h>
 #include <Sort/BubbleSort.h>
 #include <Sort/SelectionSort.h>
+#include <Sort/MergeSort.h>
 
 #include <vector>
 #include <string>
@@ -228,6 +229,10 @@ struct SortCorrectnessTest : public ::testing::Test {
     llama::SelectionSort<double> doubleSe;
     llama::SelectionSort<string> stringSe;
 
+    llama::MergeSort<int> intMe;
+    llama::MergeSort<double> doubleMe;
+    llama::MergeSort<string> stringMe;
+
     void SetUp() override {
         DataGenerator::generateRandomData(&randomInts);
         DataGenerator::generateRandomData(&randomDoubles);
@@ -261,7 +266,7 @@ struct SortCorrectnessTest : public ::testing::Test {
     }
 };
 
-// Testing for Brute Force Sort.
+/* Testing for Brute Force Sort. */
 TEST_F(SortCorrectnessTest, BruteForceRandomIntsCorrectness) {
     intBF.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -277,7 +282,7 @@ TEST_F(SortCorrectnessTest, BruteForceRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-// Testing for Insertion Sort.
+/* Testing for Insertion Sort. */
 TEST_F(SortCorrectnessTest, InsertionRandomIntsCorrectness) {
     intIn.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -293,7 +298,7 @@ TEST_F(SortCorrectnessTest, InsertionRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-// Testing for Bubble Sort.
+/* Testing for Bubble Sort. */
 TEST_F(SortCorrectnessTest, BubbleRandomIntsCorrectness) {
     intBu.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -309,7 +314,7 @@ TEST_F(SortCorrectnessTest, BubbleRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-// Testing for Selection Sort.
+/* Testing for Selection Sort. */
 TEST_F(SortCorrectnessTest, SelectionRandomIntsCorrectness) {
     intSe.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);
@@ -325,6 +330,21 @@ TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
+/* Testing for Merge Sort. */
+TEST_F(SortCorrectnessTest, MergeRandomIntsCorrectness) {
+    intMe.performSort(&randomInts);
+    EXPECT_EQ(randomIntsCorrect, randomInts);
+}
+
+TEST_F(SortCorrectnessTest, MergeRandomDoublesCorrectness) {
+    doubleMe.performSort(&randomDoubles);
+    EXPECT_EQ(randomDoublesCorrect, randomDoubles);
+}
+
+TEST_F(SortCorrectnessTest, MergeRandomStringsCorrectness) {
+    stringMe.performSort(&randomStrings);
+    EXPECT_EQ(randomStringsCorrect, randomStrings);
+}
 
 //
 // Sort Massive Test
@@ -343,6 +363,7 @@ struct SortMassiveTest : public ::testing::Test {
     llama::InsertionSort<int> intIn;
     llama::BubbleSort<int> intBu;
     llama::SelectionSort<int> intSe;
+    llama::MergeSort<int> intMe;
 
     void setupVector(vector<int> **m, vector<int> **mCorrect, int count) {
         *m = new vector<int>();
@@ -403,4 +424,8 @@ TEST_F(SortMassiveTest, BubbleMassive) {
 TEST_F(SortMassiveTest, SelectionMassive) {
     intSe.performSort(randomIntsMinorMassive);
     EXPECT_EQ(*randomIntsMinorMassiveCorrect, *randomIntsMinorMassive);
+}
+TEST_F(SortMassiveTest, MergeMassive) {
+    intMe.performSort(randomIntsMassive);
+    EXPECT_EQ(*randomIntsMassiveCorrect, *randomIntsMassive);
 }
