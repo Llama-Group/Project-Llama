@@ -28,26 +28,27 @@ namespace llama {
 template<class T>
 class SelectionSort : public Sort<T> {
  public:
-        SelectionSort() {}
-        explicit SelectionSort(std::vector<T> *inputArray) { this->performSort(inputArray); }
+    SelectionSort() {}
+    explicit SelectionSort(std::vector<T> *inputArray) { this->performSort(inputArray); }
 
-        void doSort(std::vector<SortObject<T>> *reformedArray) override {
-            int n = reformedArray->size();
-            int min;
-            for (int i = 0; i < n - 1; i++) {
-                min = i;
-                // Select the min value.
-                for (int j = i + 1; j < n; j++) {
-                    if (reformedArray->at(min) > reformedArray->at(j)) {
-                        min = j;
-                    }
-                }
-                // Swap between flag and the i if they are different.
-                if (min != i) {
-                    std::swap(reformedArray->at(i), reformedArray->at(min));
+    void doSort(std::vector<SortObject<T>> *reformedArray) override {
+        int n = reformedArray->size();
+        int min;
+        for (int i = 0; i < n - 1; i++) {
+            min = i;
+            // Select the min value.
+            for (int j = i + 1; j < n; j++) {
+                if (reformedArray->at(min) > reformedArray->at(j)) {
+                    min = j;
                 }
             }
+            // Swap between flag and the i if they are different.
+            if (min != i) {
+                std::swap(reformedArray->at(i), reformedArray->at(min));
+            }
         }
+    }
 };
 }  // namespace llama
+
 #endif  // LLAMA_CPP_SRC_SORT_SELECTIONSORT_H_
