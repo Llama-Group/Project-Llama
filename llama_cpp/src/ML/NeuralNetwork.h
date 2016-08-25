@@ -18,6 +18,7 @@
 #ifndef LLAMA_CPP_SRC_ML_NEURALNETWORK_H_
 #define LLAMA_CPP_SRC_ML_NEURALNETWORK_H_
 
+#include <cmath>
 #include <iostream>
 #include <functional>
 #include <random>
@@ -92,13 +93,11 @@ class Layer {
     void updateAndCalculateValues(std::vector<double> *previousValues);
     void updateBackWeights();
 
-    // Sigmoid function.
-    double sigmoidFunction(double input);
-    double dSigmoidFunction(double input);
-
-    // Error function.
-    std::function<double(double, double)> errorFunction =
-        [](const double &a, const double &b) { return a - b; };
+    // Sigmoid function as default activation function.
+    std::function<double(double)> activationFunction = [&](const double input) {
+                                                        return 1.0 / (1 - exp(-1.0 * input)); };
+    // Default derivative of activation function: Derivative of sigmoid function but take sigmoid(input) as input.
+    std::function<double(double)> dActivationFunction = [&](const double input) { return input * (1 - input); };
 };
 
 class NeuralNetwork {
@@ -130,7 +129,7 @@ class NeuralNetwork {
 
  private:
     std::vector<Layer *> Layers;
-    bool bias = true;
+    bool bias;
 
     double totalError = 0.0;
 

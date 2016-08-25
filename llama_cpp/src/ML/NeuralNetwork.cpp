@@ -17,10 +17,7 @@
 
 #include <ML/NeuralNetwork.h>
 
-#include <math.h>
-
 #include <algorithm>
-#include <cmath>
 #include <numeric>
 #include <iostream>
 #include <stdexcept>
@@ -55,7 +52,7 @@ void Layer::backpropagation(std::vector<double> output) {
 
     // Calculate delta output.
     std::transform(values.begin(), values.end(), output.begin(), deltas.begin(),
-                   [](double o, double t) { return (o - t) * o * (1 - o); });
+                   [&](double o, double t) { return (o - t) * dActivationFunction(o); });
 
     Layer *processingLayer = this;
     while (processingLayer->ID != LAYER_ID_INPUT) {
@@ -79,7 +76,7 @@ void Layer::updateAndCalculateValues(vector<double> *previousValues) {
         if (pNN->getBias()) {
             value += c.back();
         }
-        values[index] = sigmoidFunction(value);
+        values[index] = activationFunction(value);
         index++;
     }
 }
@@ -103,7 +100,7 @@ void Layer::updateBackWeights() {
         std::transform(prev->deltas.begin(), prev->deltas.end() - static_cast<int>(pNN->getBias()),
                        prev->values.begin(),
                        prev->deltas.begin(),
-                       [&](double a, double b) { return a * b * (1 - b); });
+                       [&](double a, double b) { return a * dActivationFunction(b); });
     }
 
     // Updating back weights.
@@ -115,19 +112,11 @@ void Layer::updateBackWeights() {
         for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
             double prevDelta = deltas[indexThisValue] *
                                prev->values[indexPreviousValue];
-            *weightIt -= learningRate * prevDelta;
+            *weightIt += -1.0 * learningRate * prevDelta;
             indexPreviousValue++;
         }
         indexThisValue++;
     }
-}
-
-double Layer::sigmoidFunction(double input) {
-    return 1.0 / (1.0 + exp(input * -1));
-}
-
-double Layer::dSigmoidFunction(double s) {
-    return s * (1 - s);
 }
 
 // NeuralNetwork Constructor.
@@ -136,7 +125,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
 
     int currNum = 0, prevNum = 0;
 
-    int numLayers = static_cast<int>(numLayerVector.size())-1;
+    int numLayers = static_cast<int>(numLayerVector.size()) - 1;
 
     // Setup Output Layer.
     currNum = numLayerVector.back();
@@ -144,7 +133,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
     prevNum = numLayerVector.back();
     numLayerVector.pop_back();
 
-    Layer *outputLayer = new Layer(this, false,
+    Layer *outputLayer = new Layer(this, false, /* No bias neuron in output layer */
                                    generateRandomBackWeightVectors(currNum, prevNum),
                                    LAYER_ID_OUTPUT, nullptr);
     Layers.insert(Layers.begin(), outputLayer);
@@ -283,3 +272,4 @@ vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeu
 
     return retVec;
 }
+
