@@ -57,13 +57,13 @@ template <class T> class MergeSort : public Sort<T> {
     }
 
     std::vector<SortObject<T>>().swap(tmp);
-  }
+    }
 
     void mergesort(std::vector<SortObject<T>> *arr, int low, int high) {
       int mid;
       if (low < high) {
       mid = (low + high) / 2;
-      // Left hand side。
+      // Left hand side.
       mergesort(arr, low, mid);
       // Right hand side.
       mergesort(arr, mid + 1, high);
