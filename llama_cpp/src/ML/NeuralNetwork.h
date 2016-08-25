@@ -95,7 +95,7 @@ class Layer {
 
     // Sigmoid function as default activation function.
     std::function<double(double)> activationFunction = [&](const double input) {
-                                                        return 1.0 / (1 - exp(-1.0 * input)); };
+                                                        return 1.0 / (1 + exp(-1.0 * input)); };
     // Default derivative of activation function: Derivative of sigmoid function but take sigmoid(input) as input.
     std::function<double(double)> dActivationFunction = [&](const double input) { return input * (1 - input); };
 };
