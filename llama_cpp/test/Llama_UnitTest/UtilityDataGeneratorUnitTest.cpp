@@ -39,7 +39,7 @@ TEST(DataGeneratorCorrectnessTest, GenerateRandomDataBool) {
     }
     double trueRatio = trueCount * 0.00001;
 
-    EXPECT_NEAR(0.5, trueRatio, 0.001) << "Boolean not distributed equally.";
+    EXPECT_NEAR(0.5, trueRatio, 0.005) << "Boolean not distributed equally.";
 }
 
 //
