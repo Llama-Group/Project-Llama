@@ -52,7 +52,7 @@ template <class T> class MergeSort : public Sort<T> {
             std::swap(tmp.at(k), arr->at(i));
         }
         std::vector<SortObject<T>>().swap(tmp);
-        }
+    }
 
     void mergesort(std::vector<SortObject<T>> *arr, int low, int high) {
         int mid;
