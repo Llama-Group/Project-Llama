@@ -21,6 +21,7 @@
 #include "Sort/InsertionSort.h"
 #include "Sort/BubbleSort.h"
 #include "Sort/SelectionSort.h"
+#include "Sort/MergeSort.h"
 
 static void StdSortInt(benchmark::State& state) {
     std::vector<int> a = {5, 4, 3, 2, 1};
@@ -136,6 +137,31 @@ static void SeSortDouble(benchmark::State& state) {
     }
 }
 
+// Sorting with Merge Sort.
+static void MeSortInt(benchmark::State& state) {
+    llama::MergeSort<int> meSort = llama::MergeSort<int>();
+    std::vector<int> a = {5, 4, 3, 2, 1};
+    while (state.KeepRunning()) {
+        meSort.performSort(&a);
+    }
+}
+
+static void MeSortString(benchmark::State& state) {
+    llama::MergeSort<std::string> meSort = llama::MergeSort<std::string>();
+    std::vector<std::string> a = {"5", "4", "3", "2", "1"};
+    while (state.KeepRunning()) {
+        meSort.performSort(&a);
+    }
+}
+
+static void MeSortDouble(benchmark::State& state) {
+    llama::MergeSort<double> meSort = llama::MergeSort<double>();
+    std::vector<double> a = {5.0, 4.0, 3.0, 2.0, 1.0};
+    while (state.KeepRunning()) {
+        meSort.performSort( &a);
+    }
+}
+
 class CustomisedClass {
 public:
     CustomisedClass() {}
@@ -198,6 +224,15 @@ static void SeSortClass(benchmark::State& state) {
     }
 }
 
+static void MeSortClass(benchmark::State& state) {
+    llama::MergeSort<CustomisedClass> meSort = llama::MergeSort<CustomisedClass>();
+    std::vector<CustomisedClass> a = {CustomisedClass(5), CustomisedClass(4),
+                          CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
+    while (state.KeepRunning()) {
+        meSort.performSort(&a);
+    }
+}
+
 BENCHMARK(StdSortInt);
 BENCHMARK(StdSortString);
 BENCHMARK(BFSortInt);
@@ -216,5 +251,9 @@ BENCHMARK(SeSortInt);
 BENCHMARK(SeSortString);
 BENCHMARK(SeSortDouble);
 BENCHMARK(SeSortClass);
+BENCHMARK(MeSortInt);
+BENCHMARK(MeSortString);
+BENCHMARK(MeSortDouble);
+BENCHMARK(MeSortClass);
 
 BENCHMARK_MAIN();
