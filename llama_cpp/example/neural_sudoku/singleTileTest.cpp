@@ -28,23 +28,36 @@ using std::vector;
 using llama::NeuralNetwork;
 
 int main() {
-    NeuralNetwork nn = NeuralNetwork({4, 5, 4});
+/*
+    auto mapResult = [](vector<double> &v) {
+        if (v.size() < 2) {
+            throw std::invalid_argument("Vector size must larger than 1.");
+        } else if (v[0] > 1 || v[1] > 1) {
+            std::for_each(v.begin(), v.end(), [](double &a) {
+                a *= 0.1; });
+        } else {
+            std::for_each(v.begin(), v.end(), [](double &a) {
+                a *= 10; });
+        }};
+ */
+    
+    NeuralNetwork nn = NeuralNetwork({2, 7, 2});
 
-    auto toResult = [](vector<double> v) { std::for_each(v.begin(), v.end(), [](double a){ return a * 0.1; }); };
-
-    vector<double> tileBox = {1, 2, 3, 4};
-    vector<double> result(tileBox);
-    toResult(result);
-
-    for (int i = 0; i < 10000; i++) {
-        nn.train(tileBox, result);
+    for (int i = 0; i < 20000; i++) {
+        nn.train({0, 2}, {0.1, 0.2});
+        nn.train({2, 0}, {0.2, 0.1});
+        nn.train({0, 1}, {0.2, 0.1});
+        nn.train({1, 0}, {0.1, 0.2});
+        nn.train({1, 2}, {0.1, 0.2});
+        nn.train({2, 1}, {0.2, 0.1});
+        nn.train({0, 0}, {0.1, 0.2});
+        nn.train({0, 0}, {0.2, 0.1});
     }
 
-    vector<double> outputs = nn.feed({1, 2, 3, 4});
-    cout << outputs[0] << ' '
-         << outputs[1] << ' '
-         << outputs[2] << ' '
-         << outputs[3] << '\n';
+    vector<double> outputs = nn.feed({0, 0});
+    // mapResult(outputs);
+    cout << outputs[0] * 10 << ", "
+         << outputs[1] * 10 << '\n';
 
     return 0;
 }
