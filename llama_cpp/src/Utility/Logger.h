@@ -32,18 +32,33 @@
     #define LLAMA_LOG_LEVEL LLAMA_LOG_LEVEL_NOTHING
 #endif
 
-#ifdef LLAMA_LOG_ENABLE_FILE_LINE
-    #define LLAMA_LOG_DEBUG(logger, ...)    logger.debugWrapper  (__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
-    #define LLAMA_LOG_INFO(logger, ...)     logger.infoWrapper   (__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
-    #define LLAMA_LOG_WARNING(logger, ...)  logger.warningWrapper(__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
-    #define LLAMA_LOG_ERROR(logger, ...)    logger.errorWrapper  (__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
-    #define LLAMA_LOG_ERROR_X(logger, ...)  logger.error_xWrapper(__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+#if (defined LLAMA_LOG_ENABLE_FILE_LINE) || (defined DEBUG)
+    #define LLAMA_LOG_DEBUG(logger, ...)            logger.debugWrapper  (__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_INFO(logger, ...)             logger.infoWrapper   (__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_WARNING(logger, ...)          logger.warningWrapper(__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_ERROR(logger, ...)            logger.errorWrapper  (__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_ERROR_X(logger, ...)          logger.error_xWrapper(__FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_DEBUG_TAG(logger, tag, ...)   logger.debugWrapper  (tag, ": ", \
+        __FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_INFO_TAG(logger, tag, ...)    logger.infoWrapper   (tag, ": ", \
+        __FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_WARNING_TAG(logger, tag, ...) logger.warningWrapper(tag, ": ", \
+        __FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_ERROR_TAG(logger, tag, ...)   logger.errorWrapper  (tag, ": ", \
+        __FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
+    #define LLAMA_LOG_ERROR_X_TAG(logger, tag, ...) logger.error_xWrapper(tag, ": ", \
+        __FILE__, ": ", __LINE__, ": ", __VA_ARGS__);
 #else
-    #define LLAMA_LOG_DEBUG(logger, ...)    logger.debugWrapper  (__VA_ARGS__);
-    #define LLAMA_LOG_INFO(logger, ...)     logger.infoWrapper   (__VA_ARGS__);
-    #define LLAMA_LOG_WARNING(logger, ...)  logger.warningWrapper(__VA_ARGS__);
-    #define LLAMA_LOG_ERROR(logger, ...)    logger.errorWrapper  (__VA_ARGS__);
-    #define LLAMA_LOG_ERROR_X(logger, ...)  logger.error_xWrapper(__VA_ARGS__);
+    #define LLAMA_LOG_DEBUG(logger, ...)            logger.debugWrapper  (__VA_ARGS__);
+    #define LLAMA_LOG_INFO(logger, ...)             logger.infoWrapper   (__VA_ARGS__);
+    #define LLAMA_LOG_WARNING(logger, ...)          logger.warningWrapper(__VA_ARGS__);
+    #define LLAMA_LOG_ERROR(logger, ...)            logger.errorWrapper  (__VA_ARGS__);
+    #define LLAMA_LOG_ERROR_X(logger, ...)          logger.error_xWrapper(__VA_ARGS__);
+    #define LLAMA_LOG_DEBUG_TAG(logger, tag, ...)   logger.debugWrapper  (tag, __VA_ARGS__);
+    #define LLAMA_LOG_INFO_TAG(logger, tag, ...)    logger.infoWrapper   (tag, __VA_ARGS__);
+    #define LLAMA_LOG_WARNING_TAG(logger, tag, ...) logger.warningWrapper(tag, __VA_ARGS__);
+    #define LLAMA_LOG_ERROR_TAG(logger, tag, ...)   logger.errorWrapper  (tag, __VA_ARGS__);
+    #define LLAMA_LOG_ERROR_X_TAG(logger, tag, ...) logger.error_xWrapper(tag, __VA_ARGS__);
 #endif
 
 namespace llama {
