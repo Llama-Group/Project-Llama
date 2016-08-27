@@ -122,7 +122,7 @@ class NeuralNetwork {
 
     void printNeuralNetwork();
 
-    double getTotalError();
+    double getTotalError(std::vector<double> targets);
     double getTotalError(std::vector<double> inputs, std::vector<double> targets);
 
     bool getBias() { return bias; }
