@@ -330,7 +330,7 @@ TEST_F(SortCorrectnessTest, SelectionRandomStringsCorrectness) {
     EXPECT_EQ(randomStringsCorrect, randomStrings);
 }
 
-// Testing for Merge Sort. 
+// Testing for Merge Sort.
 TEST_F(SortCorrectnessTest, MergeRandomIntsCorrectness) {
     intMe.performSort(&randomInts);
     EXPECT_EQ(randomIntsCorrect, randomInts);

@@ -194,12 +194,6 @@ void NeuralNetwork::train(std::vector<double> inputs, std::vector<double> target
     // Must feed before train.
     feed(inputs);
 
-    // Calculate total error.
-    totalError = 0.0;
-    for (auto it = Layers.back()->values.begin(); it < Layers.back()->values.end(); ++it) {
-        totalError += pow(*it - targets[std::distance(it, Layers.back()->values.begin())], 2) * 0.5;
-    }
-
     // Train
     Layers.back()->backpropagation(targets);
 }
@@ -234,7 +228,12 @@ void NeuralNetwork::printNeuralNetwork() {
 }
 
 // Get the total error before latest train.
-double NeuralNetwork::getTotalError() {
+double NeuralNetwork::getTotalError(std::vector<double> targets) {
+    totalError = 0.0;
+    vector<double> outputs = Layers.back()->values;
+    for (auto it = outputs.begin(); it < outputs.end(); ++it) {
+        totalError += pow(*it - targets[std::distance(it, outputs.begin())], 2) * 0.5;
+    }
     return totalError;
 }
 
