@@ -112,7 +112,7 @@ void Layer::updateBackWeights() {
         for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
             double prevDelta = deltas[indexThisValue] *
                                prev->values[indexPreviousValue];
-            *weightIt += -1.0 * learningRate * prevDelta;
+            *weightIt += -1.0 * pNN->learningRate * prevDelta;
             indexPreviousValue++;
         }
         indexThisValue++;
@@ -169,6 +169,9 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
             temp = c;
         }
     }
+
+    // Set default learning rate(Eta).
+    learningRate = 0.5;
 }
 
 // Forward Propagation.
@@ -196,6 +199,21 @@ void NeuralNetwork::train(std::vector<double> inputs, std::vector<double> target
 
     // Train
     Layers.back()->backpropagation(targets);
+}
+
+void NeuralNetwork::train(int count, std::function<void()> trainContent) {
+    train(2.0, count, trainContent);
+}
+
+void NeuralNetwork::train(double initialLearningRate,
+           int count, std::function<void()> trainContent) {
+    learningRate = initialLearningRate;
+    for (int i = 0; i < count; i++) {
+        trainContent();
+        if (learningRate > 0.5) {
+            learningRate -= 0.2 / (count + 1);
+        }
+    }
 }
 
 void NeuralNetwork::printNeuralNetwork() {

@@ -51,9 +51,6 @@ class Layer {
         neuronCount = (uint32_t)backWeightsVectors.size() + static_cast<int>(bias);
         values = std::vector<double>(neuronCount);
         deltas = std::vector<double>(neuronCount);
-
-        // Set learning rate(Eta).
-        learningRate = 0.5;
     }
 
     // Setter
@@ -88,8 +85,6 @@ class Layer {
     std::vector<double> values;
     std::vector<double> deltas;
 
-    double learningRate;
-
     void updateAndCalculateValues(std::vector<double> *previousValues);
     void updateBackWeights();
 
@@ -117,6 +112,9 @@ class NeuralNetwork {
 
     // Back Propagation
     void train(std::vector<double> inputs, std::vector<double> targets);
+    void train(int count, std::function<void()> trainContent);
+    void train(double initialLearningRate,
+               int count, std::function<void()> trainContent);
 
     int size() { return Layers.size(); }
 
@@ -126,6 +124,8 @@ class NeuralNetwork {
     double getTotalError(std::vector<double> inputs, std::vector<double> targets);
 
     bool getBias() { return bias; }
+
+    double learningRate;
 
  private:
     std::vector<Layer *> Layers;
