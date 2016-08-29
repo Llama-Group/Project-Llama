@@ -86,12 +86,32 @@ static void NNTrainAndStress(benchmark::State& state) {
 static void NNTrainAndComplete(benchmark::State& state) {
     while (state.KeepRunning()) {
         NeuralNetwork nn({2, 5, 1});
-        while (calcLogicAvgTotalError(&nn, 0, 0, 0, 1) > 0.0001) {
+        nn.train(200, [&](){
             nn.train({0, 0}, {0});
             nn.train({0, 1}, {0});
             nn.train({1, 0}, {0});
             nn.train({1, 1}, {1});
-        }
+        });
+        if (calcLogicAvgTotalError(&nn, 0, 0, 0, 1) > 0.01) {
+            while (calcLogicAvgTotalError(&nn, 0, 0, 0, 1) > 0.01) {
+                nn.train({0, 0}, {0});
+                nn.train({0, 1}, {0});
+                nn.train({1, 0}, {0});
+                nn.train({1, 1}, {1});
+            }
+        };
+    }
+}
+
+static void NNTrainAndDynamicLearningRate1000(benchmark::State& state) {
+    NeuralNetwork nn({2, 5, 1});
+    while (state.KeepRunning()) {
+        nn.train(200, [&](){
+            nn.train({0, 0}, {0});
+            nn.train({0, 1}, {0});
+            nn.train({1, 0}, {0});
+            nn.train({1, 1}, {1});
+        });
     }
 }
 
@@ -102,5 +122,6 @@ BENCHMARK(NNTrainAndNormal);
 BENCHMARK(NNTrainXorNormal);
 BENCHMARK(NNTrainAndStress);
 BENCHMARK(NNTrainAndComplete);
+BENCHMARK(NNTrainAndDynamicLearningRate1000);
 
 BENCHMARK_MAIN();

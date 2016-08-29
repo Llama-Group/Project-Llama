@@ -112,7 +112,7 @@ void Layer::updateBackWeights() {
         for (auto weightIt = vecIt->begin(); weightIt < vecIt->end(); ++weightIt) {
             double prevDelta = deltas[indexThisValue] *
                                prev->values[indexPreviousValue];
-            *weightIt += -1.0 * learningRate * prevDelta;
+            *weightIt += -1.0 * pNN->learningRate * prevDelta;
             indexPreviousValue++;
         }
         indexThisValue++;
@@ -169,6 +169,9 @@ NeuralNetwork::NeuralNetwork(std::vector<int> numLayerVector, bool bias) {
             temp = c;
         }
     }
+
+    // Set default learning rate(Eta).
+    learningRate = 0.5;
 }
 
 // Forward Propagation.
@@ -196,6 +199,21 @@ void NeuralNetwork::train(std::vector<double> inputs, std::vector<double> target
 
     // Train
     Layers.back()->backpropagation(targets);
+}
+
+void NeuralNetwork::train(int count, std::function<void()> trainContent) {
+    train(2.0, count, trainContent);
+}
+
+void NeuralNetwork::train(double initialLearningRate,
+           int count, std::function<void()> trainContent) {
+    learningRate = initialLearningRate;
+    for (int i = 0; i < count; i++) {
+        trainContent();
+        if (learningRate > 0.5) {
+            learningRate -= 0.2 / (count + 1);
+        }
+    }
 }
 
 void NeuralNetwork::printNeuralNetwork() {
@@ -250,21 +268,15 @@ double NeuralNetwork::getTotalError(vector<double> inputs, vector<double> target
 // NeurualNetwork Private Methods.
 vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons) {
     // Gaussian random engine
-    std::default_random_engine generator;
-    std::normal_distribution<double> distribution(1.0, 0.1);
-
+    std::normal_distribution<double> distribution(0, 0.33);
     std::random_device randDevice;
-    std::uniform_int_distribution<int> distTrueRandom(0, 10);
-    for (int i = 0; i < distTrueRandom(randDevice); ++i) {
-        distribution(generator);
-    }
 
     vector<vector<double>> retVec;
 
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
         for (int j = 0; j < numPreviousNeurons + static_cast<int>(bias); ++j) {
-             tempVec.push_back(distribution(generator));
+             tempVec.push_back(distribution(randDevice));
         }
         retVec.push_back(tempVec);
     }
