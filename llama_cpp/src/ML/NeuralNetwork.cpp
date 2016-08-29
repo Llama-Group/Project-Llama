@@ -250,21 +250,15 @@ double NeuralNetwork::getTotalError(vector<double> inputs, vector<double> target
 // NeurualNetwork Private Methods.
 vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons) {
     // Gaussian random engine
-    std::default_random_engine generator;
-    std::normal_distribution<double> distribution(1.0, 0.1);
-
+    std::normal_distribution<double> distribution(0, 0.33);
     std::random_device randDevice;
-    std::uniform_int_distribution<int> distTrueRandom(0, 10);
-    for (int i = 0; i < distTrueRandom(randDevice); ++i) {
-        distribution(generator);
-    }
 
     vector<vector<double>> retVec;
 
     for (int i = 0; i < numNeurons; ++i) {
         vector<double> tempVec = {};
         for (int j = 0; j < numPreviousNeurons + static_cast<int>(bias); ++j) {
-             tempVec.push_back(distribution(generator));
+             tempVec.push_back(distribution(randDevice));
         }
         retVec.push_back(tempVec);
     }
