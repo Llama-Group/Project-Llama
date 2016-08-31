@@ -27,7 +27,7 @@ using std::vector;
 
 using llama::NeuralNetwork;
 
-int main() {
+int main_single_tile() {
 /*
     auto mapResult = [](vector<double> &v) {
         if (v.size() < 2) {
@@ -40,7 +40,7 @@ int main() {
                 a *= 10; });
         }};
  */
-    
+
     NeuralNetwork nn = NeuralNetwork({2, 7, 2});
 
     for (int i = 0; i < 20000; i++) {
