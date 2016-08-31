@@ -123,6 +123,12 @@ class NeuralNetwork {
     double getTotalError(std::vector<double> targets);
     double getTotalError(std::vector<double> inputs, std::vector<double> targets);
 
+    double getTotalErrorOfProbabilities(std::vector<double> targets);
+    double getTotalErrorOfProbabilities(std::vector<double> inputs, std::vector<double> targets);
+
+    // Convert using softmax function.
+    void convertOutputsToProbabilities();
+
     bool getBias() { return bias; }
 
     double learningRate;
@@ -132,6 +138,8 @@ class NeuralNetwork {
     bool bias;
 
     double totalError = 0.0;
+
+    void softmax(std::vector<double> *values);
 
     std::vector<std::vector<double>> generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons);
 };
