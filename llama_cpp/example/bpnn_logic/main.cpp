@@ -33,7 +33,7 @@ double calcAvgTotalError(NeuralNetwork *nn, double a, double b, double c, double
 }
 
 int main(int argc, const char * argv[]) {
-    vector<int> layers = {2, 15, 1};
+    vector<int> layers = {2, 5, 1};
 
     NeuralNetwork nn = NeuralNetwork(layers);
 
