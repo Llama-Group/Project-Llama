@@ -19,6 +19,7 @@
 #include <Sort/BruteForceSort.h>
 #include <Sort/BubbleSort.h>
 #include <Sort/SelectionSort.h>
+#include <Sort/MergeSort.h>
 
 #include <string>
 #include <vector>
@@ -145,6 +146,26 @@ int main() {
     new llama::SelectionSort<CustomisedClass>(&d);
 
     std::cout << "SelectionSort results:" << std::endl;
+    for (int i = 0; i < 5; i++) {
+        std::cout << a[i] << " ";
+        std::cout << b[i] << " ";
+        std::cout << c[i] << " ";
+        std::cout << std::string(d[i]) << " " << std::endl;
+    }
+
+    // Sorting with MergeSort.
+    a = {5, 4, 3, 2, 1};
+    b = {"5", "4", "3", "2", "1"};
+    c = {5.0, 4.0, 3.0, 2.0, 1.0};
+    d = {CustomisedClass(5), CustomisedClass(4),
+        CustomisedClass(3), CustomisedClass(2), CustomisedClass(1)};
+
+    new llama::MergeSort<int>(&a);
+    new llama::MergeSort<std::string>(&b);
+    new llama::MergeSort<double>(&c);
+    new llama::MergeSort<CustomisedClass>(&d);
+
+    std::cout << "MergeSort results:" << std::endl;
     for (int i = 0; i < 5; i++) {
         std::cout << a[i] << " ";
         std::cout << b[i] << " ";

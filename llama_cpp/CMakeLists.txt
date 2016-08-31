@@ -177,6 +177,7 @@ BuildExample("${LOGGER}")
 BuildExample("${NEURAL_SUDOKU}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
+BuildBenchmark("${BPNN}")
 
 if( CMAKE_BUILD_TYPE STREQUAL "Coverage" )
     SETUP_TARGET_FOR_COVERAGE(coverage "make test || true" coverage_report)
