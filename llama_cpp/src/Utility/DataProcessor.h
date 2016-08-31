@@ -22,7 +22,7 @@
 #include <string>
 #include <vector>
 
-namepace llama {
+namespace llama {
 class DataProcessor {
  public:
     DataProcessor() {}

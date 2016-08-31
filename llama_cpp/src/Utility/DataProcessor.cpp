@@ -17,11 +17,14 @@
 
 #include <Utility/DataProcessor.h>
 
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
 
+using std::string;
 using std::vector;
+
 using llama::DataProcessor;
 
 int DataProcessor::readLine(vector<double> *output) {
