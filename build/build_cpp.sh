@@ -30,7 +30,7 @@ else
     if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
         if [ -d "../Project-Llama/llama_cpp/example/""$2" ]; then
             echo "Building: Project-Llama/llama_cpp/example/""$2"
-            CMAKEFLAGS=-D$(echo "$2" | awk '{print toupper($0)}')="$2"
+            CMAKEFLAGS+= -D$(echo "$2" | awk '{print toupper($0)}')="$2"
             if [ "$3" == "xcode" ]; then
                 CMAKEFLAGS+=" -G Xcode"
             fi
@@ -47,7 +47,7 @@ else
         fi
         if [ -d "../Project-Llama/llama_cpp/benchmark/""$2" ]; then
             echo "Building: Project-Llama/llama_cpp/benchmark/""$2"
-            CMAKEFLAGS=-D$(echo "$2" | awk '{print toupper($0)}')="$2"
+            CMAKEFLAGS+= -D$(echo "$2" | awk '{print toupper($0)}')="$2"
             if [ "$3" == "xcode" ]; then
                 CMAKEFLAGS+=" -G Xcode"
             fi
@@ -74,13 +74,13 @@ else
         for i in "${target[@]////}"; do
             flags=$flags\ -D$(echo "$i" | awk '{print toupper($0)}')="$i"
         done
-        CMAKEFLAGS="$flags"
+        CMAKEFLAGS+=" $flags"
         if [ "$2" == "xcode" ]; then
             CMAKEFLAGS+=" -G Xcode"
         fi
     # Build lib coverage
     elif [ "$1" == "coverage" ]; then
-        CMAKEFLAGS="-DCMAKE_BUILD_TYPE=Coverage"
+        CMAKEFLAGS+=" -DCMAKE_BUILD_TYPE=Coverage"
     # Show help
     else
         echo "Usage: ./build_cpp.sh  [-e|--example] [example name]|all (xcode)"
@@ -101,9 +101,6 @@ if [[ $CMAKEFLAGS == *"-G Xcode"* ]]; then
     popd >> /dev/null
 else
     cmake $CMAKEFLAGS ../Project-Llama/llama_cpp/
-fi
-
-if [[ ! $CMAKEFLAGS == *"-G Xcode"* ]]; then
     # Make
     make
     if [ $? != 0 ]; then

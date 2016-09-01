@@ -55,7 +55,6 @@ static void NNTrainAndNormal(benchmark::State& state) {
             nn.train({0, 1}, {0});
             nn.train({1, 0}, {0});
             nn.train({1, 1}, {1});
-            trainCount++;
         }
     }
 }
