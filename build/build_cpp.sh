@@ -30,7 +30,7 @@ else
     if [ "$1" == "-e" ] || [ "$1" == "--example" ] && [ "$2" != "" ]; then
         if [ -d "../Project-Llama/llama_cpp/example/""$2" ]; then
             echo "Building: Project-Llama/llama_cpp/example/""$2"
-            CMAKEFLAGS+= -D$(echo "$2" | awk '{print toupper($0)}')="$2"
+            CMAKEFLAGS+=" "-D$(echo "$2" | awk '{print toupper($0)}')="$2"
             if [ "$3" == "xcode" ]; then
                 CMAKEFLAGS+=" -G Xcode"
             fi
@@ -47,7 +47,7 @@ else
         fi
         if [ -d "../Project-Llama/llama_cpp/benchmark/""$2" ]; then
             echo "Building: Project-Llama/llama_cpp/benchmark/""$2"
-            CMAKEFLAGS+= -D$(echo "$2" | awk '{print toupper($0)}')="$2"
+            CMAKEFLAGS+=" "-D$(echo "$2" | awk '{print toupper($0)}')="$2"
             if [ "$3" == "xcode" ]; then
                 CMAKEFLAGS+=" -G Xcode"
             fi
