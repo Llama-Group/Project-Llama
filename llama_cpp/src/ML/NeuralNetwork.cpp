@@ -265,7 +265,33 @@ double NeuralNetwork::getTotalError(vector<double> inputs, vector<double> target
     return totalError;
 }
 
+// Get the total error before latest train and convertion.
+double NeuralNetwork::getTotalErrorOfProbabilities(std::vector<double> targets) {
+    convertOutputsToProbabilities();
+    return getTotalError(targets);
+}
+
+double NeuralNetwork::getTotalErrorOfProbabilities(vector<double> inputs, vector<double> targets) {
+    vector<double> outputs = feed(inputs);
+    convertOutputsToProbabilities();
+    totalError = 0.0;
+    for (auto it = outputs.begin(); it < outputs.end(); ++it) {
+        totalError += pow(*it - targets[std::distance(it, outputs.begin())], 2) * 0.5;
+    }
+    return totalError;
+}
+
+void NeuralNetwork::convertOutputsToProbabilities() {
+    softmax(&(Layers.back()->values));
+}
+
 // NeurualNetwork Private Methods.
+void NeuralNetwork::softmax(vector<double> *values) {
+    std::for_each(values->begin(), values->end(), [](double d){ return exp(d); });
+    double eSum = std::accumulate(values->begin(), values->end(), 0);
+    std::for_each(values->begin(), values->end(), [&](double d){ return d / eSum; });
+}
+
 vector<vector<double>> NeuralNetwork::generateRandomBackWeightVectors(int numNeurons, int numPreviousNeurons) {
     // Gaussian random engine
     std::normal_distribution<double> distribution(0, 0.33);
