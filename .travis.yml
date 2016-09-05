@@ -30,7 +30,7 @@ script:
 - mkdir -p ../build_cpp_benchmark
 - mkdir -p ../build_cpp_benchmark/src
 - cp ./src/libbenchmark.a ../build_cpp_benchmark/src/libbenchmark.a
-- export CXX="clang++-3.6"
+- export CXX="clang++"
 - ./build/build_cpp.sh all
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp
 - ./build/build_cpp.sh coverage
