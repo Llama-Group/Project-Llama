@@ -15,8 +15,48 @@
 //  limitations under the License.
 //
 
+#include <ifstream>
+#include <string>
+#include <vector>
+
+#define IDX3_MAGIX 0x00000803;
+#define IDX1_MAGIC 0x00000801;
+
+enum FileType = {IDX3, IDX1};
+
 class MNISTReader {
  public:
-	MNISTReader () {}
+    MNISTReader() {}
+
+	MNISTReader(std::string trainImagesPath, std::string trainClassesPath,
+				std::string testImagesPath, std::string testClassesPath) {
+		mTrainImagesPath = trainImagesPath;
+		mTrainClassesPath = trainClassesPath;
+		mTestImagesPath = testImagesPath;
+		mTestClassesPath = testClassesPath;
+	}
+
+	void getImages(std::vector<std::vector<std::vector<uint8_t>>> *imageBundle) {
+		
+	}
+
+ private:
+	ifstream fileReader;
+
+	std::string mTrainImagesPath;
+	std::string mTrainClassesPath;
+	std::string mTestImagesPath;
+	std::string mTestClassesPath;
+
+	FileType currentType;
+	int unitCount;
+	int row;
+	int column;
+
+	void setup(std::string filePath) {
+		fileReader = open(filePath, std::ios::binary);
+		// TODO(anyone): add file successfully opened check here.
+		
+	}
 };
 
