@@ -174,6 +174,7 @@ BuildExample("${DATA_GENERATOR}")
 BuildExample("${LLOBJECT}")
 BuildExample("${BPNN_LOGIC}")
 BuildExample("${LOGGER}")
+BuildExample("${MNIST_NN}")
 
 BuildBenchmark("${SORT_BENCHMARK}")
 BuildBenchmark("${BPNN}")
