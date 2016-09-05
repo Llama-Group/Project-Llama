@@ -22,8 +22,9 @@ install:
 - gem install coveralls-lcov
 
 script:
-- sudo rm /opt/llvm/bin/clang++
-- sudo ln -s /opt/llvm-3.7.0-iwyu/bin/clang++ /opt/llvm/bin/clang++
+- clPath=`which clang++`
+- sudo rm $clPath
+- sudo ln -s `which clang++-3.7` $clPath
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../build_cpp_benchmark
