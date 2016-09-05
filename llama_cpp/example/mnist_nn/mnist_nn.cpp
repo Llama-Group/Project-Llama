@@ -30,7 +30,7 @@ using std::vector;
 int main() {
     MNISTReader rd;
 
-    llama::NeuralNetwork nn({784, 300, 100, 10});
+    llama::NeuralNetwork nn({784, 500, 300, 10});
 
     auto *trainImageBundle = new vector<vector<double>>();
     auto *trainClassBundle = new vector<vector<double>>();

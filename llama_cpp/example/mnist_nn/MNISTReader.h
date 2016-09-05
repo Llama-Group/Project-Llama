@@ -67,7 +67,7 @@ class MNISTReader {
             return;
         }
 
-        fileReader.open(filePath, std::fstream::binary | std::fstream::internal);
+        fileReader.open(filePath.c_str(), std::fstream::binary | std::fstream::internal);
         // TODO(anyone): add file successfully opened check here.
 
         // Read magic.
