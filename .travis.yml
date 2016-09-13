@@ -6,12 +6,12 @@ addons:
       - cmake
       - g++-4.8
       - gcc-4.8
-      - clang++-3.6
+      - clang++-3.7
       - lcov
     sources:
       - kalakris-cmake
       - ubuntu-toolchain-r-test
-      - llvm-toolchain-precise-3.6
+      - llvm-toolchain-precise-3.7
       
 branches:
   only: 
@@ -22,12 +22,15 @@ install:
 - gem install coveralls-lcov
 
 script:
+- clPath=`which clang++`
+- sudo rm $clPath
+- sudo ln -s `which clang++-3.7` $clPath
 - cmake ./llama_cpp/benchmark/google_benchmark
 - make
 - mkdir -p ../build_cpp_benchmark
 - mkdir -p ../build_cpp_benchmark/src
 - cp ./src/libbenchmark.a ../build_cpp_benchmark/src/libbenchmark.a
-- export CXX="clang++-3.6"
+- export CXX="clang++"
 - ./build/build_cpp.sh all
 - lcov --zerocounters --directory $TRAVIS_BUILD_DIR/../build_llama_cpp
 - ./build/build_cpp.sh coverage
