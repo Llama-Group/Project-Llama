@@ -19,11 +19,18 @@
 #define LLAMA_CPP_SRC_UTILITY_SAVABLE_H_
 
 #include <iostream>
-#include <vector>
 #include <string>
-#include <random>
 
 namespace llama {
+    
+class Savable {
+ public:
+    Savable () {}
+    
+    
+    
+    
+};
     
     
 	
