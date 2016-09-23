@@ -15,7 +15,31 @@
 //  limitations under the License.
 //
 
+#include "Utility/Savable.h"
+
+#include <fstream>
 #include <iostream>
-#include <vector>
 #include <string>
-#include <random>
+
+using llama::Savable;
+
+void Savable::saveToFile(std::string fileName) {
+    std::ofstream myfile(fileName);
+    if (myfile.is_open()) {
+    myfile << this;
+    myfile.close();
+    }
+}
+
+
+void Savable::loadFromFile(std::string fileName) {
+    std::string line;
+    std::ifstream myfile(fileName);
+    if (myfile.is_open()) {
+        while(getline(myfile,line)) {
+            std::cout << line << '\n';
+        }
+        myfile.close();
+    }
+    else std::cout << "Unable to open file";
+}

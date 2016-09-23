@@ -18,6 +18,7 @@
 #ifndef LLAMA_CPP_SRC_UTILITY_SAVABLE_H_
 #define LLAMA_CPP_SRC_UTILITY_SAVABLE_H_
 
+#include <fstream>
 #include <iostream>
 #include <string>
 
@@ -27,13 +28,10 @@ class Savable {
  public:
     Savable () {}
     
+    void saveToFile(std::string fileName = "default.txt");
     
-    
-    
+    void loadFromFile(std::string fileName = "default.txt");
 };
-    
-    
-	
 }  // namespace llama
 
 #endif  // LLAMA_CPP_SRC_UTILITY_SAVABLE_H_
