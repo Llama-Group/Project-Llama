@@ -23,23 +23,17 @@
 
 using llama::Savable;
 
-void Savable::saveToFile(std::string fileName) {
+int Savable::saveToFile(std::string fileName) {
     std::ofstream myfile(fileName);
-    if (myfile.is_open()) {
-    myfile << this;
+    myfile.write(reinterpret_cast<char *>(this), sizeof(Savable));
     myfile.close();
-    }
+    return 0;
 }
 
 
-void Savable::loadFromFile(std::string fileName) {
-    std::string line;
+int Savable::loadFromFile(std::string fileName) {
     std::ifstream myfile(fileName);
-    if (myfile.is_open()) {
-        while(getline(myfile,line)) {
-            std::cout << line << '\n';
-        }
-        myfile.close();
-    }
-    else std::cout << "Unable to open file";
+    myfile.read(reinterpret_cast<char *>(this), sizeof(Savable));
+    myfile.close();
+    return 0;
 }

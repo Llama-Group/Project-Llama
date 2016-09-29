@@ -23,14 +23,19 @@
 #include <string>
 
 namespace llama {
-    
+
 class Savable {
  public:
-    Savable () {}
-    
-    void saveToFile(std::string fileName = "default.txt");
-    
-    void loadFromFile(std::string fileName = "default.txt");
+    Savable() {}
+
+    int testData1;
+    bool testData2;
+    float testData3;
+
+
+    int saveToFile(std::string fileName = "default.dat");
+
+    int loadFromFile(std::string fileName = "default.dat");
 };
 }  // namespace llama
 
