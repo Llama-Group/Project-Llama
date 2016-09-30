@@ -7,6 +7,7 @@
 //
 
 #include <iostream>
+#include <string>
 #include "SimpleDataPack.h"
 
 class SimpleObject {
