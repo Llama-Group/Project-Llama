@@ -10,6 +10,7 @@
 #define LLAMA_CPP_SRC_UTILITY_SIMPLEDATAPACK_H_
 
 #include <stdlib.h>
+#include <string.h>
 #include <functional>
 #include <fstream>
 #include <memory>
@@ -57,7 +58,7 @@ public:
     void push(unsigned short data_type, std::string id, const T* data, bool _signed = true) {
         struct savable_list_t * item = (struct savable_list_t *)malloc(sizeof(struct savable_list_t));
         if (item) {
-            memset(item, 0, sizeof(struct savable_list_t));
+            memset((void *)item, 0, sizeof(struct savable_list_t));
             item->data_type = (data_t)(_signed << 15);
             item->data_type |= data_type;
             item->id = std::make_shared<std::string>(id);
@@ -65,7 +66,7 @@ public:
             item->copied = (void *)malloc(sizeof(T));
             if (item->copied) {
                 memset(item->copied, 0, sizeof(T));
-                memcpy(item->copied, data, sizeof(T));
+                memcpy(item->copied, (const void *)data, sizeof(T));
                 item->size = sizeof(T);
                 item->next = nullptr;
                 last->next = item;
@@ -82,7 +83,7 @@ public:
     void push_pure_data(std::string id, void * data, int32_t length) {
         struct savable_list_t * item = (struct savable_list_t *)malloc(sizeof(struct savable_list_t));
         if (item) {
-            memset(item, 0, sizeof(struct savable_list_t));
+            memset((void *)item, 0, sizeof(struct savable_list_t));
             item->data_type = (data_t)(true << 15);
             item->data_type |= data_t::PURE_DATA;
             item->id = std::make_shared<std::string>(id);
@@ -90,7 +91,7 @@ public:
             item->copied = (void *)malloc(length);
             if (item->copied) {
                 memset(item->copied, 0, length);
-                memcpy(item->copied, data, length);
+                memcpy(item->copied, (const void *)data, length);
                 item->size = length;
                 item->next = nullptr;
                 last->next = item;
@@ -126,7 +127,7 @@ public:
                         
                         loaded.read(reinterpret_cast<char *>(&length), sizeof(int32_t));
                         char * buffer = (char *)malloc(length + 1);
-                        memset(buffer, 0, length + 1);
+                        memset((void *)buffer, 0, length + 1);
                         loaded.read(buffer, length);
                         std::string id = std::string(buffer);
                         free((void *)buffer);
