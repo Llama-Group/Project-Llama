@@ -43,7 +43,7 @@ int main(int argc, const char * argv[]) {
         pack.push(SimpleDataPack::data_t::BIT_128, "long double", &p);
     }
     
-    pack.push_pure_data("cstring", reinterpret_cast<void *>("Hello\0"), 6);
+    pack.push_pure_data("cstring", "Hello\0", 6);
     
     for (int i = 0; i < 4; i++) {
         SimpleObject object;
