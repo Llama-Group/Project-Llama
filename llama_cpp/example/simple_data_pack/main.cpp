@@ -6,9 +6,10 @@
 //  Copyright © 2016 BlueCocoa. All rights reserved.
 //
 
+#include <utility/SimpleDataPack.h>
+
 #include <iostream>
 #include <string>
-#include "SimpleDataPack.h"
 
 class SimpleObject {
  public:
