@@ -5,6 +5,8 @@
 
 An educational purposed project intends to implement algorithms and models learned during bachelor computer science study, and allow them to solve real-life problems and OJ.
 
+The ultimate goal is to have a great homebrew Machine Learning library.
+
 See [Llama Wiki](https://github.com/Llama-Group/Project-Llama/wiki) before you start contributing to this project.
 
 See [Quick Start](https://github.com/Llama-Group/Project-Llama/wiki/Quick-Start) for compiling guides.
