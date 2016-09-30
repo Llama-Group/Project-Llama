@@ -11,6 +11,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 #include <functional>
 #include <fstream>
 #include <memory>
@@ -18,8 +19,8 @@
 #include <string>
 
 class SimpleDataPack {
-public:
-    typedef enum data_t : unsigned short {
+ public:
+    typedef enum data_t : int16_t {
         BIT_8           = 0b00000001,
         BIT_16          = 0b00000010,
         BIT_32          = 0b00000100,
@@ -48,7 +49,7 @@ public:
                 struct savable_list_t * tmp = iterator;
                 iterator = iterator->next;
                 free(iterator->copied);
-                free((void *)tmp);
+                free(reinterpret_cast<void *>(tmp));
             } while (iterator->next);
         }
         free(header);
@@ -58,15 +59,15 @@ public:
     void push(unsigned short data_type, std::string id, const T* data, bool _signed = true) {
         struct savable_list_t * item = (struct savable_list_t *)malloc(sizeof(struct savable_list_t));
         if (item) {
-            memset((void *)item, 0, sizeof(struct savable_list_t));
+            memset(reinterpret_cast<void *>(item), 0, sizeof(struct savable_list_t));
             item->data_type = (data_t)(_signed << 15);
             item->data_type |= data_type;
             item->id = std::make_shared<std::string>(id);
             
-            item->copied = (void *)malloc(sizeof(T));
+            item->copied = malloc(sizeof(T));
             if (item->copied) {
                 memset(item->copied, 0, sizeof(T));
-                memcpy(item->copied, (const void *)data, sizeof(T));
+                memcpy(item->copied, reinterpret_cast<const void *>(data), sizeof(T));
                 item->size = sizeof(T);
                 item->next = nullptr;
                 last->next = item;
@@ -83,12 +84,12 @@ public:
     void push_pure_data(std::string id, void * data, int32_t length) {
         struct savable_list_t * item = (struct savable_list_t *)malloc(sizeof(struct savable_list_t));
         if (item) {
-            memset((void *)item, 0, sizeof(struct savable_list_t));
+            memset(reinterpret_cast<void *>(item), 0, sizeof(struct savable_list_t));
             item->data_type = (data_t)(true << 15);
             item->data_type |= data_t::PURE_DATA;
             item->id = std::make_shared<std::string>(id);
             
-            item->copied = (void *)malloc(length);
+            item->copied = malloc(length);
             if (item->copied) {
                 memset(item->copied, 0, length);
                 memcpy(item->copied, (const void *)data, length);
@@ -105,7 +106,14 @@ public:
         }
     }
     
-    void loadFrom(std::string file, const std::function<bool(unsigned short data_type, std::string id, void * data, size_t length, bool _signed)>& callback) {
+    static void loadFrom(std::string file,
+                         const std::function<bool(
+                                                  int16_t data_type,
+                                                  std::string id,
+                                                  void * data,
+                                                  size_t length,
+                                                  bool _signed)
+                         >& callback) {
         static char head[4];
         
         std::ifstream loaded(file);
@@ -116,21 +124,21 @@ public:
                 loaded.read(reinterpret_cast<char *>(&_count), sizeof(int32_t));
                 
                 if (_count >= 0) {
-                    unsigned short data_type;
+                    int16_t data_type;
                     bool _signed;
                     int32_t length;
                     for (int i = 0; i < _count; i++) {
-                        loaded.read(reinterpret_cast<char *>(&data_type), sizeof(unsigned short));
+                        loaded.read(reinterpret_cast<char *>(&data_type), sizeof(int16_t));
                         _signed = (data_type >> 15);
                         data_type <<= 1;
                         data_type >>= 1;
                         
                         loaded.read(reinterpret_cast<char *>(&length), sizeof(int32_t));
-                        char * buffer = (char *)malloc(length + 1);
-                        memset((void *)buffer, 0, length + 1);
+                        char * buffer = reinterpret_cast<char *>(malloc(length + 1));
+                        memset(reinterpret_cast<void *>(buffer), 0, length + 1);
                         loaded.read(buffer, length);
                         std::string id = std::string(buffer);
-                        free((void *)buffer);
+                        free(reinterpret_cast<void *>(buffer));
                         
                         void * data = malloc(length);
                         
@@ -166,7 +174,7 @@ public:
             while ((iterator = iterator->next)) {
                 auto&& id = iterator->id.get();
                 
-                saved.write(reinterpret_cast<char *>(&iterator->data_type), sizeof(unsigned short));
+                saved.write(reinterpret_cast<char *>(&iterator->data_type), sizeof(int16_t));
                 int32_t id_length = (int32_t)id->length();
                 saved.write(reinterpret_cast<char *>(&id_length), sizeof(int32_t));
                 saved.write(id->c_str(), id->length());
@@ -178,9 +186,9 @@ public:
             throw std::runtime_error("Cannot open file");
         }
     }
-private:
+ private:
     typedef struct savable_list_t {
-        unsigned short data_type;
+        int16_t data_type;
         std::shared_ptr<std::string> id;
         int32_t size = 0;
         void * copied = nullptr;

@@ -60,7 +60,7 @@ int main(int argc, const char * argv[]) {
     
     pack.saveTo("233.dat");
     
-    pack.loadFrom("233.dat", [](unsigned short data_type, std::string id, void * data, size_t length, bool _signed) -> bool {
+    SimpleDataPack::loadFrom("233.dat", [](unsigned short data_type, std::string id, void * data, size_t length, bool _signed) -> bool {
         switch (data_type) {
             case SimpleDataPack::data_t::BIT_8:
                 std::cout << "BIT_8:\n";
