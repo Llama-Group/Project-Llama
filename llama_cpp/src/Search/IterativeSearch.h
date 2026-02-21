@@ -18,15 +18,21 @@
 #ifndef LLAMA_CPP_SRC_SEARCH_ITERATIVESEARCH_H_
 #define LLAMA_CPP_SRC_SEARCH_ITERATIVESEARCH_H_
 
-#include <iostream>
+#include <Search/Search.h>
+#include <vector>
 
-namespace Llama {
+namespace llama {
+template <class T>
+class IterativeSearch {
+ public:
+    int linear(const std::vector<T>& data, const T& target) const {
+        return linearSearch(data, target);
+    }
 
-int tryMe() {
-    std::cout << "I'll not search for you!\n";
-    return -1;
-}
-
-}  // Llama
+    int binary(const std::vector<T>& sortedData, const T& target) const {
+        return binarySearch(sortedData, target);
+    }
+};
+}  // namespace llama
 
 #endif  // LLAMA_CPP_SRC_SEARCH_ITERATIVESEARCH_H_

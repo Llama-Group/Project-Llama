@@ -18,5 +18,38 @@
 #ifndef LLAMA_CPP_SRC_SEARCH_SEARCH_H_
 #define LLAMA_CPP_SRC_SEARCH_SEARCH_H_
 
+#include <vector>
+
+namespace llama {
+template <class T>
+int linearSearch(const std::vector<T>& data, const T& target) {
+    for (std::size_t i = 0; i < data.size(); ++i) {
+        if (data[i] == target) {
+            return static_cast<int>(i);
+        }
+    }
+    return -1;
+}
+
+template <class T>
+int binarySearch(const std::vector<T>& sortedData, const T& target) {
+    int left = 0;
+    int right = static_cast<int>(sortedData.size()) - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (sortedData[mid] == target) {
+            return mid;
+        }
+        if (sortedData[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1;
+}
+}  // namespace llama
 
 #endif  // LLAMA_CPP_SRC_SEARCH_SEARCH_H_

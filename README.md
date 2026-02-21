@@ -11,6 +11,8 @@ See [Llama Wiki](https://github.com/Llama-Group/Project-Llama/wiki) before you s
 
 See [Quick Start](https://github.com/Llama-Group/Project-Llama/wiki/Quick-Start) for compiling guides.
 
+Algorithm progress in this workspace is tracked in [算法实现计划与进度](./算法实现计划与进度.md).
+
 Installation
 ------------
 ```bash
